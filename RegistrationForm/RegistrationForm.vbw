@@ -1,0 +1,7 @@
+frmMain = 107, 103, 825, 719, C, 24, -13, 965, 771, C
+frmLogin = 146, 234, 864, 850, , 257, 255, 975, 871, C
+RegistrationFormModule = 170, 61, 888, 677, 
+INIread = 150, 150, 859, 757, 
+INIwrite = 154, 203, 965, 753, 
+frmSplash = 250, 250, 959, 857, , 225, 225, 934, 832, C
+administrator = 0, 0, 0, 0, C
