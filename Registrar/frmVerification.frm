@@ -530,7 +530,7 @@ Const expandedWindowheight As Integer = 8790
 'Loads current student's information
 Public Sub LoadStudentInfo()
 On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -723,12 +723,7 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        Set rs = New ADODB.Recordset
-        rs.ActiveConnection = cn
-        rs.CursorLocation = adUseClient
-        rs.CursorType = adOpenDynamic
-        rs.LockType = adLockOptimistic
-        rs.Source = "SELECT * FROM montessori_records"
+        Set rs = recordSet("montessori_records", "", "")
         
         rs.Open
         'Adds new student in the database
@@ -758,8 +753,7 @@ Private Sub cmdRegister_Click()
         rs.Update
         rs.Close
 
-
-        rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
+        Set rs = recordSet("montessori_queue", "Queue_ID", currentStudentID)
         rs.Open
         Do Until rs.EOF
             rs("status").Value = "onprocess"

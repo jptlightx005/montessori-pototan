@@ -125,3 +125,29 @@ ProcError:
     MsgBox Err.Description, vbExclamation
     Resume ProcExit
 End Function
+
+Public Function Enroll(queueID As Integer) As Boolean
+On Error GoTo ProcError 'If something goes wrong, skip to the Error message
+    'sets the RecordSet for counting the enrollees
+    Set rs = recordSet("montessori_queue", "Queue_ID", queueID)
+    
+    'Opens the recordset
+    rs.Open
+    Do Until rs.EOF
+        rs("status").Value = "enrolled"
+        rs.Update
+        rs.Close
+        MsgBox "The student has been successfully enrolled!", vbInformation
+        Unload Me
+        Enroll = True
+        Exit Function
+    Loop
+    MsgBox "There has been a problem, contact your admin!", vbExclamation
+    Enroll = False
+ProcExit:
+    Exit Function
+ProcError:
+    MsgBox Err.Description, vbExclamation
+    Enroll = False
+    Resume ProcExit
+End Function

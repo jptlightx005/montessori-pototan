@@ -217,31 +217,7 @@ Private Sub cmdBack_Click()
 End Sub
 
 Private Sub cmdEnroll_Click()
-'On Error GoTo ProcError 'If something goes wrong, skip to the Error message
-    'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.recordSet
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Counts the number of students on queue in the table
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID =" & studentToEnroll.queueID
-    'Opens the recordset
-    rs.Open
-    Do Until rs.EOF
-        rs("status").Value = "enrolled"
-        rs.Update
-        rs.Close
-        MsgBox "The student has been successfully enrolled!", vbInformation
-        Unload Me
-        Exit Sub
-    Loop
-    MsgBox "There has been a problem, contact your admin!", vbExclamation
-ProcExit:
-    Exit Sub
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    Enroll (studentToEnroll.queueID)
 End Sub
 
 Private Sub Form_Load()

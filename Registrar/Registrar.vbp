@@ -17,6 +17,7 @@ Class=administrator; Administrator.cls
 Form=frmEnroll.frm
 Class=student; \\Vboxsvr\thesis_montessori\SYSTEM2\Registrar\student.cls
 Form=frmSearch.frm
+Module=DBFunctions; DBFunctions.bas
 IconForm="frmRegistrar"
 Startup="Sub Main"
 HelpFile=""
