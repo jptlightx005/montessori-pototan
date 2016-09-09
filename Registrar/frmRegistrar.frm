@@ -48,6 +48,7 @@ Begin VB.Form frmRegistrar
       Width           =   7215
       Begin VB.CommandButton cmdEnroll 
          Caption         =   "Enroll"
+         Enabled         =   0   'False
          Height          =   495
          Left            =   5400
          TabIndex        =   47
@@ -56,7 +57,7 @@ Begin VB.Form frmRegistrar
       End
       Begin VB.Label lblOnProcessCount 
          BackColor       =   &H00C0E0FF&
-         Caption         =   "11"
+         Caption         =   "0"
          Height          =   375
          Left            =   1920
          TabIndex        =   46
@@ -626,7 +627,7 @@ On Error GoTo ProcError
     choice = MsgBox("Drop the enrollee?", vbYesNo + vbExclamation)
     Select Case choice
         Case vbYes
-            Set rs = New ADODB.Recordset
+            Set rs = New ADODB.recordSet
             rs.ActiveConnection = cn
             rs.CursorLocation = adUseClient
             rs.CursorType = adOpenDynamic
@@ -665,7 +666,7 @@ End Sub
 Private Function StudentOnProcess(studentID As String) As student
 'On Error GoTo ProcError
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -711,7 +712,7 @@ End Function
 Private Function CheckStudentOnQueue(queueID As String) As String
 'On Error GoTo ProcError
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -753,7 +754,6 @@ End Sub
 'The action that the window executes when loaded
 Private Sub Form_Load()
     lblEnrollees.Caption = EnrolleeCount
-    Call SaveSettings
     Call ClearBoxes
     Call LoadQueue
 End Sub
@@ -771,7 +771,7 @@ End Sub
 'The method that loads the lists of students
 Sub LoadQueue()
     On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic

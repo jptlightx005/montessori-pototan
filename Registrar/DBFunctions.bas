@@ -26,7 +26,7 @@ Public Function recordSet(tableName As String, conditionKey As String, condition
 End Function
 
 'Login Method
-Public Sub LogIn(usrn As String, pssw As String, ip As String)
+Public Function LogIn(usrn As String, pssw As String, ip As String, remember As Integer) As Boolean
 On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     ipaddress = ip 'inserts the ip entered to the global variable
                 
@@ -47,7 +47,7 @@ On Error GoTo ProcError 'If something goes wrong, skip to the Error message
 
                 regadmin.role = rs("role").Value
                 localip = frmLogin.sckMain.localip 'sets the program's local ip to the computer's network ip address
-                
+                SaveSettings (IIf(remember = 1, usrn, ""))
                 'prompts the user has logged in successfully
                 MsgBox "Logged in Successfully!", vbOKOnly + vbInformation 'prompts
                 Unload frmLogin 'exits the current form
@@ -58,39 +58,37 @@ On Error GoTo ProcError 'If something goes wrong, skip to the Error message
                 frmRegistrar.Show
                 'closes the recordset
                 rs.Close
-                Exit Sub
+                LogIn = True
+                Exit Function
             Else 'If the Password entered is wrong
                 MsgBox "Wrong Password!", vbOKOnly + vbExclamation
-                Exit Sub
+                LogIn = False
+                Exit Function
             End If
         Else 'If the Admin role is not a registrar
             MsgBox "Must use registrar account!", vbOKOnly + vbExclamation
-            Exit Sub
+            LogIn = False
+            Exit Function
         End If
     Loop
     'If the scanning didn't match records
     MsgBox "Wrong username or username doesn't exist!", vbOKOnly + vbExclamation
-    
+    LogIn = False
 ProcExit:
-    Exit Sub
+    Exit Function
     
 ProcError:
     MsgBox "Invalid credentials!", vbExclamation
     LogEvent (Err.Description)
+    LogIn = False
     Resume ProcExit
-End Sub
+End Function
 
 'Method used to count students on queue in the table of the database
 Public Function EnrolleeCount() As Integer
     On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.recordSet
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Counts the number of students on queue in the table
-    rs.Source = "SELECT count(*) FROM montessori_queue WHERE status = 'onqueue'"
+    Set rs = recordSet("montessori_queue", "status", "onqueue")
     'Opens the recordset
     rs.Open
     'Returns the value of the query
@@ -111,13 +109,7 @@ End Function
 Public Function OnProcessCount() As Integer
     On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.recordSet
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Counts the number of students on queue in the table
-    rs.Source = "SELECT count(*) FROM montessori_queue WHERE status = 'onprocess'"
+    Set rs = recordSet("montessori_queue", "status", "onprocess")
     'Opens the recordset
     rs.Open
     'Returns the value of the query

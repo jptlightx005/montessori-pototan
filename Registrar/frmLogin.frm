@@ -22,6 +22,24 @@ Begin VB.Form frmLogin
    MinButton       =   0   'False
    ScaleHeight     =   4065
    ScaleWidth      =   7380
+   Begin VB.CheckBox chkRemember 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Remember Me"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   450
+      Left            =   2640
+      TabIndex        =   9
+      Top             =   3360
+      Width           =   2055
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
       Top             =   3600
@@ -84,6 +102,15 @@ Begin VB.Form frmLogin
    End
    Begin VB.CommandButton cmdLogIn 
       Caption         =   "Log-in"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   4800
       TabIndex        =   4
@@ -195,16 +222,16 @@ Option Explicit
 
 'Calls the global login method
 Private Sub cmdLogIn_Click()
-    Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text)
+    Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text, chkRemember.Value)
 End Sub
 
 'The method called when newly loaded
 Private Sub Form_Load()
     txtUsrn.Text = regadmin.usrn
     txtPssw.Text = regadmin.pssw
+    chkRemember.Value = IIf(regadmin.usrn = "", 0, 1)
     txtIP.Text = ipaddress
 End Sub
-
 
 Sub ifReturnKeyPress(KeyAscii As Integer)
     If KeyAscii = vbKeyReturn Then

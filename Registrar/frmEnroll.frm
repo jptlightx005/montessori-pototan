@@ -219,7 +219,7 @@ End Sub
 Private Sub cmdEnroll_Click()
 'On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
