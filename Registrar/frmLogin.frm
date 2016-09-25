@@ -46,6 +46,7 @@ Begin VB.Form frmLogin
       _ExtentX        =   741
       _ExtentY        =   741
       _Version        =   393216
+      RemotePort      =   80
    End
    Begin VB.TextBox txtUsrn 
       BeginProperty Font 
@@ -220,115 +221,17 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-' we set this to true whil a connection is established
-Private blnConnected As Boolean
-
-
 'Calls the global login method
 Private Sub cmdLogIn_Click()
-    'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text, chkRemember.Value)
-    Dim eUrl As URL
+    'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text, chkRemember.Value,)
+    Dim loginParams As Dictionary
+    Set loginParams = New Dictionary
+    loginParams.Add "usrn", txtUsrn.Text
+    loginParams.Add "pssw", txtPssw.Text
     
-    Dim strMethod As String
-    Dim strData As String
-    Dim strPostData As String
-    Dim strHeaders As String
+    ipaddress = txtIP.Text 'inserts the ip entered to the global variable
     
-    Dim strHTTP As String
-    Dim x As Integer
-    
-    strPostData = ""
-    strHeaders = ""
-    strMethod = "POST"
-    
-    If blnConnected Then Exit Sub
-    
-    ' get the url
-    eUrl = ExtractUrl(txtIP.Text)
-    
-    If eUrl.Host = vbNullString Then
-        MsgBox "Invalid Host", vbCritical, "ERROR"
-    
-        Exit Sub
-    End If
-    
-     ' configure winsock
-    sckMain.Protocol = sckTCPProtocol
-    sckMain.RemoteHost = eUrl.Host
-    
-    If eUrl.Scheme = "http" Then
-        If eUrl.Port > 0 Then
-            sckMain.RemotePort = eUrl.Port
-        Else
-            sckMain.RemotePort = 80
-        End If
-    ElseIf eUrl.Scheme = vbNullString Then
-        sckMain.RemotePort = 80
-    Else
-        MsgBox "Invalid protocol schema"
-    End If
-    
-    ' build encoded data the data is url encoded in the form
-    ' var1=value&var2=value
-    strData = ""
-    strData = strData & URLEncode("usrn") & "=" & txtUsrn.Text & "&" & _
-                            URLEncode("pssw") & "=" & txtPssw.Text
-                            
-    If eUrl.Query <> vbNullString Then
-        eUrl.URI = eUrl.URI & "?" & eUrl.Query
-    End If
-    
-    ' check if any variables were supplied
-    If strData <> vbNullString Then
-        strData = Left(strData, Len(strData) - 1)
-        
-        
-        If strMethod = "GET" Then
-            ' if this is a GET request then the URL encoded data
-            ' is appended to the URI with a ?
-            If eUrl.Query <> vbNullString Then
-                eUrl.URI = eUrl.URI & "&" & strData
-            Else
-                eUrl.URI = eUrl.URI & "?" & strData
-            End If
-        Else
-            ' if it is a post request, the data is appended to the
-            ' body of the HTTP request and the headers Content-Type
-            ' and Content-Length added
-            strPostData = strData
-            strHeaders = "Content-Type: application/x-www-form-urlencoded" & vbCrLf & _
-                         "Content-Length: " & Len(strPostData) & vbCrLf
-                         
-        End If
-    End If
-    
-    ' clear the old HTTP response
-    Dim response As String
-    
-    ' build the HTTP request in the form
-    '
-    ' {REQ METHOD} URI HTTP/1.0
-    ' Host: {host}
-    ' {headers}
-    '
-    ' {post data}
-    strHTTP = strMethod & " " & eUrl.URI & " HTTP/1.0" & vbCrLf
-    strHTTP = strHTTP & "Host: " & eUrl.Host & vbCrLf
-    strHTTP = strHTTP & strHeaders
-    strHTTP = strHTTP & vbCrLf
-    strHTTP = strHTTP & strPostData
-
-    response = strHTTP
-    MsgBox response, vbInformation
-    sckMain.Connect
-    
-    ' wait for a connection
-    While Not blnConnected
-        DoEvents
-    Wend
-    
-    ' send the HTTP request
-    sckMain.SendData strHTTP
+    Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
 
 'The method called when newly loaded
@@ -379,26 +282,36 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-
+    
     sckMain.GetData strResponse, vbString, bytesTotal
-
-    ' we append this to the response box becuase data arrives
-    ' in multiple packets
-    MsgBox getJSONFromResponse(strResponse)
     
     Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    
+    
+    
+    If p.Item("status") = 1 Then
+        localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
         
-   Set p = JSON.parse(getJSONFromResponse(strResponse))
-   
-   MsgBox "Parsed object output: " & JSON.toString(p)
-   
-  MsgBox "Get Bodystyle data: " & p.Item("status")
-   
-    MsgBox "Get Form Url data: " & p.Item("message")
+        SaveSettings (IIf(chkRemember.Value = 1, txtUsrn.Text, ""))
+        
+        'prompts the user has logged in successfully
+        MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
+        
+        Unload frmLogin 'exits the current form
+        'sets the registrar form's labels with the current entries
+        frmRegistrar.lbladmin = regadmin.usrn
+        frmRegistrar.lblIP = localip
+        'shows the registrar form
+        
+        frmRegistrar.Show
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    MsgBox Description, vbExclamation, "ERROR"
+    MsgBox Description, vbExclamation, "ERROR!!!!"
     
     sckMain.Close
 End Sub
