@@ -110,7 +110,7 @@ Begin VB.Form frmRegistrar
    End
    Begin VB.Timer tmr_update 
       Enabled         =   0   'False
-      Interval        =   500
+      Interval        =   1000
       Left            =   240
       Top             =   6480
    End
@@ -630,6 +630,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Dim queueCollection As Collection
+
 'Drops the current student
 Private Sub cmdDrop_Click()
 On Error GoTo ProcError
@@ -757,7 +759,7 @@ End Sub
 
 'Views the current student's information in the queue
 Private Sub cmdView_Click()
-    frmVerification.LoadStudentInfo
+    Set frmVerification.selectedStudent = queueCollection(1)
     frmVerification.Show vbModal
 End Sub
 
@@ -792,13 +794,11 @@ Sub LoadQueue()
     tmr_update.Enabled = False
 End Sub
 
+
 'Observes the database if enrollees keep increasing
 Private Sub tmr_update_Timer()
     tmr_update.Enabled = False
-    
-    'lblEnrollees.Caption = EnrolleeCount
-    'lblOnProcessCount.Caption = OnProcessCount
-    'cmdEnroll.Enabled = (OnProcessCount > 0)
+
     Call ClearBoxes
     Call LoadQueue
 End Sub
@@ -818,27 +818,33 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     
     If p.Item("response") > 0 Then
-        Dim col As Collection
-        Set col = p.Item("message")
         
-        currentStudentID = col(1)("Queue_ID")
         
+        Dim message As Dictionary
+        
+        Set message = p.Item("message")
+        
+        lblEnrollees.Caption = message("onqueue")
+        lblOnProcessCount.Caption = message("onprocess")
+        
+        Set queueCollection = message("list")
+
         Dim j As Integer
         For j = 1 To p.Item("response")
-            Dim rs As Dictionary
-            Set rs = col(j)
+            Dim record As Dictionary
+            Set record = queueCollection(j)
             Dim i As Integer
             i = j - 1
 
-            lblID(i).Caption = rs("Queue_ID")
+            lblID(i).Caption = record("Queue_ID")
             Dim StudentInf() As String
             Dim MNameArray() As Byte
-            StudentInf = Split(rs("student_info"), "|")
+            StudentInf = Split(record("student_info"), "|")
             MNameArray = StrConv(StudentInf(3), vbFromUnicode)
             lblName(i).Caption = StudentInf(2) & " " & Chr(MNameArray(0)) & ". " & StudentInf(4)
             lblGrade(i).Caption = grade(StudentInf(1), Me)
         Next
-       
+        tmr_update.Enabled = True
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If

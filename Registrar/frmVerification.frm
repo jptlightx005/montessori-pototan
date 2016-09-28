@@ -523,55 +523,50 @@ Const defaultButtonY As Integer = 1680
 Const movedButtonX As Integer = 5880
 Const movedButtonY As Integer = 6960
 
-
+'default form height is 495
 
 Const collapsedWindowheight As Integer = 1
 Const expandedWindowheight As Integer = 8790
+
+Public selectedStudent As Dictionary
+
 'Loads current student's information
 Public Sub LoadStudentInfo()
-On Error GoTo ProcError
-    Set rs = New ADODB.recordSet
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-    rs.Open
     Dim StudentInf() As String
-    Do Until rs.EOF
-        StudentInf = Split(rs("student_info"), "|")
-        chkNew.Value = StudentInf(0)
-        cmbGrade.ListIndex = grade(StudentInf(1), Me)
-        txtLName.Text = StudentInf(4)
-        txtFName.Text = StudentInf(2)
-        txtMName.Text = StudentInf(3)
-        cmbGender.Text = StudentInf(5)
-        cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
-        cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
-        cmbYear.Text = Year(CDate(StudentInf(6)))
-        txtPlace.Text = StudentInf(7)
-        txtFather.Text = StudentInf(8)
-        txtFocc.Text = StudentInf(9)
-        txtMother.Text = StudentInf(10)
-        txtMocc.Text = StudentInf(11)
-        txtAddress.Text = StudentInf(12)
-        txtTelNo.Text = StudentInf(13)
-        txtGuardian.Text = StudentInf(14)
-        txtGRelation.Text = StudentInf(15)
-        txtGAddress.Text = StudentInf(16)
-        txtGTelNo.Text = StudentInf(17)
-        txtLast.Text = StudentInf(18)
-        txtReligion.Text = StudentInf(19)
-        chkBaptized.Value = StudentInf(20)
-        chkComm.Value = StudentInf(21)
-        Exit Sub
-    Loop
-ProcExit:
-    Exit Sub
+
+    StudentInf = Split(selectedStudent("student_info"), "|")
+    chkNew.Value = StudentInf(0)
+    cmbGrade.ListIndex = grade(StudentInf(1), Me)
+    txtLName.Text = StudentInf(4)
+    txtFName.Text = StudentInf(2)
+    txtMName.Text = StudentInf(3)
+    cmbGender.Text = StudentInf(5)
+    cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
+    cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
     
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    Dim i As Integer
+    For i = 0 To cmbYear.ListCount - 1
+        If cmbYear.List(i) = Year(CDate(StudentInf(6))) Then
+            cmbYear.ListIndex = i
+            Exit For
+        End If
+    Next
+
+    txtPlace.Text = StudentInf(7)
+    txtFather.Text = StudentInf(8)
+    txtFocc.Text = StudentInf(9)
+    txtMother.Text = StudentInf(10)
+    txtMocc.Text = StudentInf(11)
+    txtAddress.Text = StudentInf(12)
+    txtTelNo.Text = StudentInf(13)
+    txtGuardian.Text = StudentInf(14)
+    txtGRelation.Text = StudentInf(15)
+    txtGAddress.Text = StudentInf(16)
+    txtGTelNo.Text = StudentInf(17)
+    txtLast.Text = StudentInf(18)
+    txtReligion.Text = StudentInf(19)
+    chkBaptized.Value = StudentInf(20)
+    chkComm.Value = StudentInf(21)
 End Sub
 
 Private Sub chkBCert_Click()
@@ -723,7 +718,20 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        Set rs = recordSet("montessori_records", "", "")
+        
+    
+        Dim newRecord As Dictionary
+        Dim listParams As Dictionary
+        Set listParams = New Dictionary
+        listParams.Add "usrn", regadmin.usrn
+        listParams.Add "pssw", regadmin.pssw
+        listParams.Add "role", regadmin.role
+        listParams.Add "action", "queue_list"
+        blnConnected = False
+        Call sendRequest(sckMain, hAPI_QUEUE, listParams, hPOST_METHOD)
+    
+        tmr_update.Enabled = False
+        Set rs = Recordset("montessori_records", "", "")
         
         rs.Open
         'Adds new student in the database
@@ -753,7 +761,7 @@ Private Sub cmdRegister_Click()
         rs.Update
         rs.Close
 
-        Set rs = recordSet("montessori_queue", "Queue_ID", currentStudentID)
+        Set rs = Recordset("montessori_queue", "Queue_ID", currentStudentID)
         rs.Open
         Do Until rs.EOF
             rs("status").Value = "onprocess"
@@ -812,8 +820,10 @@ Private Sub Form_Load()
     For i = 1 To 31
         cmbDay.AddItem (i)
     Next
-    For i = Year(Now) - 2 To Year(Now) - 20 Step -1
+    For i = Year(Now) - 4 To 1995 Step -1
         cmbYear.AddItem (i)
     Next
     Changeable = False
+    
+    Call LoadStudentInfo
 End Sub

@@ -7,7 +7,7 @@ Public localip As String
 Public regadmin As administrator
 
 'Current Student Index selected
-Public currentStudentID As Integer
+Public selectedStudent As Dictionary
 
 'Main method of the System
 'This contains the methods called to be executed by the program before opening
@@ -18,7 +18,7 @@ Sub Main()
 End Sub
 'Logs events on file
 Sub LogEvent(eventLog As String)
-On Error GoTo ErrHandler
+On Error GoTo errHandler
   Dim nUnit As Integer
   nUnit = FreeFile
   ' This assumes write access to the directory containing the program '
@@ -28,7 +28,7 @@ On Error GoTo ErrHandler
   Close nUnit
   Exit Sub
 
-ErrHandler:
+errHandler:
   'Failed to write log for some reason.'
   'Show MsgBox so error does not go unreported '
   MsgBox "Error in " & ProcName & vbNewLine & _
