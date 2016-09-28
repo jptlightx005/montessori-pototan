@@ -228,8 +228,12 @@ Private Sub cmdLogIn_Click()
     Set loginParams = New Dictionary
     loginParams.Add "usrn", txtUsrn.Text
     loginParams.Add "pssw", txtPssw.Text
-    
+    loginParams.Add "role", "registrar"
     ipaddress = txtIP.Text 'inserts the ip entered to the global variable
+    
+    regadmin.usrn = txtUsrn.Text
+    regadmin.pssw = txtPssw.Text
+    regadmin.role = "registrar"
     
     Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
@@ -288,36 +292,38 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     
-    
-    
-    If p.Item("status") = 1 Then
+    If p.Item("response") = 1 Then
         localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
         
         SaveSettings (IIf(chkRemember.Value = 1, txtUsrn.Text, ""))
         
         'prompts the user has logged in successfully
         MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
-        
-        Unload frmLogin 'exits the current form
         'sets the registrar form's labels with the current entries
         frmRegistrar.lbladmin = regadmin.usrn
         frmRegistrar.lblIP = localip
-        'shows the registrar form
         
+        'shows the registrar form
         frmRegistrar.Show
+        
+        Unload Me 'exits the current form
     Else
+        regadmin.usrn = ""
+        regadmin.pssw = ""
+        regadmin.role = ""
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If
+    
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    MsgBox Description, vbExclamation, "ERROR!!!!"
+    MsgBox Description, vbExclamation, "Connection Error"
     
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    
+    'MsgBox "Is Called"
     sckMain.Close
 End Sub

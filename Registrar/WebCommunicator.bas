@@ -14,6 +14,7 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     
     strPostData = ""
     strHeaders = ""
+    MsgBox IIf(blnConnected, "YES", "NO")
     If blnConnected Then Exit Sub
     
     ' get the url
@@ -24,10 +25,9 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     
         Exit Sub
     End If
-    
      ' configure winsock
     sckTarget.RemoteHost = eUrl.Host
-    
+
     If eUrl.Scheme = "http" Then
         If eUrl.Port > 0 Then
             sckTarget.RemotePort = eUrl.Port

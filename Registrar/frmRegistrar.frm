@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmRegistrar 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,14 @@ Begin VB.Form frmRegistrar
    MinButton       =   0   'False
    ScaleHeight     =   8310
    ScaleWidth      =   7575
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   120
+      Top             =   7800
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemotePort      =   80
+   End
    Begin VB.CommandButton cmdSearch 
       Caption         =   "Search Student"
       BeginProperty Font 
@@ -100,9 +109,10 @@ Begin VB.Form frmRegistrar
       Width           =   1215
    End
    Begin VB.Timer tmr_update 
-      Interval        =   250
+      Enabled         =   0   'False
+      Interval        =   500
       Left            =   240
-      Top             =   6600
+      Top             =   6480
    End
    Begin VB.Frame frameQueue 
       BackColor       =   &H00C0E0FF&
@@ -627,7 +637,7 @@ On Error GoTo ProcError
     choice = MsgBox("Drop the enrollee?", vbYesNo + vbExclamation)
     Select Case choice
         Case vbYes
-            Set rs = New ADODB.recordSet
+            Set rs = New ADODB.Recordset
             rs.ActiveConnection = cn
             rs.CursorLocation = adUseClient
             rs.CursorType = adOpenDynamic
@@ -666,7 +676,7 @@ End Sub
 Private Function StudentOnProcess(studentID As String) As student
 'On Error GoTo ProcError
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.recordSet
+    Set rs = New ADODB.Recordset
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -712,7 +722,7 @@ End Function
 Private Function CheckStudentOnQueue(queueID As String) As String
 'On Error GoTo ProcError
     'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.recordSet
+    Set rs = New ADODB.Recordset
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -753,7 +763,7 @@ End Sub
 
 'The action that the window executes when loaded
 Private Sub Form_Load()
-    lblEnrollees.Caption = EnrolleeCount
+    'lblEnrollees.Caption = EnrolleeCount
     Call ClearBoxes
     Call LoadQueue
 End Sub
@@ -770,21 +780,56 @@ End Sub
 
 'The method that loads the lists of students
 Sub LoadQueue()
-    On Error GoTo ProcError
-    Set rs = New ADODB.recordSet
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_queue WHERE status = 'onqueue'"
-    rs.Open
-    Dim i As Integer
-    i = 0
-    cmdView.Enabled = (rs.RecordCount <> 0)
-    cmdDrop.Enabled = (rs.RecordCount <> 0)
-    Do Until rs.EOF
-        If i <= 9 Then
-            currentStudentID = IIf((i = 0), rs("Queue_ID"), currentStudentID)
+    Dim listParams As Dictionary
+    Set listParams = New Dictionary
+    listParams.Add "usrn", regadmin.usrn
+    listParams.Add "pssw", regadmin.pssw
+    listParams.Add "role", regadmin.role
+    listParams.Add "action", "queue_list"
+    blnConnected = False
+    Call sendRequest(sckMain, hAPI_QUEUE, listParams, hPOST_METHOD)
+
+    tmr_update.Enabled = False
+End Sub
+
+'Observes the database if enrollees keep increasing
+Private Sub tmr_update_Timer()
+    tmr_update.Enabled = False
+    
+    'lblEnrollees.Caption = EnrolleeCount
+    'lblOnProcessCount.Caption = OnProcessCount
+    'cmdEnroll.Enabled = (OnProcessCount > 0)
+    Call ClearBoxes
+    Call LoadQueue
+End Sub
+
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    
+    If p.Item("response") > 0 Then
+        Dim col As Collection
+        Set col = p.Item("message")
+        
+        currentStudentID = col(1)("Queue_ID")
+        
+        Dim j As Integer
+        For j = 1 To p.Item("response")
+            Dim rs As Dictionary
+            Set rs = col(j)
+            Dim i As Integer
+            i = j - 1
+
             lblID(i).Caption = rs("Queue_ID")
             Dim StudentInf() As String
             Dim MNameArray() As Byte
@@ -792,26 +837,21 @@ Sub LoadQueue()
             MNameArray = StrConv(StudentInf(3), vbFromUnicode)
             lblName(i).Caption = StudentInf(2) & " " & Chr(MNameArray(0)) & ". " & StudentInf(4)
             lblGrade(i).Caption = grade(StudentInf(1), Me)
-            i = i + 1
-            rs.MoveNext
-        Else
-            Exit Sub
-        End If
-    Loop
-ProcExit:
-    Exit Sub
+        Next
+       
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
     
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    sckMain.Close
 End Sub
 
-'Observes the database if enrollees keep increasing
-Private Sub tmr_update_Timer()
-    lblEnrollees.Caption = EnrolleeCount
-    lblOnProcessCount.Caption = OnProcessCount
-    cmdEnroll.Enabled = (OnProcessCount > 0)
-    Call ClearBoxes
-    Call LoadQueue
+Private Sub sckMain_Close()
+    blnConnected = False
+    
+    sckMain.Close
 End Sub
-
