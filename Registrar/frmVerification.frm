@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmVerification 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,14 @@ Begin VB.Form frmVerification
    MinButton       =   0   'False
    ScaleHeight     =   3750
    ScaleWidth      =   8595
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   6480
+      Top             =   3120
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemotePort      =   80
+   End
    Begin VB.CommandButton cmdExpand 
       Caption         =   "Expand"
       Height          =   495
@@ -523,55 +532,50 @@ Const defaultButtonY As Integer = 1680
 Const movedButtonX As Integer = 5880
 Const movedButtonY As Integer = 6960
 
-
+'default form height is 495
 
 Const collapsedWindowheight As Integer = 1
 Const expandedWindowheight As Integer = 8790
+
+Public selectedStudent As Dictionary
+
 'Loads current student's information
 Public Sub LoadStudentInfo()
-On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-    rs.Open
     Dim StudentInf() As String
-    Do Until rs.EOF
-        StudentInf = Split(rs("student_info"), "|")
-        chkNew.Value = StudentInf(0)
-        cmbGrade.ListIndex = grade(StudentInf(1), Me)
-        txtLName.Text = StudentInf(4)
-        txtFName.Text = StudentInf(2)
-        txtMName.Text = StudentInf(3)
-        cmbGender.Text = StudentInf(5)
-        cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
-        cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
-        cmbYear.Text = Year(CDate(StudentInf(6)))
-        txtPlace.Text = StudentInf(7)
-        txtFather.Text = StudentInf(8)
-        txtFocc.Text = StudentInf(9)
-        txtMother.Text = StudentInf(10)
-        txtMocc.Text = StudentInf(11)
-        txtAddress.Text = StudentInf(12)
-        txtTelNo.Text = StudentInf(13)
-        txtGuardian.Text = StudentInf(14)
-        txtGRelation.Text = StudentInf(15)
-        txtGAddress.Text = StudentInf(16)
-        txtGTelNo.Text = StudentInf(17)
-        txtLast.Text = StudentInf(18)
-        txtReligion.Text = StudentInf(19)
-        chkBaptized.Value = StudentInf(20)
-        chkComm.Value = StudentInf(21)
-        Exit Sub
-    Loop
-ProcExit:
-    Exit Sub
+
+    StudentInf = Split(selectedStudent("student_info"), "|")
+    chkNew.Value = StudentInf(0)
+    cmbGrade.ListIndex = grade(StudentInf(1), Me)
+    txtLName.Text = StudentInf(4)
+    txtFName.Text = StudentInf(2)
+    txtMName.Text = StudentInf(3)
+    cmbGender.Text = StudentInf(5)
+    cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
+    cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
     
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    Dim i As Integer
+    For i = 0 To cmbYear.ListCount - 1
+        If cmbYear.List(i) = Year(CDate(StudentInf(6))) Then
+            cmbYear.ListIndex = i
+            Exit For
+        End If
+    Next
+
+    txtPlace.Text = StudentInf(7)
+    txtFather.Text = StudentInf(8)
+    txtFocc.Text = StudentInf(9)
+    txtMother.Text = StudentInf(10)
+    txtMocc.Text = StudentInf(11)
+    txtAddress.Text = StudentInf(12)
+    txtTelNo.Text = StudentInf(13)
+    txtGuardian.Text = StudentInf(14)
+    txtGRelation.Text = StudentInf(15)
+    txtGAddress.Text = StudentInf(16)
+    txtGTelNo.Text = StudentInf(17)
+    txtLast.Text = StudentInf(18)
+    txtReligion.Text = StudentInf(19)
+    chkBaptized.Value = StudentInf(20)
+    chkComm.Value = StudentInf(21)
 End Sub
 
 Private Sub chkBCert_Click()
@@ -723,62 +727,39 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        Set rs = New ADODB.Recordset
-        rs.ActiveConnection = cn
-        rs.CursorLocation = adUseClient
-        rs.CursorType = adOpenDynamic
-        rs.LockType = adLockOptimistic
-        rs.Source = "SELECT * FROM montessori_records"
-        
-        rs.Open
-        'Adds new student in the database
-        rs.AddNew
-        rs("Queue_ID").Value = currentStudentID
-        rs("current_grade").Value = setgrade(cmbGrade.ListIndex)
-        rs("last_name").Value = txtLName.Text
-        rs("first_name").Value = txtFName.Text
-        rs("middle_name").Value = txtMName.Text
-        rs("gender").Value = cmbGender.Text
-        rs("date_of_birth").Value = DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-        rs("place_of_birth").Value = txtPlace.Text
-        rs("fathers_name").Value = txtFather.Text
-        rs("father_occupation").Value = txtFocc.Text
-        rs("mothers_name").Value = txtMother.Text
-        rs("mother_occupation").Value = txtMocc.Text
-        rs("home_address").Value = txtAddress.Text
-        rs("home_number").Value = txtTelNo.Text
-        rs("guardian_name").Value = txtGuardian.Text
-        rs("guardian_relation").Value = txtGRelation.Text
-        rs("guardian_address").Value = txtGAddress.Text
-        rs("guardian_number").Value = txtGTelNo.Text
-        rs("last_school_attended").Value = txtLast.Text
-        rs("religion").Value = txtReligion.Text
-        rs("is_baptized").Value = chkBaptized.Value
-        rs("first_communion").Value = chkComm.Value
-        rs.Update
-        rs.Close
-
-
-        rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-        rs.Open
-        Do Until rs.EOF
-            rs("status").Value = "onprocess"
-            rs.Update
-            Exit Do
-        Loop
-        
-        rs.Close
-        
-        MsgBox "The student has been succesfully added to the records database", vbInformation
-        Unload Me
+        Dim newRecord As Dictionary
+        Set newRecord = New Dictionary
+        newRecord.Add "usrn", regadmin.usrn
+        newRecord.Add "pssw", regadmin.pssw
+        newRecord.Add "role", regadmin.role
+        newRecord.Add "action", "register_student"
+    
+        newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
+        newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+        newRecord.Add "last_name", txtLName.Text
+        newRecord.Add "first_name", txtFName.Text
+        newRecord.Add "middle_name", txtMName.Text
+        newRecord.Add "gender", cmbGender.Text
+        newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+        newRecord.Add "place_of_birth", txtPlace.Text
+        newRecord.Add "fathers_name", txtFather.Text
+        newRecord.Add "father_occupation", txtFocc.Text
+        newRecord.Add "mothers_name", txtMother.Text
+        newRecord.Add "mother_occupation", txtMocc.Text
+        newRecord.Add "home_address", txtAddress.Text
+        newRecord.Add "home_number", txtTelNo.Text
+        newRecord.Add "guardian_name", txtGuardian.Text
+        newRecord.Add "guardian_relation", txtGRelation.Text
+        newRecord.Add "guardian_address", txtGAddress.Text
+        newRecord.Add "guardian_number", txtGTelNo.Text
+        newRecord.Add "last_school_attended", txtLast.Text
+        newRecord.Add "religion", txtReligion.Text
+        newRecord.Add "is_baptized", chkBaptized.Value
+        newRecord.Add "first_communion", chkComm.Value
+    
+        blnConnected = False
+        Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
     End If
-    
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
 End Sub
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
@@ -818,8 +799,43 @@ Private Sub Form_Load()
     For i = 1 To 31
         cmbDay.AddItem (i)
     Next
-    For i = Year(Now) - 2 To Year(Now) - 20 Step -1
+    For i = Year(Now) - 4 To 1995 Step -1
         cmbYear.AddItem (i)
     Next
     Changeable = False
+    
+    Call LoadStudentInfo
+End Sub
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    
+    If p.Item("response") = 1 Then
+        MsgBox "To Make sure: " & JSON.toString(p)
+        MsgBox p.Item("message"), vbInformation
+        Unload Me
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    
+    sckMain.Close
 End Sub

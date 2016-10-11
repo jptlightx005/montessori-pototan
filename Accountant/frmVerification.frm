@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmTransaction 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,13 @@ Begin VB.Form frmTransaction
    MinButton       =   0   'False
    ScaleHeight     =   3150
    ScaleWidth      =   5220
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   120
+      Top             =   2640
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
    Begin VB.CommandButton cmdCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
@@ -99,7 +107,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-
+Public currentBalance As Double
+Public studentID As String
 Public cashPaid As Double
 Public cashSet As Boolean
 Private Sub cmdCancel_Click()
@@ -107,42 +116,22 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub cmdProceed_Click()
-    On Error GoTo ProcError
     If cashSet Then
-        'sets the RecordSet for the search method
-        Set rs = New ADODB.Recordset
-        rs.ActiveConnection = cn
-        rs.CursorLocation = adUseClient
-        rs.CursorType = adOpenDynamic
-        rs.LockType = adLockOptimistic
-        rs.Source = "SELECT * FROM montessori_records WHERE Student_ID=" & frmAccountant.currentStudent.studentID
-        'opens the recordset and scans the table
-        'Exit Subs in this loop is used to skip the rest of the codes when conditions are met
-        rs.Open
-        Do Until rs.EOF
-            Dim vbChoice As Integer
-            vbChoice = MsgBox("Update the student's balance?", vbYesNoCancel)
-            If vbChoice = vbYes Then
-                Dim currentBalance As Double
-                currentBalance = rs("balance_paid").Value
-                rs("balance_paid").Value = currentBalance + cashPaid
-                rs("date_of_payment").Value = Now
-                rs.Update
-                rs.Close
-                MsgBox "Transaction is now complete!", vbInformation
-            End If
-            cmdProceed.Enabled = False
-            frmAccountant.ReloadData
-            rs.Close
-            Unload Me
-            Exit Sub
-        Loop
-        MsgBox "There's an error occured"
+        Dim vbChoice As Integer
+        vbChoice = MsgBox("Update the student's balance?", vbYesNoCancel)
+        If vbChoice = vbYes Then
+            Dim paymentParams As Dictionary
+            Set paymentParams = New Dictionary
+            paymentParams.Add "usrn", acctadmin.usrn
+            paymentParams.Add "pssw", acctadmin.pssw
+            paymentParams.Add "role", acctadmin.role
+            paymentParams.Add "action", aSTUDENT_PAYMENT
+            paymentParams.Add "student_id", studentID
+            paymentParams.Add "balance_paid", currentBalance + cashPaid
+            blnConnected = False
+            Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
+        End If
     End If
-ProcExit:
-    Exit Sub
-ProcError:
-    MsgBox Err.Description, vbExclamation
 End Sub
 
 Private Sub cmdShow_Click()
@@ -171,5 +160,45 @@ End Sub
 
 Private Sub lblPayment_Change()
     cmdProceed.Enabled = cashSet And cashPaid > 0
+End Sub
+
+
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+
+        MsgBox p.Item("message"), vbInformation
+        cmdProceed.Enabled = False
+        frmAccountant.ReloadData
+
+    Else
+        MsgBox p.Item("message"), vbExclamation
+        cmdUpdate.Enabled = False
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    MsgBox "Is Called"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    sckMain.Close
 End Sub
 

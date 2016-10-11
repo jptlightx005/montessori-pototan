@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmEnroll 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,13 @@ Begin VB.Form frmEnroll
    MinButton       =   0   'False
    ScaleHeight     =   4860
    ScaleWidth      =   6480
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   600
+      Top             =   4320
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
    Begin VB.Timer tmrEnable 
       Enabled         =   0   'False
       Interval        =   1000
@@ -175,16 +183,15 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim countdown As Integer
-Public studentToEnroll As student
-
+Public student As Dictionary
 Public Sub loadData()
-    lblID.Caption = studentToEnroll.studentID
-    lblFullName.Caption = studentToEnroll.fullName
-    lblAddress.Caption = studentToEnroll.homeAddress
+    lblID.Caption = student("Student_ID")
+    lblFullName.Caption = student("first_name") & " " & student("last_name")
+    lblAddress.Caption = student("home_address")
     
-    lblGrade.Caption = grade(studentToEnroll.grade)
-    lblBalance.Caption = studentToEnroll.balancePaid
-    lblPaidDate.Caption = Format(studentToEnroll.datePaid, "mmmm dd, yyyy")
+    lblGrade.Caption = grade(student("current_grade"))
+    lblBalance.Caption = student("balance_paid")
+    lblPaidDate.Caption = Format(student("date_of_payment"), "mmmm dd, yyyy")
     
     cmdEnroll.Enabled = False
     countdown = 3
@@ -217,31 +224,16 @@ Private Sub cmdBack_Click()
 End Sub
 
 Private Sub cmdEnroll_Click()
-'On Error GoTo ProcError 'If something goes wrong, skip to the Error message
-    'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Counts the number of students on queue in the table
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID =" & studentToEnroll.queueID
-    'Opens the recordset
-    rs.Open
-    Do Until rs.EOF
-        rs("status").Value = "enrolled"
-        rs.Update
-        rs.Close
-        MsgBox "The student has been successfully enrolled!", vbInformation
-        Unload Me
-        Exit Sub
-    Loop
-    MsgBox "There has been a problem, contact your admin!", vbExclamation
-ProcExit:
-    Exit Sub
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    Dim enrollParams As Dictionary
+    Set enrollParams = New Dictionary
+    enrollParams.Add "usrn", regadmin.usrn
+    enrollParams.Add "pssw", regadmin.pssw
+    enrollParams.Add "role", regadmin.role
+    enrollParams.Add "action", aENROLL_STUDENT
+    enrollParams.Add "queue_id", student("Queue_ID")
+    blnConnected = False
+    
+    Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
 End Sub
 
 Private Sub Form_Load()
@@ -250,10 +242,48 @@ End Sub
 
 Private Sub tmrEnable_Timer()
     countdown = countdown - 1
-    cmdEnroll.Caption = Str(countdown)
+    cmdEnroll.Caption = str(countdown)
     If countdown < 0 Then
         cmdEnroll.Caption = "Enroll"
         cmdEnroll.Enabled = True
         tmrEnable.Enabled = False
     End If
 End Sub
+
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        MsgBox p.Item("message"), vbInformation
+        Unload Me
+    Else
+        MsgBox p.Item("message"), vbExclamation
+        Unload Me
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    MsgBox "Is Called"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    tmr_update.Enabled = True
+    sckMain.Close
+End Sub
+

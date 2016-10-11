@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,13 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    ScaleHeight     =   10410
    ScaleWidth      =   7680
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   7200
+      Top             =   9960
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
    Begin VB.CommandButton cmdLogOut 
       Caption         =   "Logout"
       BeginProperty Font 
@@ -588,7 +596,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label18 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Last School Attended*"
+      Caption         =   "Last School Attended"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -606,7 +614,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label17 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Religion*"
+      Caption         =   "Religion"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -624,7 +632,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label16 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Address*"
+      Caption         =   "Address"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -642,7 +650,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label15 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Telephone Number*"
+      Caption         =   "Telephone Number"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -660,7 +668,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label14 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Relation*"
+      Caption         =   "Relation"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -678,7 +686,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label13 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Guardian*"
+      Caption         =   "Guardian"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -696,7 +704,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label12 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Telephone Number*"
+      Caption         =   "Telephone Number"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -732,7 +740,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label10 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Occupation*"
+      Caption         =   "Occupation"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -750,7 +758,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label9 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Mother's Name*"
+      Caption         =   "Mother's Name"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -768,7 +776,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label8 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Occupation*"
+      Caption         =   "Occupation"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -786,7 +794,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label7 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Father's Name*"
+      Caption         =   "Father's Name"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -804,7 +812,7 @@ Begin VB.Form frmMain
    End
    Begin VB.Label Label6 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Place of Birth*"
+      Caption         =   "Place of Birth"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -1037,96 +1045,79 @@ End Sub
 'nested codes that encodes information into a single string
 'separated by the delimiter "|"
 Private Sub cmdSubmit_Click()
-    Dim studentInf As String
-    'initializes the studentInf variable
-    studentInf = ""
-    'if student is new
-    studentInf = studentInf & chkNew.Value & "|"
-    'if grade is selected
-    If cmbGrade.ListIndex >= 0 Then
+    If ValidateData() Then
+        Dim studentInf As String
+        'initializes the studentInf variable
+        studentInf = ""
+        'if student is new
+        studentInf = studentInf & chkNew.Value & "|"
+        'student's grade
         studentInf = studentInf & grade(cmbGrade.ListIndex) & "|"
-        'if the name fields are not empty
-        If txtFName.Text <> "" And txtMName.Text <> "" And txtLName.Text <> "" Then
-            studentInf = studentInf & txtFName.Text & "|"
-            studentInf = studentInf & txtMName.Text & "|"
-            studentInf = studentInf & txtLName.Text & "|"
-            'if a gender is selected
-            If optMale.Value = True Or optFemale.Value = True Then
-                studentInf = studentInf & gender() & "|"
-                If cmbMonth.ListIndex >= 0 And _
-                    cmbDay.ListIndex >= 0 And _
-                    cmbYear.ListIndex >= 0 Then
-                    studentInf = studentInf & DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text)) & "|"
-                    'if the place of birth field is not empty
-                    If txtPlace.Text <> "" Then
-                        studentInf = studentInf & txtPlace.Text & "|"
-                        'if the father's name and occupation fields are not empty
-                        If txtFather.Text <> "" And txtFocc.Text <> "" Then
-                            studentInf = studentInf & txtFather.Text & "|"
-                            studentInf = studentInf & txtFocc.Text & "|"
-                            'if the mother's name and occupation fields are not empty
-                            If txtMother.Text <> "" And txtMocc.Text <> "" Then
-                                studentInf = studentInf & txtMother.Text & "|"
-                                studentInf = studentInf & txtMocc.Text & "|"
-                                'if the address and telephone number field is not empty
-                                If txtAddress.Text <> "" And txtTelNo.Text <> "" Then
-                                    studentInf = studentInf & txtAddress.Text & "|"
-                                    studentInf = studentInf & txtTelNo.Text & "|"
-                                    'if the guardian and relation field is not empty
-                                    If txtGuardian.Text <> "" And txtGRelation.Text <> "" Then
-                                        studentInf = studentInf & txtGuardian.Text & "|"
-                                        studentInf = studentInf & txtGRelation.Text & "|"
-                                        If txtGAddress.Text <> "" And txtGTelNo.Text <> "" Then
-                                            studentInf = studentInf & txtGAddress.Text & "|"
-                                            studentInf = studentInf & txtGTelNo.Text & "|"
-                                            'if the last school attended and religion field are not empty
-                                            If txtLast.Text <> "" And txtReligion.Text <> "" Then
-                                                studentInf = studentInf & txtLast.Text & "|"
-                                                studentInf = studentInf & txtReligion.Text & "|"
-                                                studentInf = studentInf & chkBaptized.Value & "|"
-                                                studentInf = studentInf & chkComm.Value
-                                                'confirm data
-                                                Dim choice As Integer
-                                                choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
-                                                If choice = vbYes Then
-                                                    Call SubmitStudentInfo(studentInf)
-                                                    Call ClearBoxes
-                                                    Exit Sub
-                                                ElseIf choice = vbNo Then
-                                                    Exit Sub
-                                                End If
-                                            Else
-                                                MsgBox "Please enter the last school you attended and your religion!", vbExclamation
-                                            End If
-                                        Else
-                                            MsgBox "Please enter your guardian's address and telephone number!", vbExclamation
-                                        End If
-                                    Else
-                                        MsgBox "Please enter your guardian's name and relation!", vbExclamation
-                                    End If
-                                End If
-                            Else
-                                MsgBox "Please enter your father's name and occupation!", vbExclamation
-                            End If
-                        Else
-                            MsgBox "Please enter your father's name and occupation!", vbExclamation
-                        End If
-                    Else
-                        MsgBox "Please enter your place of birth!", vbExclamation
-                    End If
-                Else
-                    MsgBox "Please enter your birth date!", vbExclamation
-                End If
-            Else
-                MsgBox "Please select your gender!", vbExclamation
-            End If
-        Else
-            MsgBox "Please enter your full name to each of the boxes provided!", vbExclamation
+        'student's name
+        studentInf = studentInf & Trim(txtFName.Text) & "|"
+        studentInf = studentInf & Trim(txtMName.Text) & "|"
+        studentInf = studentInf & Trim(txtLName.Text) & "|"
+        studentInf = studentInf & gender() & "|"
+        'student's date of birth
+        studentInf = studentInf & DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text)) & "|"
+        'place of birth
+        studentInf = studentInf & Trim(txtPlace.Text) & "|"
+        'father's name and occupation
+        studentInf = studentInf & Trim(txtFather.Text) & "|"
+        studentInf = studentInf & Trim(txtFocc.Text) & "|"
+        'mother's name and occupation
+        studentInf = studentInf & Trim(txtMother.Text) & "|"
+        studentInf = studentInf & Trim(txtMocc.Text) & "|"
+        'home address and telephone number
+        studentInf = studentInf & Trim(txtAddress.Text) & "|"
+        studentInf = studentInf & Trim(txtTelNo.Text) & "|"
+        'guardian info
+        studentInf = studentInf & Trim(txtGuardian.Text) & "|"
+        studentInf = studentInf & Trim(txtGRelation.Text) & "|"
+        studentInf = studentInf & Trim(txtGAddress.Text) & "|"
+        studentInf = studentInf & Trim(txtGTelNo.Text) & "|"
+        'last school attended and religion
+        studentInf = studentInf & Trim(txtLast.Text) & "|"
+        studentInf = studentInf & Trim(txtReligion.Text) & "|"
+        studentInf = studentInf & chkBaptized.Value & "|"
+        studentInf = studentInf & chkComm.Value
+        
+        Dim choice As Integer
+        choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
+        
+        If choice = vbYes Then
+            Dim studentParams As Dictionary
+            Set studentParams = New Dictionary
+            studentParams.Add "usrn", admin.usrn
+            studentParams.Add "pssw", admin.pssw
+            studentParams.Add "role", admin.role
+            studentParams.Add "action", aREGISTER_STUDENT
+            studentParams.Add "student_info", studentInf
+            studentParams.Add "registered_ip", localip
+            blnConnected = False
+            
+            Call sendRequest(sckMain, hAPI_QUEUE, studentParams, hPOST_METHOD)
         End If
     Else
-        MsgBox "Please select a grade!", vbExclamation
+        MsgBox "Please fill in required data!", vbExclamation
     End If
 End Sub
+
+Private Function ValidateData() As Boolean
+    Dim isValid As Boolean
+    isValid = True
+    isValid = isValid And cmbGrade.ListIndex >= 0
+    isValid = isValid And txtFName.Text <> ""
+    isValid = isValid And txtMName.Text <> ""
+    isValid = isValid And txtLName.Text <> ""
+    isValid = isValid And (optMale.Value Or optFemale.Value)
+    isValid = isValid And cmbMonth.ListIndex >= 0
+    isValid = isValid And cmbDay.ListIndex >= 0
+    isValid = isValid And cmbYear.ListIndex >= 0
+    isValid = isValid And txtAddress.Text <> ""
+    
+    ValidateData = isValid
+End Function
 
 'returns the grade as a grade code
 Private Function grade(gradeindex As Integer) As String
@@ -1194,7 +1185,7 @@ Private Sub Form_Load()
     lbladmin = admin.usrn
     lblIP = localip
     'saves the current admin as default
-    Call SaveSettings
+
     'empties the date combo boxes to renew the items inside them
     cmbYear.Clear
     cmbDay.Clear
@@ -1206,3 +1197,37 @@ Private Sub Form_Load()
         cmbYear.AddItem (i)
     Next
 End Sub
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    Debug.Print strResponse
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print JSON.toString(p)
+    If p.Item("response") = 1 Then
+        MsgBox p.Item("message"), vbOKOnly + vbInformation
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+    
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    'MsgBox "Is Called"
+    sckMain.Close
+End Sub
+
+

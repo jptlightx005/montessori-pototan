@@ -98,21 +98,9 @@ Private Const expandHeight As Integer = 3600
 
 Private searchResults As Integer
 
-Private Sub cmdSearch_Click()
-
-End Sub
-
-Private Sub Form_Load()
-
-End Sub
-
-Private Sub gridStudents_Click()
-
-End Sub
-
 Private Sub SearchStudent(filter As Integer)
 On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
+    Set rs = New ADODB.recordSet
     rs.ActiveConnection = cn
     rs.CursorLocation = adUseClient
     rs.CursorType = adOpenDynamic
@@ -137,3 +125,4 @@ ProcError:
     MsgBox Err.Description, vbExclamation
     Resume ProcExit
 End Sub
+

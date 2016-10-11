@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmAccountant 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,13 @@ Begin VB.Form frmAccountant
    MinButton       =   0   'False
    ScaleHeight     =   7545
    ScaleWidth      =   7575
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   120
+      Top             =   6600
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
    Begin VB.CommandButton cmdLogOut 
       Caption         =   "Logout"
       Height          =   495
@@ -178,7 +186,7 @@ Begin VB.Form frmAccountant
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Search"
+      Caption         =   "Search ID"
       Height          =   255
       Left            =   240
       TabIndex        =   6
@@ -259,14 +267,14 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public currentStudent As student
+Dim selectedStudent As Dictionary
 
 Private Sub cmdLogOut_Click()
     Call Logout
 End Sub
 
 Public Sub resetBoxes()
-    Set currentStudent = Nothing
+    Set selectedStudent = Nothing
     txtSearch.Text = ""
     cmdUpdate.Enabled = False
     lblID.Caption = "N/A"
@@ -281,33 +289,45 @@ Private Sub cmdReset_Click()
 End Sub
 
 Private Sub cmdSearch_Click()
-    Set currentStudent = SearchStudent(txtSearch.Text)
-    If Not currentStudent Is Nothing Then
-        Dim fullName As String
-        
-        lblID.Caption = currentStudent.studentID
-        lblFullName.Caption = currentStudent.fullName
-        lblAddress.Caption = currentStudent.homeAddress
-        lblGrade.Caption = currentStudent.grade
-        lblBalance.Caption = Format(currentStudent.balancePaid, "P##,##0.00")
-        lblPaidDate.Caption = Format(currentStudent.datePaid, "mmmm-dd-yyyy")
-        cmdUpdate.Enabled = True
-    Else
-        MsgBox "Student not Found!", vbExclamation
-        cmdUpdate.Enabled = False
+    If txtSearch.Text <> "" Then
+        If IsNumeric(txtSearch.Text) Then
+            Dim searchParams As Dictionary
+            Set searchParams = New Dictionary
+            searchParams.Add "usrn", acctadmin.usrn
+            searchParams.Add "pssw", acctadmin.pssw
+            searchParams.Add "role", acctadmin.role
+            searchParams.Add "action", aSEARCH_STUDENT
+            searchParams.Add "student_id", txtSearch.Text
+            blnConnected = False
+
+            Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
+        Else
+            MsgBox "Invalid Input!", vbExclamation
+        End If
     End If
 End Sub
 
 Private Sub cmdUpdate_Click()
+    frmTransaction.currentBalance = selectedStudent("balance_paid")
     frmTransaction.Show vbModal
 End Sub
 
 Private Sub Form_Load()
-    Call SaveSettings
+    'Call SaveSettings
 End Sub
 
 
 Public Sub ReloadData()
+    Dim searchParams As Dictionary
+    Set searchParams = New Dictionary
+    searchParams.Add "usrn", acctadmin.usrn
+    searchParams.Add "pssw", acctadmin.pssw
+    searchParams.Add "role", acctadmin.role
+    searchParams.Add "action", aSEARCH_STUDENT
+    searchParams.Add "student_id", selectedStudent("student_id")
+    blnConnected = False
+
+    Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
     Set currentStudent = SearchStudent(currentStudent.studentID)
     If Not currentStudent Is Nothing Then
         Dim fullName As String
@@ -321,3 +341,51 @@ Public Sub ReloadData()
         cmdUpdate.Enabled = True
     End If
 End Sub
+
+    
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        Set selectedStudent = p.Item("message")
+
+        Dim fullName As String
+        
+        lblID.Caption = selectedStudent("Student_ID")
+        lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
+        lblAddress.Caption = selectedStudent("home_address")
+        
+        lblGrade.Caption = grade(selectedStudent("current_grade"))
+        lblBalance.Caption = Format(selectedStudent("balance_paid"), "P##,##0.00")
+        lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
+        cmdUpdate.Enabled = True
+        
+    Else
+        MsgBox p.Item("message"), vbExclamation
+        cmdUpdate.Enabled = False
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    MsgBox "Is Called"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    sckMain.Close
+End Sub
+
