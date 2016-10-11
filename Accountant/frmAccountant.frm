@@ -259,8 +259,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public currentStudent As student
-
 Private Sub cmdLogOut_Click()
     Call Logout
 End Sub

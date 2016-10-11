@@ -22,6 +22,24 @@ Begin VB.Form frmLogin
    MinButton       =   0   'False
    ScaleHeight     =   4065
    ScaleWidth      =   7380
+   Begin VB.CheckBox chkRemember 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Remember Me"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   450
+      Left            =   2640
+      TabIndex        =   9
+      Top             =   3360
+      Width           =   2055
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
       Top             =   3600
@@ -194,7 +212,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdLogIn_Click()
-    Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text)
+    'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text)
+    
+    Dim loginParams As Dictionary
+    Set loginParams = New Dictionary
+    loginParams.Add "usrn", txtUsrn.Text
+    loginParams.Add "pssw", txtPssw.Text
+    loginParams.Add "role", "accountant"
+    ipaddress = txtIP.Text 'inserts the ip entered to the global variable
+    
+    acctadmin.usrn = txtUsrn.Text
+    acctadmin.pssw = txtPssw.Text
+    acctadmin.role = "registrar"
+    
+    Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
 
 Private Sub Form_Load()
@@ -235,3 +266,54 @@ End Sub
 Private Sub txtUsrn_KeyPress(KeyAscii As Integer)
     Call ifReturnKeyPress(KeyAscii)
 End Sub
+
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    
+    If p.Item("response") = 1 Then
+        localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
+        
+        SaveSettings (IIf(chkRemember.Value = 1, txtUsrn.Text, ""))
+        
+        'prompts the user has logged in successfully
+        MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
+        'sets the registrar form's labels with the current entries
+        frmRegistrar.lbladmin = regadmin.usrn
+        frmRegistrar.lblIP = localip
+        
+        'shows the registrar form
+        frmRegistrar.Show
+        
+        Unload Me 'exits the current form
+    Else
+        regadmin.usrn = ""
+        regadmin.pssw = ""
+        regadmin.role = ""
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+    
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    'MsgBox "Is Called"
+    sckMain.Close
+End Sub
+

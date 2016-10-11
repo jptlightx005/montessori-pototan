@@ -1099,7 +1099,7 @@ Private Sub cmdSubmit_Click()
             Call sendRequest(sckMain, hAPI_QUEUE, studentParams, hPOST_METHOD)
         End If
     Else
-        MsgBox "Please fill in required data!"
+        MsgBox "Please fill in required data!", vbExclamation
     End If
 End Sub
 
