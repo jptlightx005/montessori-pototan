@@ -1,34 +1,11 @@
 Attribute VB_Name = "DBFunctions"
 Option Explicit
 
-
-'Login Method
-Public Sub LogIn(usrn As String, pssw As String, ip As String, remember As Integer, ByRef sckTarget As Winsock)
-
-
-
-    'regadmin.usrn = usrn 'sets the current program's registrar admin to current user
-    'regadmin.pssw = pssw
-    
-    'regadmin.role = rs("role").Value
-    
-                
-                'MsgBox "Wrong Password!", vbOKOnly + vbExclamation
-                'LogIn = False
-                
-
-            'MsgBox "Must use registrar account!", vbOKOnly + vbExclamation
-            'LogIn = False
-    'If the scanning didn't match records
-    'MsgBox "Wrong username or username doesn't exist!", vbOKOnly + vbExclamation
-    'LogIn = False
-End Sub
-
 'Method used to count students on queue in the table of the database
 Public Function EnrolleeCount() As Integer
     On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = recordSet("montessori_queue", "status", "onqueue")
+    Set rs = Recordset("montessori_queue", "status", "onqueue")
     'Opens the recordset
     rs.Open
     'Returns the value of the query
@@ -49,7 +26,7 @@ End Function
 Public Function OnProcessCount() As Integer
     On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = recordSet("montessori_queue", "status", "onprocess")
+    Set rs = Recordset("montessori_queue", "status", "onprocess")
     'Opens the recordset
     rs.Open
     'Returns the value of the query
@@ -69,7 +46,7 @@ End Function
 Public Function Enroll(queueID As Integer) As Boolean
 On Error GoTo ProcError 'If something goes wrong, skip to the Error message
     'sets the RecordSet for counting the enrollees
-    Set rs = recordSet("montessori_queue", "Queue_ID", queueID)
+    Set rs = Recordset("montessori_queue", "Queue_ID", queueID)
     
     'Opens the recordset
     rs.Open

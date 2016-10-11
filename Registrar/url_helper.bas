@@ -64,13 +64,13 @@ End Function
 ' url encodes a string
 Function URLEncode(ByVal str As String) As String
         Dim intLen As Integer
-        Dim X As Integer
+        Dim x As Integer
         Dim curChar As Long
                 Dim newStr As String
                 intLen = Len(str)
         newStr = ""
-                        For X = 1 To intLen
-            curChar = Asc(Mid$(str, X, 1))
+                        For x = 1 To intLen
+            curChar = Asc(Mid$(str, x, 1))
             
             If (curChar < 48 Or curChar > 57) And _
                 (curChar < 65 Or curChar > 90) And _
@@ -79,7 +79,7 @@ Function URLEncode(ByVal str As String) As String
             Else
                 newStr = newStr & Chr(curChar)
             End If
-        Next X
+        Next x
         
         URLEncode = newStr
 End Function
@@ -87,7 +87,7 @@ End Function
 ' decodes a url encoded string
 Function UrlDecode(ByVal str As String) As String
         Dim intLen As Integer
-        Dim X As Integer
+        Dim x As Integer
         Dim curChar As String * 1
         Dim strCode As String * 2
         
@@ -96,28 +96,28 @@ Function UrlDecode(ByVal str As String) As String
         intLen = Len(str)
         newStr = ""
         
-        For X = 1 To intLen
-            curChar = Mid$(str, X, 1)
+        For x = 1 To intLen
+            curChar = Mid$(str, x, 1)
             
             If curChar = "%" Then
-                strCode = "&h" & Mid$(str, X + 1, 2)
+                strCode = "&h" & Mid$(str, x + 1, 2)
                 
                 If IsNumeric(strCode) Then
                     curChar = Chr(Int(strCode))
                 Else
                     curChar = ""
                 End If
-                                X = X + 2
+                                x = x + 2
             End If
             
             newStr = newStr & curChar
-        Next X
+        Next x
         
         UrlDecode = newStr
 End Function
 
 Function getJSONFromResponse(response As String) As String
-    Dim JSON
+    Dim JSON As String
     JSON = Mid$(response, InStr(1, response, "{"))
     getJSONFromResponse = JSON
 End Function

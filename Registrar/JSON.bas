@@ -539,7 +539,7 @@ Public Function StringToJSON(st As String) As String
 End Function
 
 
-Public Function RStoJSON(rs As ADODB.recordSet) As String
+Public Function RStoJSON(rs As ADODB.Recordset) As String
    On Error GoTo errHandler
    Dim sFlds As String
    Dim sRecs As New cStringBuilder

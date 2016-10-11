@@ -574,7 +574,7 @@ Begin VB.Form frmRegistrar
    End
    Begin VB.Label lblEnrollees 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "5"
+      Caption         =   "0"
       Height          =   375
       Left            =   2040
       TabIndex        =   2
@@ -631,33 +631,30 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim queueCollection As Collection
+Dim action As String
 
 'Drops the current student
 Private Sub cmdDrop_Click()
-On Error GoTo ProcError
     Dim choice As Integer
     choice = MsgBox("Drop the enrollee?", vbYesNo + vbExclamation)
     Select Case choice
         Case vbYes
-            Set rs = New ADODB.Recordset
-            rs.ActiveConnection = cn
-            rs.CursorLocation = adUseClient
-            rs.CursorType = adOpenDynamic
-            rs.LockType = adLockOptimistic
-            rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-            rs.Open
-            Do Until rs.EOF
-                rs("status").Value = "dropped"
-                rs.Update
-                GoTo ProcExit
-            Loop
+            Dim student As Dictionary
+            Set student = queueCollection(1)
+            
+            Dim dropParams As Dictionary
+            Set dropParams = New Dictionary
+            dropParams.Add "usrn", regadmin.usrn
+            dropParams.Add "pssw", regadmin.pssw
+            dropParams.Add "role", regadmin.role
+            dropParams.Add "action", aDROP_STUDENT
+            dropParams.Add "queue_id", student("Queue_ID")
+            blnConnected = False
+            action = aDROP_STUDENT
+            
+            Call sendRequest(sckMain, hAPI_QUEUE, dropParams, hPOST_METHOD)
+            tmr_update.Enabled = False
     End Select
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
 End Sub
 
 Private Sub cmdEnroll_Click()
@@ -665,61 +662,24 @@ Private Sub cmdEnroll_Click()
     inputID = InputBox("Enter student's ID")
     If inputID <> "" Then
         If IsNumeric(inputID) Then
-            If Not StudentOnProcess(inputID) Is Nothing Then
-                Set frmEnroll.studentToEnroll = StudentOnProcess(inputID)
-                frmEnroll.Show vbModal
-            End If
+            Dim enrollParams As Dictionary
+            Set enrollParams = New Dictionary
+            enrollParams.Add "usrn", regadmin.usrn
+            enrollParams.Add "pssw", regadmin.pssw
+            enrollParams.Add "role", regadmin.role
+            enrollParams.Add "action", aSEARCH_STUDENT
+            enrollParams.Add "student_id", inputID
+            blnConnected = False
+            
+            action = aSEARCH_STUDENT
+            
+            Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
+            tmr_update.Enabled = False
         Else
             MsgBox "Invalid Input!", vbExclamation
         End If
     End If
 End Sub
-
-Private Function StudentOnProcess(studentID As String) As student
-'On Error GoTo ProcError
-    'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Looks for student with the specified studentID
-    rs.Source = "SELECT * FROM montessori_records WHERE Student_ID =" & studentID
-    'Opens the recordset
-    rs.Open
-    'if student with student id is found
-    Do Until rs.EOF
-        Dim studentFound As student
-        Set studentFound = New student
-        studentFound.studentID = rs("Student_ID").Value
-        studentFound.firstName = rs("first_name").Value
-        studentFound.middleName = rs("middle_name").Value
-        studentFound.lastName = rs("last_name").Value
-        
-        studentFound.queueID = rs("Queue_ID").Value
-        studentFound.homeAddress = rs("home_address").Value
-        studentFound.grade = rs("current_grade").Value
-        studentFound.balancePaid = rs("balance_paid").Value
-        studentFound.datePaid = rs("date_of_payment").Value
-        Select Case CheckStudentOnQueue(studentFound.queueID)
-            Case "onqueue"
-                MsgBox "Please register the student first!", vbExclamation
-            Case "onprocess"
-                Set StudentOnProcess = studentFound
-            Case "enrolled"
-                MsgBox studentFound.fullName & " is already enrolled!", vbInformation
-        End Select
-        GoTo ProcExit
-    Loop
-    'if not, just prompt the user
-    MsgBox "Student is not found!", vbExclamation
-    Set StudentOnProcess = Nothing
-ProcExit:
-    Exit Function
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
-End Function
 
 Private Function CheckStudentOnQueue(queueID As String) As String
 'On Error GoTo ProcError
@@ -759,8 +719,10 @@ End Sub
 
 'Views the current student's information in the queue
 Private Sub cmdView_Click()
-    Set frmVerification.selectedStudent = queueCollection(1)
-    frmVerification.Show vbModal
+    If queueCollection.Count > 0 Then
+        Set frmVerification.selectedStudent = queueCollection(1)
+        frmVerification.Show vbModal
+    End If
 End Sub
 
 'The action that the window executes when loaded
@@ -787,8 +749,11 @@ Sub LoadQueue()
     listParams.Add "usrn", regadmin.usrn
     listParams.Add "pssw", regadmin.pssw
     listParams.Add "role", regadmin.role
-    listParams.Add "action", "queue_list"
+    listParams.Add "action", aQUEUE_LIST
     blnConnected = False
+    
+    action = aQUEUE_LIST
+    
     Call sendRequest(sckMain, hAPI_QUEUE, listParams, hPOST_METHOD)
 
     tmr_update.Enabled = False
@@ -797,8 +762,6 @@ End Sub
 
 'Observes the database if enrollees keep increasing
 Private Sub tmr_update_Timer()
-    tmr_update.Enabled = False
-
     Call ClearBoxes
     Call LoadQueue
 End Sub
@@ -816,48 +779,61 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        If action = aQUEUE_LIST Then
+            Set message = p.Item("message")
+            Set queueCollection = message("list")
+            Dim j As Integer
+            For j = 1 To queueCollection.Count
+                Dim record As Dictionary
+                Set record = queueCollection(j)
+                Dim i As Integer
+                i = j - 1
     
-    If p.Item("response") > 0 Then
+                lblID(i).Caption = record("Queue_ID")
+                Dim StudentInf() As String
+                Dim MNameArray() As Byte
+                StudentInf = Split(record("student_info"), "|")
+                MNameArray = StrConv(StudentInf(3), vbFromUnicode)
+                lblName(i).Caption = StudentInf(2) & " " & Chr(MNameArray(0)) & ". " & StudentInf(4)
+                lblGrade(i).Caption = grade(StudentInf(1), Me)
+            Next
+            lblEnrollees.Caption = message("onqueue")
+            lblOnProcessCount.Caption = message("onprocess")
+            cmdView.Enabled = message("onqueue") > 0
+            cmdDrop.Enabled = message("onqueue") > 0
+            cmdEnroll.Enabled = message("onprocess") > 0
+            
+        ElseIf action = aDROP_STUDENT Then
+            MsgBox p.Item("message"), vbInformation
+            
+        ElseIf action = aSEARCH_STUDENT Then
+            Set frmEnroll.student = p.Item("message")
+            frmEnroll.Show vbModal
+        End If
         
-        
-        Dim message As Dictionary
-        
-        Set message = p.Item("message")
-        
-        lblEnrollees.Caption = message("onqueue")
-        lblOnProcessCount.Caption = message("onprocess")
-        
-        Set queueCollection = message("list")
-
-        Dim j As Integer
-        For j = 1 To p.Item("response")
-            Dim record As Dictionary
-            Set record = queueCollection(j)
-            Dim i As Integer
-            i = j - 1
-
-            lblID(i).Caption = record("Queue_ID")
-            Dim StudentInf() As String
-            Dim MNameArray() As Byte
-            StudentInf = Split(record("student_info"), "|")
-            MNameArray = StrConv(StudentInf(3), vbFromUnicode)
-            lblName(i).Caption = StudentInf(2) & " " & Chr(MNameArray(0)) & ". " & StudentInf(4)
-            lblGrade(i).Caption = grade(StudentInf(1), Me)
-        Next
-        tmr_update.Enabled = True
     Else
-        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+        If action = aQUEUE_LIST Then
+            Set message = p.Item("message")
+            lblEnrollees.Caption = message("onqueue")
+            lblOnProcessCount.Caption = message("onprocess")
+        ElseIf action = aSEARCH_STUDENT Then
+            MsgBox p.Item("message"), vbExclamation
+        End If
     End If
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
-    
+    MsgBox "Is Called"
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    
+    tmr_update.Enabled = True
     sckMain.Close
 End Sub

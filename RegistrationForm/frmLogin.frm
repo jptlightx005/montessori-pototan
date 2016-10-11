@@ -13,6 +13,24 @@ Begin VB.Form frmLogin
    MinButton       =   0   'False
    ScaleHeight     =   3990
    ScaleWidth      =   7440
+   Begin VB.CheckBox chkRemember 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Remember Me"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   450
+      Left            =   2640
+      TabIndex        =   8
+      Top             =   3240
+      Width           =   2055
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
       Top             =   3480
@@ -22,6 +40,15 @@ Begin VB.Form frmLogin
    End
    Begin VB.CommandButton cmdLogIn 
       Caption         =   "Log-in"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   4800
       TabIndex        =   7
@@ -175,7 +202,19 @@ Option Explicit
 
 'Log In Button Action
 Private Sub cmdLogIn_Click()
-    Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text)
+    'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text)
+    Dim loginParams As Dictionary
+    Set loginParams = New Dictionary
+    loginParams.Add "usrn", txtUsrn.Text
+    loginParams.Add "pssw", txtPssw.Text
+    loginParams.Add "role", "admin"
+    ipaddress = txtIP.Text 'inserts the ip entered to the global variable
+    
+    admin.usrn = txtUsrn.Text
+    admin.pssw = txtPssw.Text
+    admin.role = "admin"
+    
+    Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
 
 'text field at keypress actions
@@ -184,6 +223,7 @@ Sub ifReturnKeyPress(KeyAscii As Integer)
         Call cmdLogIn_Click
     End If
 End Sub
+
 Private Sub txtUsrn_KeyPress(KeyAscii As Integer)
     Call ifReturnKeyPress(KeyAscii)
 End Sub
@@ -197,7 +237,8 @@ End Sub
 'loads the user's default settings
 Private Sub Form_Load()
     txtUsrn.Text = admin.usrn
-    txtPssw.Text = password
+    txtPssw.Text = admin.pssw
+    chkRemember.Value = IIf(admin.usrn = "", 0, 1)
     txtIP.Text = ipaddress
 End Sub
 
@@ -213,6 +254,55 @@ End Sub
 Private Sub txtUsrn_GotFocus()
     txtUsrn.SelStart = 0
     txtUsrn.SelLength = Len(txtUsrn.Text)
+End Sub
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print JSON.toString(p)
+    If p.Item("response") = 1 Then
+        localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
+        
+        SaveSettings (IIf(chkRemember.Value = 1, txtUsrn.Text, ""))
+        
+        'prompts the user has logged in successfully
+        MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
+        'sets the registrar form's labels with the current entries
+        frmMain.lbladmin = admin.usrn
+        frmMain.lblIP = localip
+        
+        'shows the registrar form
+        frmMain.Show
+        
+        Unload Me 'exits the current form
+    Else
+        admin.usrn = ""
+        admin.pssw = ""
+        admin.role = ""
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+    
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    'MsgBox "Is Called"
+    sckMain.Close
 End Sub
 
 

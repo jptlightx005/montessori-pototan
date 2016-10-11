@@ -6,9 +6,6 @@ Public ipaddress As String
 Public localip As String
 Public regadmin As administrator
 
-'Current Student Index selected
-Public selectedStudent As Dictionary
-
 'Main method of the System
 'This contains the methods called to be executed by the program before opening
 Sub Main()

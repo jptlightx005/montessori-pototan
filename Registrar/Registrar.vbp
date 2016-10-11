@@ -17,7 +17,6 @@ Module=INIread; \\Vboxsvr\thesis_montessori\SYSTEM2\Registrar\INIread.bas
 Module=INIwrite; \\Vboxsvr\thesis_montessori\SYSTEM2\Registrar\INIwrite.bas
 Class=administrator; Administrator.cls
 Form=frmEnroll.frm
-Class=student; \\Vboxsvr\thesis_montessori\SYSTEM2\Registrar\student.cls
 Form=frmSearch.frm
 Module=DBFunctions; DBFunctions.bas
 Module=url_helper; \\Vboxsvr\thesis_montessori\SYSTEM2\Registrar\url_helper.bas

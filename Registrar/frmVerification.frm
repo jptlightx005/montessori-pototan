@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmVerification 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -21,6 +22,14 @@ Begin VB.Form frmVerification
    MinButton       =   0   'False
    ScaleHeight     =   3750
    ScaleWidth      =   8595
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   6480
+      Top             =   3120
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemotePort      =   80
+   End
    Begin VB.CommandButton cmdExpand 
       Caption         =   "Expand"
       Height          =   495
@@ -718,69 +727,39 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        
-    
         Dim newRecord As Dictionary
-        Dim listParams As Dictionary
-        Set listParams = New Dictionary
-        listParams.Add "usrn", regadmin.usrn
-        listParams.Add "pssw", regadmin.pssw
-        listParams.Add "role", regadmin.role
-        listParams.Add "action", "queue_list"
+        Set newRecord = New Dictionary
+        newRecord.Add "usrn", regadmin.usrn
+        newRecord.Add "pssw", regadmin.pssw
+        newRecord.Add "role", regadmin.role
+        newRecord.Add "action", "register_student"
+    
+        newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
+        newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+        newRecord.Add "last_name", txtLName.Text
+        newRecord.Add "first_name", txtFName.Text
+        newRecord.Add "middle_name", txtMName.Text
+        newRecord.Add "gender", cmbGender.Text
+        newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+        newRecord.Add "place_of_birth", txtPlace.Text
+        newRecord.Add "fathers_name", txtFather.Text
+        newRecord.Add "father_occupation", txtFocc.Text
+        newRecord.Add "mothers_name", txtMother.Text
+        newRecord.Add "mother_occupation", txtMocc.Text
+        newRecord.Add "home_address", txtAddress.Text
+        newRecord.Add "home_number", txtTelNo.Text
+        newRecord.Add "guardian_name", txtGuardian.Text
+        newRecord.Add "guardian_relation", txtGRelation.Text
+        newRecord.Add "guardian_address", txtGAddress.Text
+        newRecord.Add "guardian_number", txtGTelNo.Text
+        newRecord.Add "last_school_attended", txtLast.Text
+        newRecord.Add "religion", txtReligion.Text
+        newRecord.Add "is_baptized", chkBaptized.Value
+        newRecord.Add "first_communion", chkComm.Value
+    
         blnConnected = False
-        Call sendRequest(sckMain, hAPI_QUEUE, listParams, hPOST_METHOD)
-    
-        tmr_update.Enabled = False
-        Set rs = Recordset("montessori_records", "", "")
-        
-        rs.Open
-        'Adds new student in the database
-        rs.AddNew
-        rs("Queue_ID").Value = currentStudentID
-        rs("current_grade").Value = setgrade(cmbGrade.ListIndex)
-        rs("last_name").Value = txtLName.Text
-        rs("first_name").Value = txtFName.Text
-        rs("middle_name").Value = txtMName.Text
-        rs("gender").Value = cmbGender.Text
-        rs("date_of_birth").Value = DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-        rs("place_of_birth").Value = txtPlace.Text
-        rs("fathers_name").Value = txtFather.Text
-        rs("father_occupation").Value = txtFocc.Text
-        rs("mothers_name").Value = txtMother.Text
-        rs("mother_occupation").Value = txtMocc.Text
-        rs("home_address").Value = txtAddress.Text
-        rs("home_number").Value = txtTelNo.Text
-        rs("guardian_name").Value = txtGuardian.Text
-        rs("guardian_relation").Value = txtGRelation.Text
-        rs("guardian_address").Value = txtGAddress.Text
-        rs("guardian_number").Value = txtGTelNo.Text
-        rs("last_school_attended").Value = txtLast.Text
-        rs("religion").Value = txtReligion.Text
-        rs("is_baptized").Value = chkBaptized.Value
-        rs("first_communion").Value = chkComm.Value
-        rs.Update
-        rs.Close
-
-        Set rs = Recordset("montessori_queue", "Queue_ID", currentStudentID)
-        rs.Open
-        Do Until rs.EOF
-            rs("status").Value = "onprocess"
-            rs.Update
-            Exit Do
-        Loop
-        
-        rs.Close
-        
-        MsgBox "The student has been succesfully added to the records database", vbInformation
-        Unload Me
+        Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
     End If
-    
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
 End Sub
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
@@ -826,4 +805,37 @@ Private Sub Form_Load()
     Changeable = False
     
     Call LoadStudentInfo
+End Sub
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    
+    If p.Item("response") = 1 Then
+        MsgBox "To Make sure: " & JSON.toString(p)
+        MsgBox p.Item("message"), vbInformation
+        Unload Me
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    
+    sckMain.Close
 End Sub

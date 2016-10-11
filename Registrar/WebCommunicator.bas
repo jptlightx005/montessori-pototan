@@ -14,7 +14,7 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     
     strPostData = ""
     strHeaders = ""
-    MsgBox IIf(blnConnected, "YES", "NO")
+    'MsgBox IIf(blnConnected, "YES", "NO")
     If blnConnected Then Exit Sub
     
     ' get the url
