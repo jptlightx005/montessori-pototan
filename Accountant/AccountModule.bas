@@ -42,15 +42,16 @@ ProcError:
 End Sub
 
 'Saves the settings in the ini file
-Public Sub SaveSettings()
+'Saves the user's settings in accountant.ini
+Public Sub SaveSettings(usrn As String)
 On Error GoTo ProcError
-    WriteIniValue App.Path & "\accountant.ini", "Default", "username", acctadmin.usrn
+    WriteIniValue App.Path & "\accountant.ini", "Default", "username", usrn
     WriteIniValue App.Path & "\accountant.ini", "Default", "ipaddress", ipaddress
 ProcExit:
     Exit Sub
     
 ProcError:
-   MsgBox Err.Description, vbExclamation
+    MsgBox Err.Description, vbExclamation
     Resume ProcExit
 End Sub
 

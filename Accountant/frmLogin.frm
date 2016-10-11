@@ -223,7 +223,7 @@ Private Sub cmdLogIn_Click()
     
     acctadmin.usrn = txtUsrn.Text
     acctadmin.pssw = txtPssw.Text
-    acctadmin.role = "registrar"
+    acctadmin.role = "accountant"
     
     Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
@@ -280,7 +280,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    
+    Debug.Print (JSON.toString(p))
     If p.Item("response") = 1 Then
         localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
         
@@ -289,17 +289,18 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         'prompts the user has logged in successfully
         MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
         'sets the registrar form's labels with the current entries
-        frmRegistrar.lbladmin = regadmin.usrn
-        frmRegistrar.lblIP = localip
-        
+        'increments the times the user has logged in
+
+        Unload frmLogin 'exits the current form
+        'sets the registrar form's labels with the current entries
+        frmAccountant.lbladmin = acctadmin.usrn
+        frmAccountant.lblIP = localip
         'shows the registrar form
-        frmRegistrar.Show
-        
-        Unload Me 'exits the current form
+        frmAccountant.Show
     Else
-        regadmin.usrn = ""
-        regadmin.pssw = ""
-        regadmin.role = ""
+        acctadmin.usrn = ""
+        acctadmin.pssw = ""
+        acctadmin.role = ""
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If
     

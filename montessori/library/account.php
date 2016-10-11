@@ -66,6 +66,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$json = array("response" => 1, "message" => "Successfully enrolled!");
 				else
 					$json = array("response" => 0, "message" => "An error has occured while saving!");
+			}else if($action == "student_payment"){
+				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
+				$balance_paid = isset($_POST['balance_paid']) ? mysql_real_escape_string($_POST['balance_paid']) : "";
+				$query = "UPDATE `montessori_records` SET `balance_paid` = $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
+				
+				if(mysql_query($query))
+					$json = array("response" => 1, "message" => "Balance successfully updated!");
+				else
+					$json = array("response" => 0, "message" => "An error has occured while updating!");
 			}
 		}else{
 			$json = array("response" => -1, "message" => "Invalid Request");
