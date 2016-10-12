@@ -83,6 +83,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	}else{
 		$json = array("response" => -1, "message" => "Invalid Request");
 	}
+}else{
+	$json = array("response" => -1, "message" => "Unknown Method");
 }
 	 
  @mysql_close($conn);

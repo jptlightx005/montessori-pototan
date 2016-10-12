@@ -652,7 +652,7 @@ Private Sub cmdDrop_Click()
             blnConnected = False
             action = aDROP_STUDENT
             
-            Call sendRequest(sckMain, hAPI_QUEUE, dropParams, hPOST_METHOD)
+            Call sendRequest(sckMain, hAPI_STUDENTS, dropParams, hPOST_METHOD)
             tmr_update.Enabled = False
     End Select
 End Sub
@@ -714,6 +714,7 @@ Private Sub cmdLogOut_Click()
 End Sub
 
 Private Sub cmdSearch_Click()
+    'tmr_update.Enabled = False
     frmSearch.Show vbModal
 End Sub
 
