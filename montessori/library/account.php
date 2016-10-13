@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$query = "UPDATE `montessori_records` SET `balance_paid` = $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
 				
 				if(mysql_query($query))
-					$json = array("response" => 1, "message" => "Balance successfully updated!");
+					$json = array("response" => 1, "message" => "Balance successfully updated!", "query" => $query);
 				else
 					$json = array("response" => 0, "message" => "An error has occured while updating!");
 			}
@@ -83,6 +83,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	}else{
 		$json = array("response" => -1, "message" => "Invalid Request");
 	}
+}else{
+	$json = array("response" => -1, "message" => "Unknown Method");
 }
 	 
  @mysql_close($conn);

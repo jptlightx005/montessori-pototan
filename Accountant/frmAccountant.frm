@@ -4,9 +4,9 @@ Begin VB.Form frmAccountant
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Accountant"
-   ClientHeight    =   7545
-   ClientLeft      =   5880
-   ClientTop       =   3960
+   ClientHeight    =   8175
+   ClientLeft      =   5805
+   ClientTop       =   2655
    ClientWidth     =   7575
    BeginProperty Font 
       Name            =   "Arial"
@@ -20,7 +20,7 @@ Begin VB.Form frmAccountant
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7545
+   ScaleHeight     =   8175
    ScaleWidth      =   7575
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
@@ -50,7 +50,7 @@ Begin VB.Form frmAccountant
       Height          =   495
       Left            =   4080
       TabIndex        =   15
-      Top             =   6480
+      Top             =   7560
       Width           =   1215
    End
    Begin VB.CommandButton cmdUpdate 
@@ -59,7 +59,7 @@ Begin VB.Form frmAccountant
       Height          =   495
       Left            =   2760
       TabIndex        =   14
-      Top             =   6480
+      Top             =   7560
       Width           =   1215
    End
    Begin VB.TextBox txtSearch 
@@ -69,16 +69,54 @@ Begin VB.Form frmAccountant
       Top             =   2160
       Width           =   3495
    End
+   Begin VB.Label lblBalance 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "N/A"
+      Height          =   375
+      Left            =   2760
+      TabIndex        =   26
+      Top             =   6360
+      Width           =   3375
+   End
+   Begin VB.Label Label6 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Balance Left"
+      Height          =   255
+      Left            =   240
+      TabIndex        =   25
+      Top             =   6360
+      Width           =   2175
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Total Matriculation"
+      Height          =   255
+      Left            =   240
+      TabIndex        =   24
+      Top             =   5880
+      Width           =   2175
+   End
+   Begin VB.Label lblMatriculation 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "N/A"
+      Height          =   375
+      Left            =   2760
+      TabIndex        =   23
+      Top             =   5880
+      Width           =   3375
+   End
    Begin VB.Label lblPaidDate 
       BackColor       =   &H00C0E0FF&
       Caption         =   "N/A"
       Height          =   375
       Left            =   2760
       TabIndex        =   21
-      Top             =   5880
+      Top             =   6960
       Width           =   3375
    End
-   Begin VB.Label lblBalance 
+   Begin VB.Label lblPayment 
       BackColor       =   &H00C0E0FF&
       Caption         =   "N/A"
       Height          =   375
@@ -121,13 +159,13 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   13
-      Top             =   5880
+      Top             =   6960
       Width           =   2175
    End
    Begin VB.Label Label7 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Balance:"
+      Caption         =   "Total Payment"
       Height          =   255
       Left            =   240
       TabIndex        =   12
@@ -309,6 +347,7 @@ End Sub
 
 Private Sub cmdUpdate_Click()
     frmTransaction.currentBalance = selectedStudent("balance_paid")
+    frmTransaction.studentID = selectedStudent("Student_ID")
     frmTransaction.Show vbModal
 End Sub
 
@@ -324,22 +363,10 @@ Public Sub ReloadData()
     searchParams.Add "pssw", acctadmin.pssw
     searchParams.Add "role", acctadmin.role
     searchParams.Add "action", aSEARCH_STUDENT
-    searchParams.Add "student_id", selectedStudent("student_id")
+    searchParams.Add "student_id", selectedStudent("Student_ID")
     blnConnected = False
 
     Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
-    Set currentStudent = SearchStudent(currentStudent.studentID)
-    If Not currentStudent Is Nothing Then
-        Dim fullName As String
-        fullName = currentStudent.firstName & " " & Left$(CStr(currentStudent.middleName), 1) & " " & currentStudent.lastName
-        lblID.Caption = currentStudent.studentID
-        lblFullName.Caption = UCase(fullName)
-        lblAddress.Caption = currentStudent.homeAddress
-        lblGrade.Caption = currentStudent.grade
-        lblBalance.Caption = Format(currentStudent.balancePaid, "P##,##0.00")
-        lblPaidDate.Caption = Format(currentStudent.datePaid, "mmmm-dd-yyyy")
-        cmdUpdate.Enabled = True
-    End If
 End Sub
 
     
@@ -368,7 +395,12 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         lblAddress.Caption = selectedStudent("home_address")
         
         lblGrade.Caption = grade(selectedStudent("current_grade"))
-        lblBalance.Caption = Format(selectedStudent("balance_paid"), "P##,##0.00")
+        lblPayment.Caption = Format(selectedStudent("balance_paid"), "P##,##0.00")
+        lblMatriculation.Caption = Format(selectedStudent("total_matriculation"), "P##,##0.00")
+        Dim balanceLeft As Integer
+        balanceLeft = selectedStudent("total_matriculation") - selectedStudent("balance_paid")
+        lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
+        
         lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
         cmdUpdate.Enabled = True
         

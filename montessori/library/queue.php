@@ -18,16 +18,16 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 		if($num > 0){
 			if($action == "queue_list"){
-				$query = "SELECT Queue_ID, student_info FROM `montessori_queue` WHERE `status` = 'onqueue'";
-				$result1 = mysql_query($query);
-				$onqueuecount = mysql_num_rows($result1);
-				
 				$query = "SELECT * FROM `montessori_queue` WHERE `status` = 'onprocess'";
-				$result2 = mysql_query($query);
-				$onprocesscount = mysql_num_rows($result2);
+				$result = mysql_query($query);
+				$onprocesscount = mysql_num_rows($result);
 					
+				$query = "SELECT Queue_ID, student_info FROM `montessori_queue` WHERE `status` = 'onqueue'";
+				$result = mysql_query($query);
+				$onqueuecount = mysql_num_rows($result);
+				
 				if($onqueuecount > 0){
-					while($row = mysql_fetch_assoc($result1)){
+					while($row = mysql_fetch_assoc($result)){
 						 $rows[] = $row;
 					}
 

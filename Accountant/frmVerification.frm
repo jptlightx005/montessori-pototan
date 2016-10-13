@@ -129,7 +129,7 @@ Private Sub cmdProceed_Click()
             paymentParams.Add "student_id", studentID
             paymentParams.Add "balance_paid", currentBalance + cashPaid
             blnConnected = False
-            Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
+            Call sendRequest(sckMain, hAPI_ACCOUNT, paymentParams, hPOST_METHOD)
         End If
     End If
 End Sub
@@ -185,9 +185,9 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         cmdProceed.Enabled = False
         frmAccountant.ReloadData
 
+        Unload Me
     Else
         MsgBox p.Item("message"), vbExclamation
-        cmdUpdate.Enabled = False
     End If
 End Sub
 

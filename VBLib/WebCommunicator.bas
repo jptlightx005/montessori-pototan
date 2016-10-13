@@ -14,6 +14,7 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     
     strPostData = ""
     strHeaders = ""
+    Debug.Print ("Endpoint: " & endpoint)
     Debug.Print ("params" & JSON.toString(formData))
     If blnConnected Then Exit Sub
     
