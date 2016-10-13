@@ -103,33 +103,8 @@ Private Const expandHeight As Integer = 3600
 
 Private searchResults As Collection
 
-
-Private Sub SearchStudent(filter As Integer)
-On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    
-    Select Case filter
-        Case 0
-        
-    End Select
-    
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-    rs.Open
-    
-    Do Until rs.EOF
-        
-        Exit Sub
-    Loop
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+Private Sub cmdCancel_Click()
+    Unload Me
 End Sub
 
 Private Sub cmdSearch_Click()

@@ -22,6 +22,23 @@ Begin VB.Form frmRegistrar
    MinButton       =   0   'False
    ScaleHeight     =   8310
    ScaleWidth      =   7575
+   Begin VB.CommandButton cmdStudentList 
+      Caption         =   "Student List"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   3240
+      TabIndex        =   49
+      Top             =   2160
+      Width           =   1575
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
       Top             =   7800
@@ -42,9 +59,9 @@ Begin VB.Form frmRegistrar
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3120
+      Left            =   3840
       TabIndex        =   48
-      Top             =   2160
+      Top             =   7440
       Width           =   1695
    End
    Begin VB.Frame frameEnroll 
@@ -716,6 +733,10 @@ End Sub
 Private Sub cmdSearch_Click()
     'tmr_update.Enabled = False
     frmSearch.Show vbModal
+End Sub
+
+Private Sub cmdStudentList_Click()
+    frmStudentList.Show vbModal
 End Sub
 
 'Views the current student's information in the queue

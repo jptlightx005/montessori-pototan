@@ -1,0 +1,199 @@
+VERSION 5.00
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Begin VB.Form frmStudentList 
+   BackColor       =   &H00C0E0FF&
+   BorderStyle     =   1  'Fixed Single
+   Caption         =   "List of Students"
+   ClientHeight    =   6540
+   ClientLeft      =   6540
+   ClientTop       =   2955
+   ClientWidth     =   7890
+   BeginProperty Font 
+      Name            =   "Arial"
+      Size            =   12
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
+   LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   ScaleHeight     =   6540
+   ScaleWidth      =   7890
+   Begin VB.CommandButton cmdClose 
+      Caption         =   "Close"
+      Height          =   495
+      Left            =   6480
+      TabIndex        =   3
+      Top             =   120
+      Width           =   1215
+   End
+   Begin VB.CommandButton cmdView 
+      Caption         =   "View"
+      Height          =   495
+      Left            =   5160
+      TabIndex        =   2
+      Top             =   120
+      Width           =   1215
+   End
+   Begin VB.ComboBox cmbGrade 
+      Height          =   390
+      ItemData        =   "frmStudentList.frx":0000
+      Left            =   240
+      List            =   "frmStudentList.frx":0019
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      Top             =   120
+      Width           =   3735
+   End
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   240
+      Top             =   3840
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
+   Begin MSFlexGridLib.MSFlexGrid gridStudents 
+      Height          =   5655
+      Left            =   120
+      TabIndex        =   0
+      Top             =   720
+      Width           =   7575
+      _ExtentX        =   13361
+      _ExtentY        =   9975
+      _Version        =   393216
+   End
+End
+Attribute VB_Name = "frmStudentList"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Private searchResults As Collection
+
+Private Sub cmdClose_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdView_Click()
+    If cmbGrade.ListIndex >= 0 Then
+        Dim searchParams As Dictionary
+        Set searchParams = New Dictionary
+        searchParams.Add "usrn", regadmin.usrn
+        searchParams.Add "pssw", regadmin.pssw
+        searchParams.Add "role", regadmin.role
+        searchParams.Add "action", aSEARCH_STUDENT
+        searchParams.Add "filter_key", "current_grade"
+        searchParams.Add "filter_value", setgrade(cmbGrade.ListIndex)
+    
+        blnConnected = False
+    
+        Call sendRequest(sckMain, hAPI_STUDENTS, searchParams, hPOST_METHOD)
+        
+    Else
+        MsgBox "Please select a grade!", vbInformation
+    End If
+End Sub
+
+Private Function setgrade(gradeindex As Integer) As String
+    Select Case gradeindex
+        Case 0:
+            setgrade = "preschool"
+        Case 1:
+            setgrade = "grade1"
+        Case 2:
+            setgrade = "grade2"
+        Case 3:
+            setgrade = "grade3"
+        Case 4:
+            setgrade = "grade4"
+        Case 5:
+            setgrade = "grade5"
+        Case 6:
+            setgrade = "grade6"
+    End Select
+End Function
+
+Public Function grade(grd As String) As String
+    Select Case grd
+        Case "preschool"
+            grade = "Nursery"
+        Case "grade1"
+            grade = "Grade I"
+        Case "grade2"
+            grade = "Grade II"
+        Case "grade3"
+            grade = "Grade III"
+        Case "grade4"
+            grade = "Grade IV"
+        Case "grade5"
+            grade = "Grade V"
+        Case "grade6"
+            grade = "Grade VI"
+    End Select
+End Function
+
+Private Sub RefreshTableView()
+    gridStudents.Cols = 6
+    gridStudents.rows = searchResults.Count + 1
+    gridStudents.TextMatrix(0, 1) = "First Name"
+    gridStudents.TextMatrix(0, 2) = "Middle Name"
+    gridStudents.TextMatrix(0, 3) = "Last Name"
+    gridStudents.TextMatrix(0, 4) = "Gender"
+    gridStudents.TextMatrix(0, 5) = "Grade"
+    
+    
+    Dim i As Integer
+    For i = 1 To searchResults.Count
+        Dim studentInfo As Dictionary
+        Set studentInfo = searchResults(i)
+        gridStudents.TextMatrix(i, 0) = Format(i, String(4, "0"))
+        gridStudents.TextMatrix(i, 1) = studentInfo("first_name")
+        gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
+        gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
+        gridStudents.TextMatrix(i, 4) = studentInfo("gender")
+        gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
+    Next
+End Sub
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        Set searchResults = p.Item("message")
+        
+        Call RefreshTableView
+    Else
+        Set searchResults = New Collection
+        Call RefreshTableView
+        MsgBox p.Item("message"), vbExclamation
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    MsgBox "Is Called"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    sckMain.Close
+End Sub
