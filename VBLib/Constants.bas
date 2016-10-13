@@ -15,5 +15,5 @@ Public Const aSEARCH_STUDENT As String = "search_student"
 Public Const aENROLL_STUDENT As String = "enroll_student"
 Public Const aQUEUE_LIST As String = "queue_list"
 Public Const aREGISTER_STUDENT As String = "register_student"
-Public Const aPAYMENT As String = "payment"
+Public Const aSTUDENT_PAYMENT As String = "student_payment"
 

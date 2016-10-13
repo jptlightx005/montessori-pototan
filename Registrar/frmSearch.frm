@@ -155,41 +155,59 @@ Private Function filterKeyFromIndex(index As Integer) As String
         Case 1
             filterKeyFromIndex = "Queue_ID"
         Case 2
-            filterKeyFromIndex = "current_grade"
-        Case 3
             filterKeyFromIndex = "first_name"
-        Case 4
+        Case 3
             filterKeyFromIndex = "middle_name"
-        Case 5
+        Case 4
             filterKeyFromIndex = "last_name"
-        Case 6
+        Case 5
             filterKeyFromIndex = "home_address"
+        Case 6
+            filterKeyFromIndex = "current_grade"
     End Select
 End Function
 
-Private Sub Form_Load()
-    
-End Sub
-
 Private Sub RefreshTableView()
-    gridStudents.Cols = 5
-    gridStudents.rows = searchResults.Count
+    gridStudents.Cols = 6
+    gridStudents.rows = searchResults.Count + 1
     gridStudents.TextMatrix(0, 1) = "First Name"
-    gridStudents.TextMatrix(0, 2) = "Last Name"
-    gridStudents.TextMatrix(0, 3) = "Gender"
-    gridStudents.TextMatrix(0, 4) = "Grade"
+    gridStudents.TextMatrix(0, 2) = "Middle Name"
+    gridStudents.TextMatrix(0, 3) = "Last Name"
+    gridStudents.TextMatrix(0, 4) = "Gender"
+    gridStudents.TextMatrix(0, 5) = "Grade"
     
     
     Dim i As Integer
     For i = 1 To searchResults.Count
         Dim studentInfo As Dictionary
-        studentInfo = searchResults(i)
+        Set studentInfo = searchResults(i)
+        gridStudents.TextMatrix(i, 0) = Format(i, String(4, "0"))
         gridStudents.TextMatrix(i, 1) = studentInfo("first_name")
-        gridStudents.TextMatrix(i, 2) = studentInfo("last_name")
-        gridStudents.TextMatrix(i, 3) = studentInfo("gender")
-        gridStudents.TextMatrix(i, 4) = studentInfo("grade")
+        gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
+        gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
+        gridStudents.TextMatrix(i, 4) = studentInfo("gender")
+        gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
     Next
 End Sub
+
+Public Function grade(grd As String) As String
+    Select Case grd
+        Case "preschool"
+            grade = "Nursery"
+        Case "grade1"
+            grade = "Grade I"
+        Case "grade2"
+            grade = "Grade II"
+        Case "grade3"
+            grade = "Grade III"
+        Case "grade4"
+            grade = "Grade IV"
+        Case "grade5"
+            grade = "Grade V"
+        Case "grade6"
+            grade = "Grade VI"
+    End Select
+End Function
 
 Private Sub sckMain_Connect()
     blnConnected = True
@@ -211,6 +229,8 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         
         Call RefreshTableView
     Else
+        Set searchResults = New Collection
+        Call RefreshTableView
         MsgBox p.Item("message"), vbExclamation
     End If
 End Sub
