@@ -1,6 +1,6 @@
-frmMain = 217, 11, 935, 627, C, 24, -13, 965, 771, C
-frmLogin = 145, 143, 863, 759, , 249, 198, 967, 814, C
-RegistrationFormModule = 170, 61, 888, 675, 
+frmMain = 249, -20, 967, 413, C, 24, -13, 965, 662, C
+frmLogin = 224, 50, 942, 666, C, 249, 198, 967, 814, C
+RegistrationFormModule = 183, 35, 901, 390, C
 frmSplash = 250, 250, 959, 857, C, 225, 225, 934, 832, C
 administrator = 0, 0, 0, 0, C
 Constants = 0, 0, 0, 0, C
@@ -8,5 +8,5 @@ cStringBuilder = 0, 0, 0, 0, C
 INIread = 0, 0, 0, 0, C
 INIwrite = 0, 0, 0, 0, C
 JSON = 0, 0, 0, 0, C
-url_helper = 0, 0, 0, 0, C
-WebCommunicator = 0, 0, 0, 0, C
+url_helper = 110, 145, 1162, 467, 
+WebCommunicator = 66, 87, 1110, 401, 

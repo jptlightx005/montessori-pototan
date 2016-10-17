@@ -29,6 +29,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 							$values .= "'$value', ";
 					}
 				}
+				$fields .= "total_matriculation, ";
+				$values .= "25000, ";
 				$fields = substr($fields, 0, strlen($fields) - 2) . ")";
 				$values = substr($values, 0, strlen($values) - 2) . ")";
 				
@@ -38,12 +40,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$queue_id = $_POST['Queue_ID'];
 					$query = "UPDATE `montessori_queue` SET `status` = 'onprocess' WHERE `Queue_ID` = '$queue_id'";
 					
-					if(mysql_query($query))
-						$json = array("response" => 1, "message" => "Successfully registered!");
-					else
+					if(mysql_query($query)){
+						$query = "SELECT Student_ID FROM montessori_records WHERE `Queue_ID` = '$queue_id'";
+						$result = mysql_query($query);
+						if($result){
+							$record = mysql_fetch_assoc($result);
+							if($record)
+								$json = array("response" => 1, "message" => "The student has been registered!", "studentID" => $record['Student_ID']);
+							else
+								$json = array("response" => 0, "message" => "Student not found!");
+						}else{
+							$json = array("response" => 0, "message" => "An error has occured while fetching!");
+						}
+					}else{
 						$json = array("response" => 0, "message" => "An error has occured while saving!");
+					}
 				}else{
-					$json = array("response" => 0, "message" => "An error has occured while saving!");
+					$json = array("response" => 0, "message" => "An error has occured while saving!", "query" => $query);
 				}
 			}else if($action == "search_student"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
