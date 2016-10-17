@@ -1214,6 +1214,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         Dim message As String
         message = p.Item("message") & ". Your Queue ID is " & p.Item("queueID")
         MsgBox message, vbOKOnly + vbInformation
+        Call ClearBoxes
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If
