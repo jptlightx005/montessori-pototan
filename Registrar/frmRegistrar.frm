@@ -669,7 +669,7 @@ Private Sub cmdDrop_Click()
             blnConnected = False
             action = aDROP_STUDENT
             
-            Call sendRequest(sckMain, hAPI_STUDENTS, dropParams, hPOST_METHOD)
+            Call sendRequest(sckMain, hAPI_QUEUE, dropParams, hPOST_METHOD)
             tmr_update.Enabled = False
     End Select
 End Sub
@@ -798,10 +798,10 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
     
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+    'Debug.Print (strResponse)
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    Debug.Print (JSON.toString(p))
+    'Debug.Print (JSON.toString(p))
     Dim message As Dictionary
 
     If p.Item("response") = 1 Then

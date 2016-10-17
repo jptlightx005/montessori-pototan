@@ -1211,7 +1211,9 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     Debug.Print JSON.toString(p)
     If p.Item("response") = 1 Then
-        MsgBox p.Item("message"), vbOKOnly + vbInformation
+        Dim message As String
+        message = p.Item("message") & ". Your Queue ID is " & p.Item("queueID")
+        MsgBox message, vbOKOnly + vbInformation
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If

@@ -47,7 +47,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				if($sameinfocount == 0){
 					$query = "INSERT INTO `montessori_queue` VALUES (NULL, '$usrn', '$registered_ip', '$student_info', 'onqueue', CURRENT_TIMESTAMP)";
 					if(mysql_query($query)){
-						$json = array("response" => 1, "message" => "The student has been registered!");
+						$query = "SELECT Queue_ID FROM montessori_queue WHERE `student_info` = '$student_info'";
+						$result = mysql_query($query);
+						if($result){
+							$record = mysql_fetch_assoc($result);
+							if($record)
+								$json = array("response" => 1, "message" => "The student has been registered!", "queueID" => $record['Queue_ID']);
+							else
+								$json = array("response" => 0, "message" => "Student not found!");
+						}else{
+							$json = array("response" => 0, "message" => "An error has occured while fetching!");
+						}
+						
 					}else{
 						$json = array("response" => 0, "message" => $query);
 					}

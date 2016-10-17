@@ -815,13 +815,15 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
     
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+    Debug.Print (strResponse)
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     
     If p.Item("response") = 1 Then
-        MsgBox "To Make sure: " & JSON.toString(p)
-        MsgBox p.Item("message"), vbInformation
+        'MsgBox "To Make sure: " & JSON.toString(p)
+        Dim message As String
+        message = p.Item("message") & ". Your ID is " & p.Item("studentID")
+        MsgBox message, vbOKOnly + vbInformation
         Unload Me
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
