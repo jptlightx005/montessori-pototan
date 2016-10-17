@@ -25,6 +25,7 @@ Module=JSON; ..\VBLib\JSON.bas
 Module=url_helper; ..\VBLib\url_helper.bas
 Module=WebCommunicator; ..\VBLib\WebCommunicator.bas
 Form=frmStudentList.frm
+Form=frmViewStudent.frm
 IconForm="frmRegistrar"
 Startup="Sub Main"
 HelpFile=""

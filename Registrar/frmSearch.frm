@@ -33,22 +33,12 @@ Begin VB.Form frmSearch
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
       Height          =   2775
       Left            =   120
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   1680
       Width           =   6495
       _ExtentX        =   11456
       _ExtentY        =   4895
       _Version        =   393216
-   End
-   Begin VB.ComboBox cmbFilter 
-      Height          =   390
-      ItemData        =   "frmSearch.frx":0000
-      Left            =   1680
-      List            =   "frmSearch.frx":0019
-      Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Top             =   960
-      Width           =   3615
    End
    Begin VB.CommandButton cmdView 
       Caption         =   "View"
@@ -76,19 +66,19 @@ Begin VB.Form frmSearch
    End
    Begin VB.TextBox txtSearch 
       Height          =   495
-      Left            =   1680
+      Left            =   360
       TabIndex        =   0
-      Top             =   360
-      Width           =   3615
+      Top             =   960
+      Width           =   4935
    End
    Begin VB.Label Label1 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Search:"
+      Caption         =   "Search Last Name:"
       Height          =   255
       Left            =   360
       TabIndex        =   1
       Top             =   480
-      Width           =   1095
+      Width           =   2175
    End
 End
 Attribute VB_Name = "frmSearch"
@@ -114,33 +104,13 @@ Private Sub cmdSearch_Click()
     searchParams.Add "pssw", regadmin.pssw
     searchParams.Add "role", regadmin.role
     searchParams.Add "action", aSEARCH_STUDENT
-    Debug.Print (vbCrLf & cmbFilter.ListIndex & vbCrLf)
-    searchParams.Add "filter_key", filterKeyFromIndex(cmbFilter.ListIndex)
+    searchParams.Add "filter_key", last_name
     searchParams.Add "filter_value", txtSearch.Text
     
     blnConnected = False
     
     Call sendRequest(sckMain, hAPI_STUDENTS, searchParams, hPOST_METHOD)
 End Sub
-
-Private Function filterKeyFromIndex(index As Integer) As String
-    Select Case index
-        Case -1 To 0
-            filterKeyFromIndex = ""
-        Case 1
-            filterKeyFromIndex = "Queue_ID"
-        Case 2
-            filterKeyFromIndex = "first_name"
-        Case 3
-            filterKeyFromIndex = "middle_name"
-        Case 4
-            filterKeyFromIndex = "last_name"
-        Case 5
-            filterKeyFromIndex = "home_address"
-        Case 6
-            filterKeyFromIndex = "current_grade"
-    End Select
-End Function
 
 Private Sub RefreshTableView()
     gridStudents.Cols = 6
@@ -183,6 +153,15 @@ Public Function grade(grd As String) As String
             grade = "Grade VI"
     End Select
 End Function
+
+Private Sub cmdView_Click()
+MsgBox "ROWSEL IS " & gridStudents.RowSel
+    Debug.Print ("ROWSEL IS " & gridStudents.RowSel)
+    If gridStudents.ColSel > 0 Then
+        Set frmViewStudent.studentInfo = searchResults(gridStudents.RowSel)
+        frmViewStudent.Show vbModal
+    End If
+End Sub
 
 Private Sub sckMain_Connect()
     blnConnected = True

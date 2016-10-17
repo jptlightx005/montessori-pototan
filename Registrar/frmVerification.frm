@@ -425,7 +425,7 @@ Begin VB.Form frmVerification
    End
    Begin VB.ComboBox cmbGrade 
       Enabled         =   0   'False
-      Height          =   435
+      Height          =   390
       ItemData        =   "frmVerification.frx":007C
       Left            =   2640
       List            =   "frmVerification.frx":0095

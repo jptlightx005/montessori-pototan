@@ -319,6 +319,8 @@ Public Sub resetBoxes()
     lblFullName.Caption = "N/A"
     lblAddress.Caption = "N/A"
     lblGrade.Caption = "N/A"
+    lblMatriculation.Caption = "N/A"
+    lblPayment.Caption = "N/A"
     lblBalance.Caption = "N/A"
     lblPaidDate.Caption = "N/A"
 End Sub
