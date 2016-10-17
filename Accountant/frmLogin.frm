@@ -231,6 +231,7 @@ End Sub
 Private Sub Form_Load()
     txtUsrn.Text = acctadmin.usrn
     txtPssw.Text = password
+    chkRemember.Value = IIf(acctadmin.usrn = "", 0, 1)
     txtIP.Text = ipaddress
 End Sub
 

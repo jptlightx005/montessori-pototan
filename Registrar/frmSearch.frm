@@ -98,6 +98,10 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub cmdSearch_Click()
+    Call searchStudent
+End Sub
+
+Public Sub searchStudent()
     Dim searchParams As Dictionary
     Set searchParams = New Dictionary
     searchParams.Add "usrn", regadmin.usrn
@@ -111,6 +115,7 @@ Private Sub cmdSearch_Click()
     
     Call sendRequest(sckMain, hAPI_STUDENTS, searchParams, hPOST_METHOD)
 End Sub
+
 
 Private Sub RefreshTableView()
     gridStudents.Cols = 6
@@ -155,7 +160,6 @@ Public Function grade(grd As String) As String
 End Function
 
 Private Sub cmdView_Click()
-MsgBox "ROWSEL IS " & gridStudents.RowSel
     Debug.Print ("ROWSEL IS " & gridStudents.RowSel)
     If gridStudents.ColSel > 0 Then
         Set frmViewStudent.studentInfo = searchResults(gridStudents.RowSel)

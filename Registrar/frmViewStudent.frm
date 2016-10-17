@@ -511,8 +511,47 @@ Private Sub cmdClose_Click()
     Unload Me
 End Sub
 
-Private Sub Command1_Click()
+Private Sub cmdEdit_Click()
+    If Changeable Then
+        'Disables submission controls for editing
+        cmdEdit.Caption = "Edit"
+        Changeable = False
+        Call EnableDisableControls
+    Else
+        'Enables submission controls for submission
+        cmdEdit.Caption = "Cancel"
+        Changeable = True
+        Call EnableDisableControls
+    End If
+End Sub
 
+Sub EnableDisableControls()
+    cmbGrade.Enabled = Changeable
+    txtLName.Enabled = Changeable
+    txtFName.Enabled = Changeable
+    txtMName.Enabled = Changeable
+    cmbGender.Enabled = Changeable
+    cmbMonth.Enabled = Changeable
+    cmbDay.Enabled = Changeable
+    cmbYear.Enabled = Changeable
+    txtPlace.Enabled = Changeable
+    txtFather.Enabled = Changeable
+    txtFocc.Enabled = Changeable
+    txtAddress.Enabled = Changeable
+    txtMother.Enabled = Changeable
+    txtMocc.Enabled = Changeable
+    txtTelNo.Enabled = Changeable
+    txtGuardian.Enabled = Changeable
+    txtGAddress.Enabled = Changeable
+    txtLast.Enabled = Changeable
+    txtGRelation.Enabled = Changeable
+    txtGTelNo.Enabled = Changeable
+    txtReligion.Enabled = Changeable
+    chkBaptized.Enabled = Changeable
+    chkComm.Enabled = Changeable
+
+    'Enables the save button
+    cmdSave.Enabled = Changeable
 End Sub
 
 Private Sub cmdExpand_Click()
@@ -538,6 +577,45 @@ Private Sub cmdExpand_Click()
     End If
 End Sub
 
+Private Sub cmdSave_Click()
+    Changeable = False
+    Call EnableDisableControls
+    cmdEdit.Caption = "Edit"
+
+    Dim updatedRecord As Dictionary
+    Set updatedRecord = New Dictionary
+    updatedRecord.Add "usrn", regadmin.usrn
+    updatedRecord.Add "pssw", regadmin.pssw
+    updatedRecord.Add "role", regadmin.role
+    updatedRecord.Add "action", aUPDATE_STUDENT
+    updatedRecord.Add "student_id", studentInfo("student_id")
+    
+    updatedRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+    updatedRecord.Add "last_name", txtLName.Text
+    updatedRecord.Add "first_name", txtFName.Text
+    updatedRecord.Add "middle_name", txtMName.Text
+    updatedRecord.Add "gender", cmbGender.Text
+    updatedRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+    updatedRecord.Add "place_of_birth", txtPlace.Text
+    updatedRecord.Add "fathers_name", txtFather.Text
+    updatedRecord.Add "father_occupation", txtFocc.Text
+    updatedRecord.Add "mothers_name", txtMother.Text
+    updatedRecord.Add "mother_occupation", txtMocc.Text
+    updatedRecord.Add "home_address", txtAddress.Text
+    updatedRecord.Add "home_number", txtTelNo.Text
+    updatedRecord.Add "guardian_name", txtGuardian.Text
+    updatedRecord.Add "guardian_relation", txtGRelation.Text
+    updatedRecord.Add "guardian_address", txtGAddress.Text
+    updatedRecord.Add "guardian_number", txtGTelNo.Text
+    updatedRecord.Add "last_school_attended", txtLast.Text
+    updatedRecord.Add "religion", txtReligion.Text
+    updatedRecord.Add "is_baptized", chkBaptized.Value
+    updatedRecord.Add "first_communion", chkComm.Value
+
+    blnConnected = False
+    Call sendRequest(sckMain, hAPI_ACCOUNT, updatedRecord, hPOST_METHOD)
+End Sub
+
 Private Sub Form_Load()
     expanded = False
     cmbYear.Clear
@@ -553,6 +631,30 @@ Private Sub Form_Load()
     
     Call LoadStudentInfo
 End Sub
+
+Private Function setgrade(gradeindex As Integer) As String
+    Select Case gradeindex
+        Case 0:
+            setgrade = "preschool"
+        Case 1:
+            setgrade = "grade1"
+        Case 2:
+            setgrade = "grade2"
+        Case 3:
+            setgrade = "grade3"
+        Case 4:
+            setgrade = "grade4"
+        Case 5:
+            setgrade = "grade5"
+        Case 6:
+            setgrade = "grade6"
+    End Select
+End Function
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Call frmSearch.searchStudent
+End Sub
+
 Private Sub sckMain_Connect()
     blnConnected = True
 End Sub
@@ -562,12 +664,12 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
     
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     
+    Debug.Print (JSON.toString(p))
     If p.Item("response") = 1 Then
-        MsgBox "To Make sure: " & JSON.toString(p)
         MsgBox p.Item("message"), vbInformation
         Unload Me
     Else
