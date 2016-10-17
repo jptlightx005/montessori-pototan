@@ -588,7 +588,7 @@ Private Sub cmdSave_Click()
     updatedRecord.Add "pssw", regadmin.pssw
     updatedRecord.Add "role", regadmin.role
     updatedRecord.Add "action", aUPDATE_STUDENT
-    updatedRecord.Add "student_id", studentInfo("student_id")
+    updatedRecord.Add "student_id", studentInfo("Student_ID")
     
     updatedRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
     updatedRecord.Add "last_name", txtLName.Text

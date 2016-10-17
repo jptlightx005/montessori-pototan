@@ -779,10 +779,6 @@ Private Function setgrade(gradeindex As Integer) As String
             setgrade = "grade6"
     End Select
 End Function
-Private Function DoB(bm As Integer, bd As Integer, by As Integer) As String
-    
-    DoB = Format$(CDate((bm + 1) & "-" & bd & "-" & by), "yyyy-mm-dd")
-End Function
 
 Private Sub cmdSave_Click()
     Changeable = False
@@ -820,7 +816,6 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     
     If p.Item("response") = 1 Then
-        'MsgBox "To Make sure: " & JSON.toString(p)
         Dim message As String
         message = p.Item("message") & ". Your ID is " & p.Item("studentID")
         MsgBox message, vbOKOnly + vbInformation

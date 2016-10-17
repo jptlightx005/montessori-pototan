@@ -13,6 +13,7 @@ Public Const hREFRESH_RATE As Integer = 500
 Public Const aDROP_STUDENT As String = "drop_student"
 Public Const aSEARCH_STUDENT As String = "search_student"
 Public Const aENROLL_STUDENT As String = "enroll_student"
+Public Const aUPDATE_STUDENT As String = "update_student"
 Public Const aQUEUE_LIST As String = "queue_list"
 Public Const aREGISTER_STUDENT As String = "register_student"
 Public Const aSTUDENT_PAYMENT As String = "student_payment"

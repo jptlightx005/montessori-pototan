@@ -86,3 +86,9 @@ Public Sub Logout()
     Unload frmRegistrar
     frmLogin.Show
 End Sub
+
+Public Function DoB(bm As Integer, bd As Integer, by As Integer) As String
+    
+    DoB = Format$(CDate((bm + 1) & "-" & bd & "-" & by), "yyyy-mm-dd")
+End Function
+
