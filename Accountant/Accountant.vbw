@@ -1,5 +1,5 @@
 AccountantModule = 104, 94, 915, 644, 
-frmTransaction = 155, 28, 966, 486, C, 151, 346, 962, 756, C
+frmTransaction = 155, 28, 966, 486, , 151, 346, 962, 756, C
 frmSplash = 82, 173, 982, 665, , 110, 145, 921, 695, C
 administrator = 0, 0, 0, 0, C
 Constants = 553, 72, 1365, 622, 
@@ -8,7 +8,7 @@ INIread = 0, 0, 0, 0, C
 INIwrite = 0, 0, 0, 0, C
 JSON = 0, 0, 0, 0, C
 url_helper = 0, 0, 0, 0, C
-WebCommunicator = 22, 29, 941, 472, C
+WebCommunicator = 22, 29, 945, 472, 
 student = 0, 0, 0, 0, C
-frmLogin = 98, 54, 924, 509, C, 125, 125, 834, 732, C
-frmAccountant = 89, 35, 1012, 478, , 110, 145, 922, 766, C
+frmLogin = 100, 100, 926, 670, , 125, 125, 834, 732, C
+frmAccountant = 89, 35, 1012, 478, , 171, 69, 983, 811, C

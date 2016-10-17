@@ -4,7 +4,7 @@ Begin VB.Form frmEnroll
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Enroll Student"
-   ClientHeight    =   4860
+   ClientHeight    =   4335
    ClientLeft      =   5805
    ClientTop       =   3255
    ClientWidth     =   6480
@@ -20,11 +20,11 @@ Begin VB.Form frmEnroll
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4860
+   ScaleHeight     =   4335
    ScaleWidth      =   6480
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   600
-      Top             =   4320
+      Top             =   3840
       _ExtentX        =   741
       _ExtentY        =   741
       _Version        =   393216
@@ -33,29 +33,29 @@ Begin VB.Form frmEnroll
       Enabled         =   0   'False
       Interval        =   1000
       Left            =   120
-      Top             =   4320
+      Top             =   3840
    End
    Begin VB.CommandButton cmdEnroll 
       Caption         =   "Enroll"
       Enabled         =   0   'False
       Height          =   495
       Left            =   3720
-      TabIndex        =   14
-      Top             =   4200
+      TabIndex        =   12
+      Top             =   3720
       Width           =   1215
    End
    Begin VB.CommandButton cmdBack 
       Caption         =   "Back"
       Height          =   495
       Left            =   5040
-      TabIndex        =   13
-      Top             =   4200
+      TabIndex        =   11
+      Top             =   3720
       Width           =   1215
    End
    Begin VB.Frame frameExtendedInfo 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Student Information"
-      Height          =   3975
+      Height          =   3495
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -66,7 +66,7 @@ Begin VB.Form frmEnroll
          Caption         =   "Student ID Number:"
          Height          =   255
          Left            =   120
-         TabIndex        =   12
+         TabIndex        =   10
          Top             =   840
          Width           =   2175
       End
@@ -75,7 +75,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   11
+         TabIndex        =   9
          Top             =   840
          Width           =   2175
       End
@@ -85,7 +85,7 @@ Begin VB.Form frmEnroll
          Caption         =   "Full Name:"
          Height          =   255
          Left            =   120
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   1320
          Width           =   2175
       End
@@ -95,7 +95,7 @@ Begin VB.Form frmEnroll
          Caption         =   "Address:"
          Height          =   255
          Left            =   120
-         TabIndex        =   9
+         TabIndex        =   7
          Top             =   1800
          Width           =   2175
       End
@@ -105,18 +105,8 @@ Begin VB.Form frmEnroll
          Caption         =   "Grade:"
          Height          =   255
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   6
          Top             =   2520
-         Width           =   2175
-      End
-      Begin VB.Label Label7 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Balance:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   7
-         Top             =   3000
          Width           =   2175
       End
       Begin VB.Label Label9 
@@ -125,8 +115,8 @@ Begin VB.Form frmEnroll
          Caption         =   "Paid Last:"
          Height          =   255
          Left            =   120
-         TabIndex        =   6
-         Top             =   3480
+         TabIndex        =   5
+         Top             =   3000
          Width           =   2175
       End
       Begin VB.Label lblFullName 
@@ -134,7 +124,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   1320
          Width           =   3375
       End
@@ -143,7 +133,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   4
+         TabIndex        =   3
          Top             =   1800
          Width           =   3375
       End
@@ -152,17 +142,8 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   3
-         Top             =   2520
-         Width           =   3375
-      End
-      Begin VB.Label lblBalance 
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "N/A"
-         Height          =   375
-         Left            =   2640
          TabIndex        =   2
-         Top             =   3000
+         Top             =   2520
          Width           =   3375
       End
       Begin VB.Label lblPaidDate 
@@ -171,7 +152,7 @@ Begin VB.Form frmEnroll
          Height          =   375
          Left            =   2640
          TabIndex        =   1
-         Top             =   3480
+         Top             =   3000
          Width           =   3375
       End
    End
@@ -190,7 +171,6 @@ Public Sub loadData()
     lblAddress.Caption = student("home_address")
     
     lblGrade.Caption = grade(student("current_grade"))
-    lblBalance.Caption = student("balance_paid")
     lblPaidDate.Caption = Format(student("date_of_payment"), "mmmm dd, yyyy")
     
     cmdEnroll.Enabled = False

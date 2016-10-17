@@ -4,9 +4,9 @@ Begin VB.Form frmAccountant
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Accountant"
-   ClientHeight    =   8175
+   ClientHeight    =   8790
    ClientLeft      =   5805
-   ClientTop       =   2655
+   ClientTop       =   735
    ClientWidth     =   7575
    BeginProperty Font 
       Name            =   "Arial"
@@ -20,11 +20,11 @@ Begin VB.Form frmAccountant
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8175
+   ScaleHeight     =   8790
    ScaleWidth      =   7575
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
-      Top             =   6600
+      Top             =   7200
       _ExtentX        =   741
       _ExtentY        =   741
       _Version        =   393216
@@ -50,7 +50,7 @@ Begin VB.Form frmAccountant
       Height          =   495
       Left            =   4080
       TabIndex        =   15
-      Top             =   7560
+      Top             =   8160
       Width           =   1215
    End
    Begin VB.CommandButton cmdUpdate 
@@ -59,7 +59,7 @@ Begin VB.Form frmAccountant
       Height          =   495
       Left            =   2760
       TabIndex        =   14
-      Top             =   7560
+      Top             =   8160
       Width           =   1215
    End
    Begin VB.TextBox txtSearch 
@@ -69,13 +69,32 @@ Begin VB.Form frmAccountant
       Top             =   2160
       Width           =   3495
    End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "School Year:"
+      Height          =   255
+      Left            =   240
+      TabIndex        =   28
+      Top             =   4680
+      Width           =   2175
+   End
+   Begin VB.Label lblSchoolYear 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "N/A"
+      Height          =   375
+      Left            =   2760
+      TabIndex        =   27
+      Top             =   4680
+      Width           =   3375
+   End
    Begin VB.Label lblBalance 
       BackColor       =   &H00C0E0FF&
       Caption         =   "N/A"
       Height          =   375
       Left            =   2760
       TabIndex        =   26
-      Top             =   6360
+      Top             =   6960
       Width           =   3375
    End
    Begin VB.Label Label6 
@@ -85,7 +104,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   25
-      Top             =   6360
+      Top             =   6960
       Width           =   2175
    End
    Begin VB.Label Label8 
@@ -95,7 +114,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   24
-      Top             =   5880
+      Top             =   6480
       Width           =   2175
    End
    Begin VB.Label lblMatriculation 
@@ -104,7 +123,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   23
-      Top             =   5880
+      Top             =   6480
       Width           =   3375
    End
    Begin VB.Label lblPaidDate 
@@ -113,7 +132,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   21
-      Top             =   6960
+      Top             =   7560
       Width           =   3375
    End
    Begin VB.Label lblPayment 
@@ -122,7 +141,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   20
-      Top             =   5400
+      Top             =   6000
       Width           =   3375
    End
    Begin VB.Label lblGrade 
@@ -131,7 +150,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   19
-      Top             =   4920
+      Top             =   5520
       Width           =   3375
    End
    Begin VB.Label lblAddress 
@@ -159,7 +178,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   13
-      Top             =   6960
+      Top             =   7560
       Width           =   2175
    End
    Begin VB.Label Label7 
@@ -169,7 +188,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   12
-      Top             =   5400
+      Top             =   6000
       Width           =   2175
    End
    Begin VB.Label Label5 
@@ -179,7 +198,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   11
-      Top             =   4920
+      Top             =   5520
       Width           =   2175
    End
    Begin VB.Label Label4 
@@ -318,6 +337,8 @@ Public Sub resetBoxes()
     lblID.Caption = "N/A"
     lblFullName.Caption = "N/A"
     lblAddress.Caption = "N/A"
+    lblSchoolYear.Caption = "N/A"
+    
     lblGrade.Caption = "N/A"
     lblMatriculation.Caption = "N/A"
     lblPayment.Caption = "N/A"
@@ -395,7 +416,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         lblID.Caption = selectedStudent("Student_ID")
         lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
         lblAddress.Caption = selectedStudent("home_address")
-        
+        lblSchoolYear.Caption = "S.Y. 2015-2016"
         lblGrade.Caption = grade(selectedStudent("current_grade"))
         lblPayment.Caption = Format(selectedStudent("balance_paid"), "P##,##0.00")
         lblMatriculation.Caption = Format(selectedStudent("total_matriculation"), "P##,##0.00")

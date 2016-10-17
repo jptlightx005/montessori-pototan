@@ -88,6 +88,28 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$json = array("response" => 1, "message" => "Balance successfully updated!", "query" => $query);
 				else
 					$json = array("response" => 0, "message" => "An error has occured while updating!");
+			}else if ($action == "update_student"){
+				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
+				
+				$setFieldValue = "";
+				
+				foreach($_POST as $key => $value){
+					if($key != "usrn" && 
+						$key != "pssw" &&
+						$key != "role" &&
+						$key != "action" &&
+						$key != "student_id"){
+							$setFieldValue .= "`$key` = '$value', ";
+					}
+				}
+				$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);
+				
+				$query = "UPDATE `montessori_records` SET $setFieldValue WHERE `Student_ID` = '$student_id'";
+				
+				if(mysql_query($query))
+					$json = array("response" => 1, "message" => "Student Information successfully updated!", "query" => $query);
+				else
+					$json = array("response" => 0, "message" => "An error has occured while updating!");
 			}
 		}else{
 			$json = array("response" => -1, "message" => "Invalid Request");
