@@ -1,6 +1,6 @@
-frmRegistrar = 180, 9, 1030, 614, , 2, 18, 689, 649, C
-RegistrarModule = 217, -18, 932, 593, 
-frmLogin = 144, 71, 782, 783, , 66, 66, 789, 688, C
+frmRegistrar = 74, 65, 924, 670, , 2, 18, 689, 649, C
+RegistrarModule = 103, 107, 818, 718, 
+frmLogin = 305, 57, 943, 769, , 66, 66, 789, 688, C
 frmVerification = 178, 157, 893, 693, , 89, 135, 789, 517, C
 frmSplash = 144, 322, 955, 872, C, 117, 109, 928, 659, C
 frmEnroll = 79, 41, 947, 658, , 44, 58, 856, 608, C
@@ -13,6 +13,6 @@ INIread = 0, 0, 0, 0, C
 INIwrite = 0, 0, 0, 0, C
 JSON = 22, 29, 945, 457, 
 url_helper = 0, 0, 0, 0, C
-WebCommunicator = 110, 145, 1033, 573, 
+WebCommunicator = -104, 168, 819, 596, C
 frmStudentList = 94, 27, 906, 577, , 176, 232, 988, 782, C
 frmViewStudent = 114, -17, 925, 533, , 154, 203, 966, 753, C

@@ -35,10 +35,10 @@ ProcError:
 End Sub
 
 'Saves the user's settings in registration_form.ini
-Public Sub SaveSettings(usrn As String)
+Public Sub SaveSettings(usrn As String, ip As String)
 On Error GoTo ProcError
-    WriteIniValue App.Path & "\registrar.ini", "Default", "username", usrn
-    WriteIniValue App.Path & "\registrar.ini", "Default", "ipaddress", ipaddress
+    WriteIniValue App.Path & "\registration_form.ini", "Default", "username", usrn
+    WriteIniValue App.Path & "\registration_form.ini", "Default", "ipaddress", ip
 ProcExit:
     Exit Sub
     

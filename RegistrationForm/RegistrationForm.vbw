@@ -1,6 +1,6 @@
 frmMain = 249, -20, 967, 413, , 24, -13, 965, 662, C
-frmLogin = 224, 50, 942, 666, C, 249, 198, 967, 814, C
-RegistrationFormModule = 183, 35, 901, 390, C
+frmLogin = 224, 50, 942, 666, , 249, 198, 967, 814, C
+RegistrationFormModule = 183, 35, 901, 629, 
 frmSplash = 250, 250, 959, 857, C, 225, 225, 934, 832, C
 administrator = 0, 0, 0, 0, C
 Constants = 0, 0, 0, 0, C

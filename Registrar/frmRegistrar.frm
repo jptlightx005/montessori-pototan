@@ -670,7 +670,7 @@ Private Sub cmdDrop_Click()
             action = aDROP_STUDENT
             
             Call sendRequest(sckMain, hAPI_QUEUE, dropParams, hPOST_METHOD)
-            tmr_update.Enabled = False
+            tmr_update.enabled = False
     End Select
 End Sub
 
@@ -691,7 +691,7 @@ Private Sub cmdEnroll_Click()
             action = aSEARCH_STUDENT
             
             Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
-            tmr_update.Enabled = False
+            tmr_update.enabled = False
         Else
             MsgBox "Invalid Input!", vbExclamation
         End If
@@ -778,7 +778,7 @@ Sub LoadQueue()
     
     Call sendRequest(sckMain, hAPI_QUEUE, listParams, hPOST_METHOD)
 
-    tmr_update.Enabled = False
+    tmr_update.enabled = False
 End Sub
 
 
@@ -825,9 +825,9 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
             Next
             lblEnrollees.Caption = message("onqueue")
             lblOnProcessCount.Caption = message("onprocess")
-            cmdView.Enabled = message("onqueue") > 0
-            cmdDrop.Enabled = message("onqueue") > 0
-            cmdEnroll.Enabled = message("onprocess") > 0
+            cmdView.enabled = message("onqueue") > 0
+            cmdDrop.enabled = message("onqueue") > 0
+            cmdEnroll.enabled = message("onprocess") > 0
             
         ElseIf action = aDROP_STUDENT Then
             MsgBox p.Item("message"), vbInformation
@@ -856,6 +856,6 @@ End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    tmr_update.Enabled = True
+    tmr_update.enabled = True
     sckMain.Close
 End Sub
