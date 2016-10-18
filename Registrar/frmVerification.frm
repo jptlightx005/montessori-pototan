@@ -727,38 +727,42 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        Dim newRecord As Dictionary
-        Set newRecord = New Dictionary
-        newRecord.Add "usrn", regadmin.usrn
-        newRecord.Add "pssw", regadmin.pssw
-        newRecord.Add "role", regadmin.role
-        newRecord.Add "action", "register_student"
-    
-        newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
-        newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
-        newRecord.Add "last_name", Trim(txtLName.Text)
-        newRecord.Add "first_name", Trim(txtFName.Text)
-        newRecord.Add "middle_name", Trim(txtMName.Text)
-        newRecord.Add "gender", cmbGender.Text
-        newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-        newRecord.Add "place_of_birth", Trim(txtPlace.Text)
-        newRecord.Add "fathers_name", Trim(txtFather.Text)
-        newRecord.Add "father_occupation", Trim(txtFocc.Text)
-        newRecord.Add "mothers_name", Trim(txtMother.Text)
-        newRecord.Add "mother_occupation", Trim(txtMocc.Text)
-        newRecord.Add "home_address", Trim(txtAddress.Text)
-        newRecord.Add "home_number", Trim(txtTelNo.Text)
-        newRecord.Add "guardian_name", Trim(txtGuardian.Text)
-        newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
-        newRecord.Add "guardian_address", Trim(txtGAddress.Text)
-        newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
-        newRecord.Add "last_school_attended", Trim(txtLast.Text)
-        newRecord.Add "religion", Trim(txtReligion.Text)
-        newRecord.Add "is_baptized", chkBaptized.Value
-        newRecord.Add "first_communion", chkComm.Value
-    
-        blnConnected = False
-        Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
+        If Validation() Then
+            Dim newRecord As Dictionary
+            Set newRecord = New Dictionary
+            newRecord.Add "usrn", regadmin.usrn
+            newRecord.Add "pssw", regadmin.pssw
+            newRecord.Add "role", regadmin.role
+            newRecord.Add "action", "register_student"
+        
+            newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
+            newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+            newRecord.Add "last_name", Trim(txtLName.Text)
+            newRecord.Add "first_name", Trim(txtFName.Text)
+            newRecord.Add "middle_name", Trim(txtMName.Text)
+            newRecord.Add "gender", cmbGender.Text
+            newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+            newRecord.Add "place_of_birth", Trim(txtPlace.Text)
+            newRecord.Add "fathers_name", Trim(txtFather.Text)
+            newRecord.Add "father_occupation", Trim(txtFocc.Text)
+            newRecord.Add "mothers_name", Trim(txtMother.Text)
+            newRecord.Add "mother_occupation", Trim(txtMocc.Text)
+            newRecord.Add "home_address", Trim(txtAddress.Text)
+            newRecord.Add "home_number", Trim(txtTelNo.Text)
+            newRecord.Add "guardian_name", Trim(txtGuardian.Text)
+            newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
+            newRecord.Add "guardian_address", Trim(txtGAddress.Text)
+            newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
+            newRecord.Add "last_school_attended", Trim(txtLast.Text)
+            newRecord.Add "religion", Trim(txtReligion.Text)
+            newRecord.Add "is_baptized", chkBaptized.Value
+            newRecord.Add "first_communion", chkComm.Value
+        
+            blnConnected = False
+            Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
+        Else
+            MsgBox "Please fill in required data!", vbExclamation
+        End If
     End If
 End Sub
 
@@ -837,3 +841,19 @@ Private Sub sckMain_Close()
     
     sckMain.Close
 End Sub
+
+Private Function Validation() As Boolean
+    Dim isValid As Boolean
+    isValid = True
+    isValid = isValid And cmbGrade.ListIndex >= 0
+    isValid = isValid And txtFName.Text <> ""
+    isValid = isValid And txtMName.Text <> ""
+    isValid = isValid And txtLName.Text <> ""
+    isValid = isValid And cmbGender.ListIndex >= 0
+    isValid = isValid And cmbMonth.ListIndex >= 0
+    isValid = isValid And cmbDay.ListIndex >= 0
+    isValid = isValid And cmbYear.ListIndex >= 0
+    isValid = isValid And txtAddress.Text <> ""
+    
+    Validation = isValid
+End Function
