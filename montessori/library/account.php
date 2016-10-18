@@ -25,8 +25,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "pssw" &&
 						$key != "role" &
 						$key != "action"){
+							$newValue = addslashes($value);
 							$fields .= "$key, ";
-							$values .= "'$value', ";
+							$values .= "'$newValue', ";
 					}
 				}
 				$fields .= "total_matriculation, ";
@@ -99,7 +100,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "role" &&
 						$key != "action" &&
 						$key != "student_id"){
-							$setFieldValue .= "`$key` = '$value', ";
+							$newValue = addslashes($value);
+							$setFieldValue .= "`$key` = '$newValue', ";
 					}
 				}
 				$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);

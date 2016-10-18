@@ -579,21 +579,21 @@ Public Sub LoadStudentInfo()
 End Sub
 
 Private Sub chkBCert_Click()
-    cmdRegister.Enabled = (chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
+    cmdRegister.enabled = (chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
 End Sub
 
 Private Sub chkNoReport_Click()
     If chkNoReport.Value = 1 Then
         chkReport.Value = 0
-        chkReport.Enabled = False
+        chkReport.enabled = False
     Else
-        chkReport.Enabled = True
+        chkReport.enabled = True
     End If
-    cmdRegister.Enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
+    cmdRegister.enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
 End Sub
 
 Private Sub chkReport_Click()
-    cmdRegister.Enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
+    cmdRegister.enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
 End Sub
 
 Private Sub cmbMonth_Click()
@@ -646,38 +646,38 @@ Private Sub cmbYear_Click()
 End Sub
 
 Sub EnableDisableControls()
-    chkNew.Enabled = Changeable
-    cmbGrade.Enabled = Changeable
-    txtLName.Enabled = Changeable
-    txtFName.Enabled = Changeable
-    txtMName.Enabled = Changeable
-    cmbGender.Enabled = Changeable
-    cmbMonth.Enabled = Changeable
-    cmbDay.Enabled = Changeable
-    cmbYear.Enabled = Changeable
-    txtPlace.Enabled = Changeable
-    txtFather.Enabled = Changeable
-    txtFocc.Enabled = Changeable
-    txtAddress.Enabled = Changeable
-    txtMother.Enabled = Changeable
-    txtMocc.Enabled = Changeable
-    txtTelNo.Enabled = Changeable
-    txtGuardian.Enabled = Changeable
-    txtGAddress.Enabled = Changeable
-    txtLast.Enabled = Changeable
-    txtGRelation.Enabled = Changeable
-    txtGTelNo.Enabled = Changeable
-    txtReligion.Enabled = Changeable
-    chkBaptized.Enabled = Changeable
-    chkComm.Enabled = Changeable
+    chkNew.enabled = Changeable
+    cmbGrade.enabled = Changeable
+    txtLName.enabled = Changeable
+    txtFName.enabled = Changeable
+    txtMName.enabled = Changeable
+    cmbGender.enabled = Changeable
+    cmbMonth.enabled = Changeable
+    cmbDay.enabled = Changeable
+    cmbYear.enabled = Changeable
+    txtPlace.enabled = Changeable
+    txtFather.enabled = Changeable
+    txtFocc.enabled = Changeable
+    txtAddress.enabled = Changeable
+    txtMother.enabled = Changeable
+    txtMocc.enabled = Changeable
+    txtTelNo.enabled = Changeable
+    txtGuardian.enabled = Changeable
+    txtGAddress.enabled = Changeable
+    txtLast.enabled = Changeable
+    txtGRelation.enabled = Changeable
+    txtGTelNo.enabled = Changeable
+    txtReligion.enabled = Changeable
+    chkBaptized.enabled = Changeable
+    chkComm.enabled = Changeable
     
-    chkBCert.Enabled = Not Changeable
-    chkReport.Enabled = Not Changeable
-    chkNoReport.Enabled = Not Changeable
-    cmdRegister.Enabled = IIf(Changeable, False, chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
+    chkBCert.enabled = Not Changeable
+    chkReport.enabled = Not Changeable
+    chkNoReport.enabled = Not Changeable
+    cmdRegister.enabled = IIf(Changeable, False, chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
     
     'Enables the save button
-    cmdSave.Enabled = Changeable
+    cmdSave.enabled = Changeable
 End Sub
 
 Private Sub cmdEdit_Click()
@@ -736,24 +736,24 @@ Private Sub cmdRegister_Click()
     
         newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
         newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
-        newRecord.Add "last_name", txtLName.Text
-        newRecord.Add "first_name", txtFName.Text
-        newRecord.Add "middle_name", txtMName.Text
+        newRecord.Add "last_name", Trim(txtLName.Text)
+        newRecord.Add "first_name", Trim(txtFName.Text)
+        newRecord.Add "middle_name", Trim(txtMName.Text)
         newRecord.Add "gender", cmbGender.Text
         newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-        newRecord.Add "place_of_birth", txtPlace.Text
-        newRecord.Add "fathers_name", txtFather.Text
-        newRecord.Add "father_occupation", txtFocc.Text
-        newRecord.Add "mothers_name", txtMother.Text
-        newRecord.Add "mother_occupation", txtMocc.Text
-        newRecord.Add "home_address", txtAddress.Text
-        newRecord.Add "home_number", txtTelNo.Text
-        newRecord.Add "guardian_name", txtGuardian.Text
-        newRecord.Add "guardian_relation", txtGRelation.Text
-        newRecord.Add "guardian_address", txtGAddress.Text
-        newRecord.Add "guardian_number", txtGTelNo.Text
-        newRecord.Add "last_school_attended", txtLast.Text
-        newRecord.Add "religion", txtReligion.Text
+        newRecord.Add "place_of_birth", Trim(txtPlace.Text)
+        newRecord.Add "fathers_name", Trim(txtFather.Text)
+        newRecord.Add "father_occupation", Trim(txtFocc.Text)
+        newRecord.Add "mothers_name", Trim(txtMother.Text)
+        newRecord.Add "mother_occupation", Trim(txtMocc.Text)
+        newRecord.Add "home_address", Trim(txtAddress.Text)
+        newRecord.Add "home_number", Trim(txtTelNo.Text)
+        newRecord.Add "guardian_name", Trim(txtGuardian.Text)
+        newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
+        newRecord.Add "guardian_address", Trim(txtGAddress.Text)
+        newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
+        newRecord.Add "last_school_attended", Trim(txtLast.Text)
+        newRecord.Add "religion", Trim(txtReligion.Text)
         newRecord.Add "is_baptized", chkBaptized.Value
         newRecord.Add "first_communion", chkComm.Value
     
@@ -761,6 +761,7 @@ Private Sub cmdRegister_Click()
         Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
     End If
 End Sub
+
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
         Case 0:
