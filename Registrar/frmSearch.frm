@@ -86,6 +86,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Private Const defaultHeight As Integer = 2055
 Private Const expandedHeight As Integer = 5655
 
@@ -108,7 +110,7 @@ Public Sub searchStudent()
     searchParams.Add "pssw", regadmin.pssw
     searchParams.Add "role", regadmin.role
     searchParams.Add "action", aSEARCH_STUDENT
-    searchParams.Add "filter_key", last_name
+    searchParams.Add "filter_key", "last_name"
     searchParams.Add "filter_value", txtSearch.Text
     
     blnConnected = False

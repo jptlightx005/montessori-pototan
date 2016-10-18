@@ -49,10 +49,10 @@ ProcError:
 End Sub
 
 'Saves the user's settings in registrar.ini
-Public Sub SaveSettings(usrn As String)
+Public Sub SaveSettings(usrn As String, ip As String)
 On Error GoTo ProcError
     WriteIniValue App.Path & "\registrar.ini", "Default", "username", usrn
-    WriteIniValue App.Path & "\registrar.ini", "Default", "ipaddress", ipaddress
+    WriteIniValue App.Path & "\registrar.ini", "Default", "ipaddress", ip
 ProcExit:
     Exit Sub
     

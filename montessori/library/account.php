@@ -25,8 +25,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "pssw" &&
 						$key != "role" &
 						$key != "action"){
+							$newValue = addslashes($value);
 							$fields .= "$key, ";
-							$values .= "'$value', ";
+							$values .= "'$newValue', ";
 					}
 				}
 				$fields .= "total_matriculation, ";
@@ -73,12 +74,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				}
 			}else if($action == "enroll_student"){
 				$queue_id = isset($_POST['queue_id']) ? mysql_real_escape_string($_POST['queue_id']) : "";
-				$query = "UPDATE `montessori_queue` SET `status` = 'enrolled' WHERE `Queue_ID` = '$queue_id'";
-				
-				if(mysql_query($query))
-					$json = array("response" => 1, "message" => "Successfully enrolled!");
-				else
-					$json = array("response" => 0, "message" => "An error has occured while saving!");
+				$query = "SELECT `status` FROM `montessori_queue` WHERE `Queue_ID` = '$queue_id'";
+				$status = mysql_fetch_assoc(mysql_query($query));
+				if($status['status'] == "onprocess"){
+					$query = "UPDATE `montessori_queue` SET `status` = 'enrolled' WHERE `Queue_ID` = '$queue_id'";				
+					if(mysql_query($query))						
+						$json = array("response" => 1, "message" => "Successfully enrolled!");
+					else
+						$json = array("response" => 0, "message" => "An error has occured while saving!");
+				}else if($status['status'] == "enrolled"){
+					$json = array("response" => 0, "message" => "The student is already enrolled!");
+				}
 			}else if($action == "student_payment"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 				$balance_paid = isset($_POST['balance_paid']) ? mysql_real_escape_string($_POST['balance_paid']) : "";
@@ -99,7 +105,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "role" &&
 						$key != "action" &&
 						$key != "student_id"){
-							$setFieldValue .= "`$key` = '$value', ";
+							$newValue = addslashes($value);
+							$setFieldValue .= "`$key` = '$newValue', ";
 					}
 				}
 				$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);

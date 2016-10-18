@@ -235,9 +235,19 @@ Private Sub cmdLogIn_Click()
     regadmin.pssw = txtPssw.Text
     regadmin.role = "registrar"
     
+    Call EnableDisableControls(False)
+    
     Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
 
+Private Sub EnableDisableControls(enabled As Boolean)
+    txtUsrn.enabled = enabled
+    txtPssw.enabled = enabled
+    txtIP.enabled = enabled
+    
+    chkRemember.enabled = enabled
+    cmdLogIn.enabled = enabled
+End Sub
 'The method called when newly loaded
 Private Sub Form_Load()
     txtUsrn.Text = regadmin.usrn
@@ -295,7 +305,13 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     If p.Item("response") = 1 Then
         localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
         
-        SaveSettings (IIf(chkRemember.Value = 1, txtUsrn.Text, ""))
+        Dim rememberValues As Boolean
+        rememberValues = chkRemember.Value
+        Dim usrname As String
+        Dim ipadd As String
+        usrname = IIf(rememberValues, txtUsrn.Text, "")
+        ipadd = IIf(rememberValues, ipaddress, "")
+        Call SaveSettings(usrname, ipadd)
         
         'prompts the user has logged in successfully
         MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
@@ -313,6 +329,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         regadmin.role = ""
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
     End If
+    Call EnableDisableControls(True)
     
 End Sub
 
@@ -320,10 +337,12 @@ Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal 
     MsgBox Description, vbExclamation, "Connection Error"
     
     sckMain.Close
+    Call EnableDisableControls(True)
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
     'MsgBox "Is Called"
     sckMain.Close
+    Call EnableDisableControls(True)
 End Sub

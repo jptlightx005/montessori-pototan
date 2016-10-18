@@ -165,6 +165,8 @@ Attribute VB_Exposed = False
 Option Explicit
 Dim countdown As Integer
 Public student As Dictionary
+Public status As String
+
 Public Sub loadData()
     lblID.Caption = student("Student_ID")
     lblFullName.Caption = student("first_name") & " " & student("last_name")
@@ -173,10 +175,11 @@ Public Sub loadData()
     lblGrade.Caption = grade(student("current_grade"))
     lblPaidDate.Caption = Format(student("date_of_payment"), "mmmm dd, yyyy")
     
-    cmdEnroll.Enabled = False
+    cmdEnroll.enabled = False
     countdown = 3
-    tmrEnable.Enabled = True
+    tmrEnable.enabled = True
 End Sub
+
 Public Function grade(grd As String) As String
     Select Case grd
         Case "preschool"
@@ -225,8 +228,8 @@ Private Sub tmrEnable_Timer()
     cmdEnroll.Caption = str(countdown)
     If countdown < 0 Then
         cmdEnroll.Caption = "Enroll"
-        cmdEnroll.Enabled = True
-        tmrEnable.Enabled = False
+        cmdEnroll.enabled = True
+        tmrEnable.enabled = False
     End If
 End Sub
 
@@ -263,7 +266,7 @@ End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    tmr_update.Enabled = True
+    tmr_update.enabled = True
     sckMain.Close
 End Sub
 
