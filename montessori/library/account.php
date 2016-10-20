@@ -30,8 +30,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 							$values .= "'$newValue', ";
 					}
 				}
-				//$fields .= "total_matriculation, ";
-				//$values .= "25000, ";
 				
 				$fields = substr($fields, 0, strlen($fields) - 2) . ")";
 				$values = substr($values, 0, strlen($values) - 2) . ")";
@@ -48,15 +46,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						if($result){
 							$record = mysql_fetch_assoc($result);
 							if($record){
-								$student_id = $record['Student_ID'];
-								$first_name = $_POST['first_name'];
-								$middle_name = $_POST['middle_name'];
-								$last_name = $_POST['last_name'];
-								$home_address = $_POST['home_address'];
-								$school_year = "2016-2017";
-								$total_matriculation = "25000";
-								$current_grade = $_POST['current_grade'];
-								$query = "INSERT INTO `montessori_accounts` (Student_ID, Query_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_matriculation, total_payment) VALUES ('$student_id', '$queue_id', '$first_name', '$middle_name', '$last_name', '$home_address', '$school_year', '$current_grade', $total_matriculation, 0)";
+								$student_id = addslashes($record['Student_ID']);
+								$first_name = addslashes($_POST['first_name']);
+								$middle_name = addslashes($_POST['middle_name']);
+								$last_name = addslashes($_POST['last_name']);
+								$home_address = addslashes($_POST['home_address']);
+								$school_year = addslashes("2016-2017");
+								$total_matriculation = addslashes("25000");
+								$current_grade = addslashes($_POST['current_grade']);
+								$query = "INSERT INTO `montessori_accounts` (Student_ID, Queue_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_matriculation, total_payment) VALUES ('$student_id', '$queue_id', '$first_name', '$middle_name', '$last_name', '$home_address', '$school_year', '$current_grade', $total_matriculation, 0)";
 								$result = mysql_query($query);
 								if($result){
 									$json = array("response" => 1, "message" => $student_id);

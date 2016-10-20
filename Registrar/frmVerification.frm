@@ -822,8 +822,13 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     
     If p.Item("response") = 1 Then
         Dim message As String
-        message = "The student has been registered! Student's ID is " & p.Item("message")
+        message = "The student has been registered!"
+        
         MsgBox message, vbOKOnly + vbInformation
+        
+        frmStudentIDPrint.studentID = p.Item("message")
+        frmStudentIDPrint.studentName = Trim(txtFName.Text)
+        frmStudentIDPrint.Show vbModal
         Unload Me
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
