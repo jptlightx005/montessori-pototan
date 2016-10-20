@@ -16,4 +16,4 @@ url_helper = 0, 0, 945, 418,
 WebCommunicator = -104, 168, 819, 596, C
 frmStudentList = 94, 27, 906, 577, , 176, 232, 988, 782, C
 frmViewStudent = 114, -17, 925, 533, , 154, 203, 966, 753, C
-frmStudentIDPrint = 0, 0, 0, 0, C, 258, 258, 967, 865, C
+frmStudentIDPrint = 160, 197, 972, 747, , 229, 154, 662, 483, C
