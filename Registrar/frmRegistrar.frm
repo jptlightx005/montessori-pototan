@@ -782,6 +782,10 @@ Sub LoadQueue()
 End Sub
 
 
+Private Sub Form_Unload(Cancel As Integer)
+    End
+End Sub
+
 'Observes the database if enrollees keep increasing
 Private Sub tmr_update_Timer()
     Call ClearBoxes

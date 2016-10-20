@@ -333,7 +333,7 @@ End Sub
 Public Sub resetBoxes()
     Set selectedStudent = Nothing
     txtSearch.Text = ""
-    cmdUpdate.Enabled = False
+    cmdUpdate.enabled = False
     lblID.Caption = "N/A"
     lblFullName.Caption = "N/A"
     lblAddress.Caption = "N/A"
@@ -392,6 +392,9 @@ Public Sub ReloadData()
     Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+    End
+End Sub
     
 Private Sub sckMain_Connect()
     blnConnected = True
@@ -416,20 +419,20 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         lblID.Caption = selectedStudent("Student_ID")
         lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
         lblAddress.Caption = selectedStudent("home_address")
-        lblSchoolYear.Caption = "S.Y. 2015-2016"
+        lblSchoolYear.Caption = selectedStudent("school_year")
         lblGrade.Caption = grade(selectedStudent("current_grade"))
-        lblPayment.Caption = Format(selectedStudent("balance_paid"), "P##,##0.00")
+        lblPayment.Caption = Format(selectedStudent("total_payment"), "P##,##0.00")
         lblMatriculation.Caption = Format(selectedStudent("total_matriculation"), "P##,##0.00")
         Dim balanceLeft As Integer
-        balanceLeft = selectedStudent("total_matriculation") - selectedStudent("balance_paid")
+        balanceLeft = selectedStudent("total_matriculation") - selectedStudent("total_payment")
         lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
         
         lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
-        cmdUpdate.Enabled = True
+        cmdUpdate.enabled = True
         
     Else
         MsgBox p.Item("message"), vbExclamation
-        cmdUpdate.Enabled = False
+        cmdUpdate.enabled = False
     End If
 End Sub
 

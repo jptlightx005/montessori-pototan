@@ -318,7 +318,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         'sets the registrar form's labels with the current entries
         'increments the times the user has logged in
 
-        Unload frmLogin 'exits the current form
+        Unload Me 'exits the current form
         'sets the registrar form's labels with the current entries
         frmAccountant.lbladmin = acctadmin.usrn
         frmAccountant.lblIP = localip

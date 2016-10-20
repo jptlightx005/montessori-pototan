@@ -733,7 +733,7 @@ Private Sub cmdRegister_Click()
             newRecord.Add "usrn", regadmin.usrn
             newRecord.Add "pssw", regadmin.pssw
             newRecord.Add "role", regadmin.role
-            newRecord.Add "action", "register_student"
+            newRecord.Add "action", aREGISTER_STUDENT
         
             newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
             newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
@@ -822,7 +822,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     
     If p.Item("response") = 1 Then
         Dim message As String
-        message = p.Item("message") & ". Your ID is " & p.Item("studentID")
+        message = "The student has been registered! Student's ID is " & p.Item("message")
         MsgBox message, vbOKOnly + vbInformation
         Unload Me
     Else
