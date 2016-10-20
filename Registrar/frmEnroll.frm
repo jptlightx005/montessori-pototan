@@ -213,6 +213,7 @@ Private Sub cmdEnroll_Click()
     enrollParams.Add "pssw", regadmin.pssw
     enrollParams.Add "role", regadmin.role
     enrollParams.Add "action", aENROLL_STUDENT
+    
     enrollParams.Add "queue_id", student("Queue_ID")
     blnConnected = False
     
@@ -243,7 +244,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
     
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+    Debug.Print strResponse
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     Debug.Print (JSON.toString(p))
