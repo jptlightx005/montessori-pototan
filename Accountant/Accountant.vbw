@@ -12,3 +12,4 @@ WebCommunicator = 22, 29, 945, 472,
 student = 0, 0, 0, 0, C
 frmLogin = 100, 100, 926, 670, C, 125, 125, 834, 732, C
 frmAccountant = 89, 35, 1012, 478, , 171, 69, 983, 811, C
+frmStudentListPrint = 0, 0, 0, 0, C, 150, 150, 859, 757, C
