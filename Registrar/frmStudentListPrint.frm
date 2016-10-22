@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmStudentListPrint 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
@@ -14,28 +15,88 @@ Begin VB.Form frmStudentListPrint
    ScaleHeight     =   7380
    ScaleWidth      =   9345
    StartUpPosition =   3  'Windows Default
-   Begin MSFlexGridLib.MSFlexGrid MSFlexGrid1 
-      Height          =   6255
+   Begin MSComDlg.CommonDialog cmnDlg 
+      Left            =   4440
+      Top             =   3480
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
+   Begin VB.CommandButton cmdClose 
+      Caption         =   "Close"
+      BeginProperty Font 
+         Name            =   "Arial Narrow"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   6600
+      TabIndex        =   3
+      Top             =   6840
+      Width           =   1215
+   End
+   Begin VB.CommandButton cmdPrint 
+      Caption         =   "Print"
+      BeginProperty Font 
+         Name            =   "Arial Narrow"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   7920
+      TabIndex        =   2
+      Top             =   6840
+      Width           =   1215
+   End
+   Begin MSFlexGridLib.MSFlexGrid gridStudents 
+      Height          =   5895
       Left            =   360
       TabIndex        =   0
       Top             =   840
       Width           =   8655
       _ExtentX        =   15266
-      _ExtentY        =   11033
+      _ExtentY        =   10398
       _Version        =   393216
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
-      BorderStyle     =   0
       Appearance      =   0
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
    Begin VB.Label lblGrade 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
       Caption         =   "Grade 3"
+      BeginProperty Font 
+         Name            =   "Arial Narrow"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
-      Left            =   4080
+      Left            =   360
       TabIndex        =   1
-      Top             =   0
-      Width           =   1215
+      Top             =   240
+      Width           =   8655
    End
 End
 Attribute VB_Name = "frmStudentListPrint"
@@ -43,3 +104,62 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+Public studentList As Collection
+Public listGrade As String
+
+Private Sub cmdClose_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdPrint_Click()
+    
+    Dim BeginPage, EndPage, NumCopies, Orientation, i
+    ' Set Cancel to True.
+    cmnDlg.PrinterDefault = True
+    cmnDlg.CancelError = True
+    On Error GoTo ErrHandler
+    ' Display the Print dialog box.
+    cmnDlg.ShowPrinter
+    
+    ' Get user-selected values from the dialog box.
+    BeginPage = cmnDlg.FromPage
+    EndPage = cmnDlg.ToPage
+    NumCopies = cmnDlg.Copies
+    Orientation = cmnDlg.Orientation
+    For i = 1 To NumCopies
+        cmdPrint.Visible = False
+        cmdClose.Visible = False
+        PrintForm
+        cmdPrint.Visible = True
+        cmdClose.Visible = True
+     'Printer.EndDoc
+   Next
+ErrHandler:
+   ' User pressed Cancel button.
+   Exit Sub
+End Sub
+
+Private Sub Form_Load()
+    gridStudents.Cols = 5
+    gridStudents.rows = studentList.Count + 1
+    gridStudents.TextMatrix(0, 1) = "First Name"
+    gridStudents.TextMatrix(0, 2) = "Middle Name"
+    gridStudents.TextMatrix(0, 3) = "Last Name"
+    gridStudents.TextMatrix(0, 4) = "Gender"
+    
+    
+    Dim i As Integer
+    For i = 1 To studentList.Count
+        Dim studentInfo As Dictionary
+        Set studentInfo = studentList(i)
+        gridStudents.TextMatrix(i, 0) = Format(i, String(4, "0"))
+        gridStudents.TextMatrix(i, 1) = studentInfo("first_name")
+        gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
+        gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
+        gridStudents.TextMatrix(i, 4) = studentInfo("gender")
+    Next
+    
+    lblGrade.Caption = listGrade
+End Sub
+

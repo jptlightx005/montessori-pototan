@@ -23,6 +23,15 @@ Begin VB.Form frmStudentList
    MinButton       =   0   'False
    ScaleHeight     =   6540
    ScaleWidth      =   7890
+   Begin VB.CommandButton cmdPrint 
+      Caption         =   "Print"
+      Enabled         =   0   'False
+      Height          =   495
+      Left            =   5160
+      TabIndex        =   4
+      Top             =   120
+      Width           =   1215
+   End
    Begin VB.CommandButton cmdClose 
       Caption         =   "Close"
       Height          =   495
@@ -34,7 +43,7 @@ Begin VB.Form frmStudentList
    Begin VB.CommandButton cmdView 
       Caption         =   "View"
       Height          =   495
-      Left            =   5160
+      Left            =   3840
       TabIndex        =   2
       Top             =   120
       Width           =   1215
@@ -47,7 +56,7 @@ Begin VB.Form frmStudentList
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   120
-      Width           =   3735
+      Width           =   3495
    End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   240
@@ -76,8 +85,20 @@ Option Explicit
 
 Private searchResults As Collection
 
+Private Sub cmbGrade_Click()
+    
+End Sub
+
 Private Sub cmdClose_Click()
     Unload Me
+End Sub
+
+Private Sub cmdPrint_Click()
+    If searchResults.Count >= 0 Then
+        Set frmStudentListPrint.studentList = searchResults
+        frmStudentListPrint.listGrade = cmbGrade.Text
+        frmStudentListPrint.Show vbModal
+    End If
 End Sub
 
 Private Sub cmdView_Click()
@@ -178,7 +199,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
     If p.Item("response") = 1 Then
         Set searchResults = p.Item("message")
-        
+        cmdPrint.enabled = True
         Call RefreshTableView
     Else
         Set searchResults = New Collection
