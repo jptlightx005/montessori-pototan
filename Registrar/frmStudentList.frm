@@ -85,10 +85,6 @@ Option Explicit
 
 Private searchResults As Collection
 
-Private Sub cmbGrade_Click()
-    
-End Sub
-
 Private Sub cmdClose_Click()
     Unload Me
 End Sub

@@ -97,7 +97,7 @@ Private Sub Form_Load()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -113,7 +113,7 @@ Private Sub Form_Load()
      'Printer.EndDoc
    Next
    Exit Sub
-ErrHandler:
+errHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
