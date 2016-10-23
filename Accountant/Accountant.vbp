@@ -24,6 +24,7 @@ Class=student; ..\VBLib\student.cls
 Form=frmLogin.frm
 Form=frmAccountant.frm
 Form=frmStudentListPrint.frm
+Form=frmReceiptPrint.frm
 Startup="Sub Main"
 HelpFile=""
 Title="Accountant"
