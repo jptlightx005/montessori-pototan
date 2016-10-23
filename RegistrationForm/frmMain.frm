@@ -1212,8 +1212,12 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Debug.Print JSON.toString(p)
     If p.Item("response") = 1 Then
         Dim message As String
-        message = p.Item("message") & ". Your Queue ID is " & p.Item("queueID")
+        message = "The student has been registered!"
         MsgBox message, vbOKOnly + vbInformation
+        frmPriorityNumber.queueID = p.Item("message")
+        frmPriorityNumber.studentName = Trim(txtFName.Text)
+        frmPriorityNumber.Show vbModal
+        
         Call ClearBoxes
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts

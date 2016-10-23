@@ -805,7 +805,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     'Debug.Print (strResponse)
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    'Debug.Print (JSON.toString(p))
+    Debug.Print (JSON.toString(p))
     Dim message As Dictionary
 
     If p.Item("response") = 1 Then

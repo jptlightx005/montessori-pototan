@@ -52,7 +52,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						if($result){
 							$record = mysql_fetch_assoc($result);
 							if($record)
-								$json = array("response" => 1, "message" => "The student has been registered!", "queueID" => $record['Queue_ID']);
+								$json = array("response" => 1, "message" => $record['Queue_ID']);
 							else
 								$json = array("response" => 0, "message" => "Student not found!");
 						}else{
