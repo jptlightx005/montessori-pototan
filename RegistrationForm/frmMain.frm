@@ -1215,7 +1215,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         message = "The student has been registered!"
         MsgBox message, vbOKOnly + vbInformation
         frmPriorityNumber.queueID = p.Item("message")
-        frmPriorityNumber.studentName = Trim(txtFName.Text)
+        frmPriorityNumber.studentName = Trim(txtLName.Text)
         frmPriorityNumber.Show vbModal
         
         Call ClearBoxes

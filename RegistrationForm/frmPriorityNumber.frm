@@ -21,10 +21,10 @@ Begin VB.Form frmPriorityNumber
       _ExtentY        =   847
       _Version        =   393216
    End
-   Begin VB.Label lblFirstName 
+   Begin VB.Label lblLastName 
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
-      Caption         =   "John Patrick"
+      Caption         =   "Trump"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   15.75
@@ -91,7 +91,7 @@ Public studentName As String
 
 Private Sub Form_Load()
     lblQueueID.Caption = queueID
-    lblFirstName.Caption = studentName
+    lblLastName.Caption = studentName
 
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Set Cancel to True.

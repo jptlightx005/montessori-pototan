@@ -827,7 +827,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         MsgBox message, vbOKOnly + vbInformation
         
         frmStudentIDPrint.studentID = p.Item("message")
-        frmStudentIDPrint.studentName = Trim(txtFName.Text)
+        frmStudentIDPrint.studentName = Trim(txtLName.Text)
         frmStudentIDPrint.Show vbModal
         Unload Me
     Else
