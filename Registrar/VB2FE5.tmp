@@ -9,15 +9,6 @@ Begin VB.Form frmStudentListPrint
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   9345
-   BeginProperty Font 
-      Name            =   "Arial"
-      Size            =   15.75
-      Charset         =   0
-      Weight          =   400
-      Underline       =   0   'False
-      Italic          =   0   'False
-      Strikethrough   =   0   'False
-   EndProperty
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -74,7 +65,6 @@ Begin VB.Form frmStudentListPrint
       _ExtentX        =   15266
       _ExtentY        =   10398
       _Version        =   393216
-      Cols            =   5
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
@@ -158,14 +148,10 @@ Private Sub Form_Load()
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
     
+    Dim textWidths(5) As Integer
     Dim i As Integer
-    For i = 0 To 4
-        gridStudents.Row = 0
-        gridStudents.Col = i
-        gridStudents.CellFontBold = True
-        gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
-    Next
-    
+
+    'Dim i As Integer
     For i = 1 To studentList.Count
         Dim studentInfo As Dictionary
         Set studentInfo = studentList(i)
@@ -177,10 +163,16 @@ Private Sub Form_Load()
         
         Dim j As Integer
         For j = 0 To 4
-            If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
-                gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
+            Debug.Print TextWidth(gridStudents.TextMatrix(i, j)) & " == " & textWidths(j)
+            If TextWidth(gridStudents.TextMatrix(i, j)) > textWidths(j) Then
+                textWidths(j) = TextWidth(gridStudents.TextMatrix(i, j))
             End If
         Next
+    Next
+    
+    For i = 1 To 4
+        Debug.Print "Col Widths == " & textWidths(i)
+        gridStudents.ColWidth(i) = textWidths(i)
     Next
     
     lblGrade.Caption = listGrade
