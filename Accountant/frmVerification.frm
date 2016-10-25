@@ -159,7 +159,7 @@ Private Sub txtPayment_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub lblPayment_Change()
-    cmdProceed.Enabled = cashSet And cashPaid > 0
+    cmdProceed.enabled = cashSet And cashPaid > 0
 End Sub
 
 
@@ -182,7 +182,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     If p.Item("response") = 1 Then
 
         MsgBox p.Item("message"), vbInformation
-        cmdProceed.Enabled = False
+        cmdProceed.enabled = False
         frmAccountant.ReloadData
 
         Unload Me

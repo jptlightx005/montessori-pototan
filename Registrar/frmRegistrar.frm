@@ -5,8 +5,8 @@ Begin VB.Form frmRegistrar
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Registrar"
    ClientHeight    =   8310
-   ClientLeft      =   5655
-   ClientTop       =   3405
+   ClientLeft      =   5895
+   ClientTop       =   1260
    ClientWidth     =   7575
    BeginProperty Font 
       Name            =   "Arial"

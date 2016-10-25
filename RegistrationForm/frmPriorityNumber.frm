@@ -5,15 +5,14 @@ Begin VB.Form frmPriorityNumber
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Priority Number"
    ClientHeight    =   2310
-   ClientLeft      =   45
-   ClientTop       =   375
+   ClientLeft      =   8085
+   ClientTop       =   3135
    ClientWidth     =   3255
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2310
    ScaleWidth      =   3255
-   StartUpPosition =   3  'Windows Default
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   0
       Top             =   1200
@@ -89,10 +88,7 @@ Option Explicit
 Public queueID As String
 Public studentName As String
 
-Private Sub Form_Load()
-    lblQueueID.Caption = queueID
-    lblLastName.Caption = studentName
-
+Private Sub Form_Activate()
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
@@ -116,5 +112,10 @@ Private Sub Form_Load()
 errHandler:
    ' User pressed Cancel button.
    Exit Sub
+End Sub
+
+Private Sub Form_Load()
+    lblQueueID.Caption = queueID
+    lblLastName.Caption = studentName
 End Sub
 

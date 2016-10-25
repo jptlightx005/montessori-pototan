@@ -4,10 +4,10 @@ Begin VB.Form frmMain
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Enrollment Form"
-   ClientHeight    =   10410
-   ClientLeft      =   3510
-   ClientTop       =   1950
-   ClientWidth     =   7680
+   ClientHeight    =   9675
+   ClientLeft      =   3150
+   ClientTop       =   735
+   ClientWidth     =   12780
    BeginProperty Font 
       Name            =   "Arial"
       Size            =   14.25
@@ -20,11 +20,541 @@ Begin VB.Form frmMain
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   10410
-   ScaleWidth      =   7680
+   ScaleHeight     =   9675
+   ScaleWidth      =   12780
+   Begin VB.Frame Frame3 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Guardian Information"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   480
+      TabIndex        =   56
+      Top             =   6720
+      Width           =   8775
+      Begin VB.TextBox txtGProvince 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   24
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtGBrgy 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   22
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtGCity 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   5880
+         TabIndex        =   23
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtGuardian 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   20
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtGRelation 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   21
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtGTelNo 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   5880
+         TabIndex        =   25
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.Label Label26 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Province"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   62
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label25 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "City/Town"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   5880
+         TabIndex        =   61
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label11 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Brgy/Street"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   60
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label13 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Guardian"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   59
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label14 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Relation"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   58
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label15 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Telephone Number"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   5880
+         TabIndex        =   57
+         Top             =   1080
+         Width           =   2655
+      End
+   End
+   Begin VB.Frame Frame2 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Home Information"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   6600
+      TabIndex        =   51
+      Top             =   4560
+      Width           =   6015
+      Begin VB.TextBox txtProvince 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   18
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtBrgy 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   16
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtTelNo 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   19
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtCity 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   17
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.Label Label24 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Province*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   55
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label23 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "City/Town*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   54
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label22 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Brgy/Street*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   53
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label12 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Telephone Number"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   52
+         Top             =   1080
+         Width           =   2655
+      End
+   End
+   Begin VB.Frame Frame1 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Parents"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   480
+      TabIndex        =   46
+      Top             =   4560
+      Width           =   6015
+      Begin VB.TextBox txtFather 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   12
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtFocc 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   13
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtMother 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   240
+         TabIndex        =   14
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtMocc 
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   15
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.Label Label7 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Father's Name"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   50
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label8 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Occupation"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   49
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label9 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Mother's Name"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   48
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label10 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Occupation"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   47
+         Top             =   1080
+         Width           =   2055
+      End
+   End
    Begin MSWinsockLib.Winsock sckMain 
-      Left            =   7200
-      Top             =   9960
+      Left            =   11760
+      Top             =   9120
       _ExtentX        =   741
       _ExtentY        =   741
       _Version        =   393216
@@ -41,16 +571,16 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   5880
-      TabIndex        =   51
-      Top             =   1440
-      Width           =   1215
+      Left            =   8400
+      TabIndex        =   45
+      Top             =   1560
+      Width           =   1335
    End
    Begin VB.CommandButton cmdReset 
       Caption         =   "Reset"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -58,16 +588,16 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   1800
-      TabIndex        =   50
-      Top             =   9840
+      Left            =   7680
+      TabIndex        =   44
+      Top             =   9000
       Width           =   1215
    End
    Begin VB.CommandButton cmdSubmit 
       Caption         =   "Submit"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -75,9 +605,9 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   480
-      TabIndex        =   26
-      Top             =   9840
+      Left            =   6360
+      TabIndex        =   30
+      Top             =   9000
       Width           =   1215
    End
    Begin VB.CheckBox chkComm 
@@ -85,7 +615,7 @@ Begin VB.Form frmMain
       Caption         =   "First Communion"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -93,17 +623,17 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   315
-      Left            =   3360
-      TabIndex        =   25
-      Top             =   9480
-      Width           =   2775
+      Left            =   3960
+      TabIndex        =   29
+      Top             =   9240
+      Width           =   2295
    End
    Begin VB.CheckBox chkBaptized 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Baptized"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -111,15 +641,15 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   315
-      Left            =   480
-      TabIndex        =   24
-      Top             =   9480
+      Left            =   3960
+      TabIndex        =   28
+      Top             =   8880
       Width           =   2175
    End
    Begin VB.TextBox txtLast 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -127,15 +657,15 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   480
-      TabIndex        =   22
-      Top             =   9000
+      Left            =   9360
+      TabIndex        =   26
+      Top             =   7440
       Width           =   2655
    End
    Begin VB.TextBox txtReligion 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -143,238 +673,78 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3360
-      TabIndex        =   23
-      Top             =   9000
-      Width           =   2655
-   End
-   Begin VB.TextBox txtGAddress 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
-      TabIndex        =   20
-      Top             =   8280
-      Width           =   2655
-   End
-   Begin VB.TextBox txtGTelNo 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3360
-      TabIndex        =   21
-      Top             =   8280
-      Width           =   2655
-   End
-   Begin VB.TextBox txtGRelation 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3360
-      TabIndex        =   19
-      Top             =   7560
-      Width           =   2655
-   End
-   Begin VB.TextBox txtGuardian 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
-      TabIndex        =   18
-      Top             =   7560
-      Width           =   2655
-   End
-   Begin VB.TextBox txtTelNo 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3360
-      TabIndex        =   17
-      Top             =   6840
-      Width           =   2655
-   End
-   Begin VB.TextBox txtAddress 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
-      TabIndex        =   16
-      Top             =   6840
-      Width           =   2655
-   End
-   Begin VB.TextBox txtMocc 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3360
-      TabIndex        =   15
-      Top             =   6120
-      Width           =   2655
-   End
-   Begin VB.TextBox txtMother 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
-      TabIndex        =   14
-      Top             =   6120
-      Width           =   2655
-   End
-   Begin VB.TextBox txtFocc 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   3360
-      TabIndex        =   13
-      Top             =   5400
-      Width           =   2655
-   End
-   Begin VB.TextBox txtFather 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
-      TabIndex        =   12
-      Top             =   5400
+      Left            =   9360
+      TabIndex        =   27
+      Top             =   8160
       Width           =   2655
    End
    Begin VB.TextBox txtPlace 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
-      Left            =   4680
+      Height          =   375
+      Left            =   8760
       TabIndex        =   11
-      Top             =   4560
+      Top             =   4080
       Width           =   2535
    End
    Begin VB.ComboBox cmbYear 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
-      Left            =   3120
+      Height          =   375
+      Left            =   7440
       Style           =   2  'Dropdown List
       TabIndex        =   10
-      Top             =   4560
+      Top             =   4080
       Width           =   1215
    End
    Begin VB.ComboBox cmbDay 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
-      Left            =   1800
+      Height          =   375
+      Left            =   6120
       Style           =   2  'Dropdown List
       TabIndex        =   9
-      Top             =   4560
+      Top             =   4080
       Width           =   1215
    End
    Begin VB.ComboBox cmbMonth 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
+      Height          =   375
       ItemData        =   "frmMain.frx":0000
-      Left            =   480
+      Left            =   4800
       List            =   "frmMain.frx":0028
       Style           =   2  'Dropdown List
       TabIndex        =   8
-      Top             =   4560
+      Top             =   4080
       Width           =   1215
    End
    Begin VB.OptionButton optMale 
@@ -382,7 +752,7 @@ Begin VB.Form frmMain
       Caption         =   "Male"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -390,9 +760,9 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   1680
+      Left            =   2040
       TabIndex        =   6
-      Top             =   3720
+      Top             =   4080
       Width           =   1095
    End
    Begin VB.OptionButton optFemale 
@@ -400,7 +770,7 @@ Begin VB.Form frmMain
       Caption         =   "Female"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -408,15 +778,31 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2880
+      Left            =   3240
       TabIndex        =   7
-      Top             =   3720
+      Top             =   4080
       Width           =   1575
    End
    Begin VB.TextBox txtLName 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   7440
+      TabIndex        =   5
+      Top             =   3240
+      Width           =   2535
+   End
+   Begin VB.TextBox txtMName 
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -425,14 +811,14 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   5280
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   3240
-      Width           =   1935
+      Width           =   2055
    End
-   Begin VB.TextBox txtMName 
+   Begin VB.TextBox txtFName 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -441,22 +827,6 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       Left            =   2880
-      TabIndex        =   4
-      Top             =   3240
-      Width           =   2295
-   End
-   Begin VB.TextBox txtFName 
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
       TabIndex        =   3
       Top             =   3240
       Width           =   2295
@@ -464,16 +834,16 @@ Begin VB.Form frmMain
    Begin VB.ComboBox cmbGrade 
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   435
+      Height          =   375
       ItemData        =   "frmMain.frx":0068
-      Left            =   3720
+      Left            =   6720
       List            =   "frmMain.frx":0081
       Style           =   2  'Dropdown List
       TabIndex        =   2
@@ -485,7 +855,7 @@ Begin VB.Form frmMain
       Caption         =   "New Student"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -493,7 +863,7 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   315
-      Left            =   480
+      Left            =   3480
       TabIndex        =   1
       Top             =   2400
       Width           =   2175
@@ -503,16 +873,16 @@ Begin VB.Form frmMain
       Caption         =   "Grade*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2760
-      TabIndex        =   49
+      Left            =   5880
+      TabIndex        =   43
       Top             =   2400
       Width           =   1575
    End
@@ -528,8 +898,8 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3120
-      TabIndex        =   48
+      Left            =   5640
+      TabIndex        =   42
       Top             =   1680
       Width           =   2535
    End
@@ -546,8 +916,8 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2400
-      TabIndex        =   47
+      Left            =   4920
+      TabIndex        =   41
       Top             =   1680
       Width           =   495
    End
@@ -563,8 +933,8 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3120
-      TabIndex        =   46
+      Left            =   5640
+      TabIndex        =   40
       Top             =   1200
       Width           =   2535
    End
@@ -581,14 +951,14 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2040
-      TabIndex        =   45
+      Left            =   4560
+      TabIndex        =   39
       Top             =   1200
       Width           =   975
    End
    Begin VB.Image Image2 
       Height          =   1815
-      Left            =   120
+      Left            =   2640
       Picture         =   "frmMain.frx":00A5
       Stretch         =   -1  'True
       Top             =   240
@@ -599,7 +969,7 @@ Begin VB.Form frmMain
       Caption         =   "Last School Attended"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -607,9 +977,9 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   480
-      TabIndex        =   44
-      Top             =   8640
+      Left            =   9360
+      TabIndex        =   38
+      Top             =   7080
       Width           =   2895
    End
    Begin VB.Label Label17 
@@ -617,7 +987,7 @@ Begin VB.Form frmMain
       Caption         =   "Religion"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -625,197 +995,17 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3360
-      TabIndex        =   43
-      Top             =   8640
-      Width           =   2655
-   End
-   Begin VB.Label Label16 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Address"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
-      TabIndex        =   42
-      Top             =   7920
-      Width           =   2055
-   End
-   Begin VB.Label Label15 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Telephone Number"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3360
-      TabIndex        =   41
-      Top             =   7920
-      Width           =   2655
-   End
-   Begin VB.Label Label14 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Relation"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3360
-      TabIndex        =   40
-      Top             =   7200
-      Width           =   2055
-   End
-   Begin VB.Label Label13 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Guardian"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
-      TabIndex        =   39
-      Top             =   7200
-      Width           =   2055
-   End
-   Begin VB.Label Label12 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Telephone Number"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3360
-      TabIndex        =   38
-      Top             =   6480
-      Width           =   2655
-   End
-   Begin VB.Label Label11 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Address*"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
+      Left            =   9360
       TabIndex        =   37
-      Top             =   6480
-      Width           =   2055
-   End
-   Begin VB.Label Label10 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Occupation"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3360
-      TabIndex        =   36
-      Top             =   5760
-      Width           =   2055
-   End
-   Begin VB.Label Label9 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Mother's Name"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
-      TabIndex        =   35
-      Top             =   5760
-      Width           =   2055
-   End
-   Begin VB.Label Label8 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Occupation"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3360
-      TabIndex        =   34
-      Top             =   5040
-      Width           =   2055
-   End
-   Begin VB.Label Label7 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "Father's Name"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   480
-      TabIndex        =   33
-      Top             =   5040
-      Width           =   2055
+      Top             =   7800
+      Width           =   2655
    End
    Begin VB.Label Label6 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Place of Birth"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -823,9 +1013,9 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   4680
-      TabIndex        =   32
-      Top             =   4200
+      Left            =   8760
+      TabIndex        =   36
+      Top             =   3720
       Width           =   2295
    End
    Begin VB.Label Label5 
@@ -833,17 +1023,17 @@ Begin VB.Form frmMain
       Caption         =   "Date of Birth*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   480
-      TabIndex        =   31
-      Top             =   4200
+      Left            =   4800
+      TabIndex        =   35
+      Top             =   3720
       Width           =   2295
    End
    Begin VB.Label Label4 
@@ -851,16 +1041,16 @@ Begin VB.Form frmMain
       Caption         =   "Gender*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   480
-      TabIndex        =   30
+      Left            =   2040
+      TabIndex        =   34
       Top             =   3720
       Width           =   1215
    End
@@ -869,16 +1059,16 @@ Begin VB.Form frmMain
       Caption         =   "Last Name*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   5280
-      TabIndex        =   29
+      Left            =   7440
+      TabIndex        =   33
       Top             =   2880
       Width           =   1575
    End
@@ -887,16 +1077,16 @@ Begin VB.Form frmMain
       Caption         =   "Middle Name*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2880
-      TabIndex        =   28
+      Left            =   5280
+      TabIndex        =   32
       Top             =   2880
       Width           =   1935
    End
@@ -905,16 +1095,16 @@ Begin VB.Form frmMain
       Caption         =   "First Name*"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   11.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
-         Italic          =   0   'False
+         Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   480
-      TabIndex        =   27
+      Left            =   2880
+      TabIndex        =   31
       Top             =   2880
       Width           =   1575
    End
@@ -931,14 +1121,14 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   2040
+      Left            =   4560
       TabIndex        =   0
       Top             =   480
       Width           =   5055
    End
    Begin VB.Line Line1 
-      X1              =   2040
-      X2              =   7080
+      X1              =   4560
+      X2              =   9600
       Y1              =   1080
       Y2              =   1080
    End
@@ -1020,11 +1210,17 @@ Public Sub ClearBoxes()
     txtFocc.Text = ""
     txtMother.Text = ""
     txtMocc.Text = ""
-    txtAddress.Text = ""
+    'txtAddress.Text = ""
+    txtBrgy.Text = ""
+    txtCity.Text = ""
+    txtProvince.Text = ""
     txtTelNo.Text = ""
     txtGuardian.Text = ""
     txtGRelation.Text = ""
-    txtGAddress.Text = ""
+    'txtGAddress.Text = ""
+    txtGBrgy.Text = ""
+    txtGCity.Text = ""
+    txtGProvince.Text = ""
     txtGTelNo.Text = ""
     txtLast.Text = ""
     txtReligion.Text = ""
@@ -1068,13 +1264,20 @@ Private Sub cmdSubmit_Click()
         'mother's name and occupation
         studentInf = studentInf & Trim(txtMother.Text) & "|"
         studentInf = studentInf & Trim(txtMocc.Text) & "|"
-        'home address and telephone number
-        studentInf = studentInf & Trim(txtAddress.Text) & "|"
+        'home address
+        'studentInf = studentInf & Trim(txtAddress.Text) & "|"
+        studentInf = studentInf & Trim(txtBrgy.Text) & "|"
+        studentInf = studentInf & Trim(txtCity.Text) & "|"
+        studentInf = studentInf & Trim(txtProvince.Text) & "|"
+        'telephone number
         studentInf = studentInf & Trim(txtTelNo.Text) & "|"
         'guardian info
         studentInf = studentInf & Trim(txtGuardian.Text) & "|"
         studentInf = studentInf & Trim(txtGRelation.Text) & "|"
-        studentInf = studentInf & Trim(txtGAddress.Text) & "|"
+        'studentInf = studentInf & Trim(txtGAddress.Text) & "|"
+        studentInf = studentInf & Trim(txtGBrgy.Text) & "|"
+        studentInf = studentInf & Trim(txtGCity.Text) & "|"
+        studentInf = studentInf & Trim(txtGProvince.Text) & "|"
         studentInf = studentInf & Trim(txtGTelNo.Text) & "|"
         'last school attended and religion
         studentInf = studentInf & Trim(txtLast.Text) & "|"
@@ -1114,7 +1317,9 @@ Private Function ValidateData() As Boolean
     isValid = isValid And cmbMonth.ListIndex >= 0
     isValid = isValid And cmbDay.ListIndex >= 0
     isValid = isValid And cmbYear.ListIndex >= 0
-    isValid = isValid And txtAddress.Text <> ""
+    isValid = isValid And txtBrgy.Text <> ""
+    isValid = isValid And txtCity.Text <> ""
+    isValid = isValid And txtProvince.Text <> ""
     
     ValidateData = isValid
 End Function

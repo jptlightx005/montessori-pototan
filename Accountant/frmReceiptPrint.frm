@@ -25,15 +25,6 @@ Begin VB.Form frmReceiptPrint
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdCancel 
       Caption         =   "Cancel"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   495
       Left            =   3240
       TabIndex        =   8
@@ -42,15 +33,6 @@ Begin VB.Form frmReceiptPrint
    End
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   495
       Left            =   4560
       TabIndex        =   7
@@ -75,15 +57,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label lblAmountWords 
       BackColor       =   &H00FFFFFF&
       Caption         =   "One Thousand Pesos Only"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   360
       TabIndex        =   11
@@ -111,15 +84,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label Label7 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Amount in Words:"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   360
       TabIndex        =   9
@@ -129,15 +93,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label lblAddress 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Brgy. St. Pototan, Iloilo"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   1320
       TabIndex        =   5
@@ -147,15 +102,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label Label4 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Nicholas A. Cage"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   1320
       TabIndex        =   4
@@ -183,15 +129,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label Label2 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Address:"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   240
       TabIndex        =   2
@@ -219,15 +156,6 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Label Label1 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Name:"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   360
       TabIndex        =   0
@@ -256,19 +184,7 @@ Private Sub Form_Load()
     Next
 End Sub
 
-Private Sub Label2_Click()
-
-End Sub
-
-Private Sub Label4_Click()
-
-End Sub
-
 Private Sub lblName_Click()
-
-End Sub
-
-Private Sub Label6_Click()
 
 End Sub
 
