@@ -88,15 +88,10 @@ Option Explicit
 Public studentID As String
 Public studentName As String
 
-Private Sub Form_Load()
-lblStudentID.Caption = studentID
-    lblLastName.Caption = studentName
-
-    Dim BeginPage, EndPage, NumCopies, Orientation, i
-    ' Set Cancel to True.
-    cmnDlg.PrinterDefault = True
-    cmnDlg.CancelError = True
+Private Sub Form_Activate()
     On Error GoTo ErrHandler
+    
+    Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -115,4 +110,14 @@ lblStudentID.Caption = studentID
 ErrHandler:
    ' User pressed Cancel button.
    Exit Sub
+End Sub
+
+Private Sub Form_Load()
+    lblStudentID.Caption = studentID
+    lblLastName.Caption = studentName
+    
+    ' Set Cancel to True.
+    cmnDlg.PrinterDefault = True
+    cmnDlg.CancelError = True
+    
 End Sub

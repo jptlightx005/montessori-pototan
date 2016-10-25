@@ -23,8 +23,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				foreach($_POST as $key => $value){
 					if($key != "usrn" &&
 						$key != "pssw" &&
-						$key != "role" &
-						$key != "action"){
+						$key != "role" &&
+						$key != "action" &&
+                        $key != "total_matriculation"){
 							$newValue = addslashes($value);
 							$fields .= "$key, ";
 							$values .= "'$newValue', ";
@@ -60,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                     $y = $year_now - 1;
                                     $school_year =  "$y-$year_now";
                                 }
-								$total_matriculation = addslashes("25000");
+								$total_matriculation = addslashes($_POST['total_matriculation']);
 								$current_grade = addslashes($_POST['current_grade']);
 								$query = "INSERT INTO `montessori_accounts` (Student_ID, Queue_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_matriculation, total_payment) VALUES ('$student_id', '$queue_id', '$first_name', '$middle_name', '$last_name', '$home_address', '$school_year', '$current_grade', $total_matriculation, 0)";
 								$result = mysql_query($query);

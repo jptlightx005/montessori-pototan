@@ -22,6 +22,14 @@ Begin VB.Form frmVerification
    MinButton       =   0   'False
    ScaleHeight     =   3750
    ScaleWidth      =   8595
+   Begin VB.TextBox txtMatriculation 
+      Height          =   390
+      Left            =   4080
+      TabIndex        =   51
+      Text            =   "0"
+      Top             =   2640
+      Width           =   3015
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   6480
       Top             =   3120
@@ -411,7 +419,7 @@ Begin VB.Form frmVerification
       Height          =   495
       Left            =   7200
       TabIndex        =   9
-      Top             =   2400
+      Top             =   2520
       Width           =   1215
    End
    Begin VB.CommandButton cmdRegister 
@@ -483,6 +491,15 @@ Begin VB.Form frmVerification
       Top             =   720
       Width           =   2175
    End
+   Begin VB.Label Label19 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Matriculation"
+      Height          =   255
+      Left            =   4080
+      TabIndex        =   52
+      Top             =   2280
+      Width           =   1500
+   End
    Begin VB.Label Label4 
       Alignment       =   2  'Center
       BackColor       =   &H00C0E0FF&
@@ -530,7 +547,7 @@ Const expandHeight As Integer = 4560
 Const defaultButtonX As Integer = 7200
 Const defaultButtonY As Integer = 1680
 Const movedButtonX As Integer = 5880
-Const movedButtonY As Integer = 6960
+Const movedButtonY As Integer = 7680
 
 'default form height is 495
 
@@ -704,6 +721,9 @@ Private Sub cmdExpand_Click()
         cmdEdit.Top = cmdEdit.Top + expandHeight
         cmdSave.Top = cmdSave.Top + expandHeight
         
+        Label19.Top = Label19.Top + expandHeight
+        txtMatriculation.Top = txtMatriculation.Top + expandHeight
+        
         cmdExpand.Left = movedButtonX
         cmdExpand.Top = movedButtonY
         cmdExpand.Caption = "Collapse"
@@ -717,6 +737,9 @@ Private Sub cmdExpand_Click()
         cmdEdit.Top = cmdEdit.Top - expandHeight
         cmdSave.Top = cmdSave.Top - expandHeight
         
+        Label19.Top = Label19.Top - expandHeight
+        txtMatriculation.Top = txtMatriculation.Top - expandHeight
+        
         cmdExpand.Left = defaultButtonX
         cmdExpand.Top = defaultButtonY
         cmdExpand.Caption = "Expand"
@@ -727,6 +750,10 @@ End Sub
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
+        If CheckMatriculation() = False Then
+            Exit Sub
+        End If
+        
         If Validation() Then
             Dim newRecord As Dictionary
             Set newRecord = New Dictionary
@@ -757,7 +784,8 @@ Private Sub cmdRegister_Click()
             newRecord.Add "religion", Trim(txtReligion.Text)
             newRecord.Add "is_baptized", chkBaptized.Value
             newRecord.Add "first_communion", chkComm.Value
-        
+            newRecord.Add "total_matriculation", txtMatriculation.Text
+            
             blnConnected = False
             Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
         Else
@@ -790,7 +818,6 @@ Private Sub cmdSave_Click()
     Call EnableDisableControls
     cmdEdit.Caption = "Edit"
 End Sub
-
 
 Private Sub Form_Load()
     expanded = False
@@ -862,3 +889,41 @@ Private Function Validation() As Boolean
     
     Validation = isValid
 End Function
+
+Private Function CheckMatriculation() As Boolean
+    Dim matriculation As Integer
+    matriculation = CDbl(txtMatriculation.Text)
+    If matriculation < 10000 Then
+        MsgBox "Matriculation should be 10000 and beyond", vbExclamation
+        CheckMatriculation = False
+    Else
+        CheckMatriculation = True
+    End If
+End Function
+Private Sub txtMatriculation_GotFocus()
+    txtMatriculation.SelStart = 0
+    txtMatriculation.SelLength = Len(txtMatriculation.Text)
+End Sub
+
+Private Sub txtMatriculation_KeyPress(KeyAscii As Integer)
+    If KeyAscii >= vbKey0 And KeyAscii <= vbKey9 Or KeyAscii = vbKeyBack Or KeyAscii = vbKeyDelete Then
+        Exit Sub
+    ElseIf KeyAscii = vbKeyDecimal Or KeyAscii = Asc(".") Then
+        If InStr(1, txtMatriculation.Text, ".") > 0 Then
+            KeyAscii = 0
+            Exit Sub
+        End If
+    Else
+        KeyAscii = 0
+    End If
+End Sub
+
+Private Sub txtMatriculation_LostFocus()
+    If txtMatriculation.Text = "" Then
+        txtMatriculation.Text = "0"
+    Else
+        Dim num As Double
+        num = CDbl(txtMatriculation.Text)
+        txtMatriculation.Text = num
+    End If
+End Sub
