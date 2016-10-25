@@ -107,6 +107,15 @@ Begin VB.Form frmStudentList
       _ExtentX        =   13361
       _ExtentY        =   9975
       _Version        =   393216
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
 End
 Attribute VB_Name = "frmStudentList"
@@ -197,10 +206,13 @@ Private Sub RefreshTableView()
     gridStudents.TextMatrix(0, 4) = "Gender"
     gridStudents.TextMatrix(0, 5) = "Grade"
     
-    
+    Dim totalWidth As Integer
+    totalWidth = 0
+        
     Dim i As Integer
     For i = 0 To 4
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
     
     For i = 1 To searchResults.Count
@@ -214,12 +226,20 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
         
         Dim j As Integer
+        
         For j = 0 To 4
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
+                totalWidth = totalWidth + gridStudents.ColWidth(j)
             End If
         Next
+        Me.Width = totalWidth - 556
     Next
+End Sub
+
+Private Sub Form_Load()
+    Set searchResults = New Collection
+    RefreshTableView
 End Sub
 
 Private Sub Form_Resize()
