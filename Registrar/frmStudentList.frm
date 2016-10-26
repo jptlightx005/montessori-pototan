@@ -141,6 +141,7 @@ End Sub
 
 Private Sub cmdView_Click()
     If cmbGrade.ListIndex >= 0 Then
+        cmdView.enabled = False
         Dim searchParams As Dictionary
         Set searchParams = New Dictionary
         searchParams.Add "usrn", regadmin.usrn
@@ -276,15 +277,18 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         Call RefreshTableView
         MsgBox p.Item("message"), vbExclamation
     End If
+    cmdView.enabled = True
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
     MsgBox "Is Called"
+    cmdView.enabled = True
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
+    cmdView.enabled = True
     sckMain.Close
 End Sub
