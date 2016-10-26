@@ -526,32 +526,32 @@ Private Sub cmdEdit_Click()
 End Sub
 
 Sub EnableDisableControls()
-    cmbGrade.Enabled = Changeable
-    txtLName.Enabled = Changeable
-    txtFName.Enabled = Changeable
-    txtMName.Enabled = Changeable
-    cmbGender.Enabled = Changeable
-    cmbMonth.Enabled = Changeable
-    cmbDay.Enabled = Changeable
-    cmbYear.Enabled = Changeable
-    txtPlace.Enabled = Changeable
-    txtFather.Enabled = Changeable
-    txtFocc.Enabled = Changeable
-    txtAddress.Enabled = Changeable
-    txtMother.Enabled = Changeable
-    txtMocc.Enabled = Changeable
-    txtTelNo.Enabled = Changeable
-    txtGuardian.Enabled = Changeable
-    txtGAddress.Enabled = Changeable
-    txtLast.Enabled = Changeable
-    txtGRelation.Enabled = Changeable
-    txtGTelNo.Enabled = Changeable
-    txtReligion.Enabled = Changeable
-    chkBaptized.Enabled = Changeable
-    chkComm.Enabled = Changeable
+    cmbGrade.enabled = Changeable
+    txtLName.enabled = Changeable
+    txtFName.enabled = Changeable
+    txtMName.enabled = Changeable
+    cmbGender.enabled = Changeable
+    cmbMonth.enabled = Changeable
+    cmbDay.enabled = Changeable
+    cmbYear.enabled = Changeable
+    txtPlace.enabled = Changeable
+    txtFather.enabled = Changeable
+    txtFocc.enabled = Changeable
+    txtAddress.enabled = Changeable
+    txtMother.enabled = Changeable
+    txtMocc.enabled = Changeable
+    txtTelNo.enabled = Changeable
+    txtGuardian.enabled = Changeable
+    txtGAddress.enabled = Changeable
+    txtLast.enabled = Changeable
+    txtGRelation.enabled = Changeable
+    txtGTelNo.enabled = Changeable
+    txtReligion.enabled = Changeable
+    chkBaptized.enabled = Changeable
+    chkComm.enabled = Changeable
 
     'Enables the save button
-    cmdSave.Enabled = Changeable
+    cmdSave.enabled = Changeable
 End Sub
 
 Private Sub cmdExpand_Click()

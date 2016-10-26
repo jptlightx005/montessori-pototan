@@ -94,7 +94,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   26
-      Top             =   6960
+      Top             =   6480
       Width           =   3375
    End
    Begin VB.Label Label6 
@@ -104,7 +104,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   25
-      Top             =   6960
+      Top             =   6480
       Width           =   2175
    End
    Begin VB.Label Label8 
@@ -114,7 +114,7 @@ Begin VB.Form frmAccountant
       Height          =   255
       Left            =   240
       TabIndex        =   24
-      Top             =   6480
+      Top             =   6960
       Width           =   2175
    End
    Begin VB.Label lblMatriculation 
@@ -123,7 +123,7 @@ Begin VB.Form frmAccountant
       Height          =   375
       Left            =   2760
       TabIndex        =   23
-      Top             =   6480
+      Top             =   6960
       Width           =   3375
    End
    Begin VB.Label lblPaidDate 
@@ -369,8 +369,10 @@ Private Sub cmdSearch_Click()
 End Sub
 
 Private Sub cmdUpdate_Click()
-    frmTransaction.currentBalance = selectedStudent("balance_paid")
+    frmTransaction.currentBalance = selectedStudent("total_payment")
     frmTransaction.studentID = selectedStudent("Student_ID")
+    frmTransaction.studentName = selectedStudent("first_name") & " " & selectedStudent("last_name")
+    frmTransaction.studentAddress = selectedStudent("home_address")
     frmTransaction.Show vbModal
 End Sub
 

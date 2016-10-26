@@ -3,15 +3,14 @@ Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmStudentList 
    BackColor       =   &H00C0E0FF&
-   BorderStyle     =   1  'Fixed Single
    Caption         =   "List of Students"
    ClientHeight    =   6540
-   ClientLeft      =   6540
-   ClientTop       =   2955
+   ClientLeft      =   3495
+   ClientTop       =   2310
    ClientWidth     =   7890
    BeginProperty Font 
       Name            =   "Arial"
-      Size            =   12
+      Size            =   15.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,13 +18,20 @@ Begin VB.Form frmStudentList
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   6540
    ScaleWidth      =   7890
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
       Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   5160
       TabIndex        =   4
@@ -34,6 +40,15 @@ Begin VB.Form frmStudentList
    End
    Begin VB.CommandButton cmdClose 
       Caption         =   "Close"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   6480
       TabIndex        =   3
@@ -42,6 +57,15 @@ Begin VB.Form frmStudentList
    End
    Begin VB.CommandButton cmdView 
       Caption         =   "View"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   3840
       TabIndex        =   2
@@ -49,6 +73,15 @@ Begin VB.Form frmStudentList
       Width           =   1215
    End
    Begin VB.ComboBox cmbGrade 
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   390
       ItemData        =   "frmStudentList.frx":0000
       Left            =   240
@@ -74,6 +107,15 @@ Begin VB.Form frmStudentList
       _ExtentX        =   13361
       _ExtentY        =   9975
       _Version        =   393216
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
 End
 Attribute VB_Name = "frmStudentList"
@@ -99,6 +141,7 @@ End Sub
 
 Private Sub cmdView_Click()
     If cmbGrade.ListIndex >= 0 Then
+        cmdView.enabled = False
         Dim searchParams As Dictionary
         Set searchParams = New Dictionary
         searchParams.Add "usrn", regadmin.usrn
@@ -164,8 +207,14 @@ Private Sub RefreshTableView()
     gridStudents.TextMatrix(0, 4) = "Gender"
     gridStudents.TextMatrix(0, 5) = "Grade"
     
-    
+    Dim totalWidth As Integer
+    totalWidth = 0
+        
     Dim i As Integer
+    For i = 0 To 4
+        gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
+    Next
+    
     For i = 1 To searchResults.Count
         Dim studentInfo As Dictionary
         Set studentInfo = searchResults(i)
@@ -175,7 +224,34 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
         gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
+        
+        Dim j As Integer
+        
+        For j = 0 To 5
+            If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
+                gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
+            End If
+        Next
     Next
+    For i = 0 To 5
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
+    Next
+    Me.Width = totalWidth + 680
+End Sub
+
+Private Sub Form_Load()
+    Set searchResults = New Collection
+    RefreshTableView
+End Sub
+
+Private Sub Form_Resize()
+    Debug.Print Me.Width & "=="
+    gridStudents.Width = Me.Width - 556
+    gridStudents.Height = Me.Height - 1455
+    cmdClose.Left = Me.Width - 1650
+    cmdPrint.Left = Me.Width - 2970
+    cmdView.Left = Me.Width - 4290
+    cmbGrade.Width = Me.Width - 4635
 End Sub
 
 Private Sub sckMain_Connect()
@@ -202,15 +278,18 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         Call RefreshTableView
         MsgBox p.Item("message"), vbExclamation
     End If
+    cmdView.enabled = True
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
     MsgBox "Is Called"
+    cmdView.enabled = True
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
+    cmdView.enabled = True
     sckMain.Close
 End Sub

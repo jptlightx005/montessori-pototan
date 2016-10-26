@@ -109,6 +109,8 @@ Attribute VB_Exposed = False
 Option Explicit
 Public currentBalance As Double
 Public studentID As String
+Public studentName As String
+Public studentAddress As String
 Public cashPaid As Double
 Public cashSet As Boolean
 Private Sub cmdCancel_Click()
@@ -159,7 +161,7 @@ Private Sub txtPayment_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub lblPayment_Change()
-    cmdProceed.Enabled = cashSet And cashPaid > 0
+    cmdProceed.enabled = cashSet And cashPaid > 0
 End Sub
 
 
@@ -182,7 +184,13 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     If p.Item("response") = 1 Then
 
         MsgBox p.Item("message"), vbInformation
-        cmdProceed.Enabled = False
+        cmdProceed.enabled = False
+        
+        frmReceiptPrint.fName = studentName
+        frmReceiptPrint.fAddress = studentAddress
+        frmReceiptPrint.pAmount = cashPaid
+        frmReceiptPrint.Show vbModal
+        
         frmAccountant.ReloadData
 
         Unload Me
