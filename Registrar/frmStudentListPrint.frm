@@ -92,7 +92,11 @@ Begin VB.Form frmStudentListPrint
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
+      GridColor       =   0
+      GridLines       =   3
+      GridLinesFixed  =   3
       AllowUserResizing=   1
+      BorderStyle     =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -174,7 +178,7 @@ Private Sub cmdPrint_Click()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -191,7 +195,7 @@ Private Sub cmdPrint_Click()
         cmdClose.Visible = True
      'Printer.EndDoc
    Next
-ErrHandler:
+errHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
@@ -202,13 +206,17 @@ End Sub
 
 Private Sub Form_Load()
     gridStudents.Cols = 5
-    gridStudents.rows = studentList.Count + 1
+    gridStudents.rows = 20
     gridStudents.TextMatrix(0, 1) = "First Name"
     gridStudents.TextMatrix(0, 2) = "Middle Name"
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
     
     Dim i As Integer
+    Dim totalWidth As Integer
+    Dim totalHeight As Integer
+    totalWidth = 0
+    totalHeight = gridStudents.RowHeight(0) * gridStudents.rows
     For i = 0 To 4
         gridStudents.Row = 0
         gridStudents.Col = i
@@ -231,8 +239,13 @@ Private Sub Form_Load()
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
             End If
         Next
+        totalHeight = totalHeight + gridStudents.RowHeight(i)
     Next
-    
+    For i = 0 To 4
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
+    Next
+    Me.Width = totalWidth + widthDifference + 50
+    Me.Height = totalHeight + heightDifference + 50
     lblGrade.Caption = listGrade
 End Sub
 

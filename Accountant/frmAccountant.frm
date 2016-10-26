@@ -371,6 +371,8 @@ End Sub
 Private Sub cmdUpdate_Click()
     frmTransaction.currentBalance = selectedStudent("total_payment")
     frmTransaction.studentID = selectedStudent("Student_ID")
+    frmTransaction.studentName = selectedStudent("first_name") & " " & selectedStudent("last_name")
+    frmTransaction.studentAddress = selectedStudent("home_address")
     frmTransaction.Show vbModal
 End Sub
 

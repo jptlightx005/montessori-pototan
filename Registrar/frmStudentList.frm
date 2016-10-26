@@ -213,7 +213,6 @@ Private Sub RefreshTableView()
     Dim i As Integer
     For i = 0 To 4
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
-        totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
     
     For i = 1 To searchResults.Count
@@ -228,14 +227,16 @@ Private Sub RefreshTableView()
         
         Dim j As Integer
         
-        For j = 0 To 4
+        For j = 0 To 5
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
-                totalWidth = totalWidth + gridStudents.ColWidth(j)
             End If
         Next
-        Me.Width = totalWidth - 556
     Next
+    For i = 0 To 5
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
+    Next
+    Me.Width = totalWidth + 680
 End Sub
 
 Private Sub Form_Load()

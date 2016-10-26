@@ -109,6 +109,8 @@ Attribute VB_Exposed = False
 Option Explicit
 Public currentBalance As Double
 Public studentID As String
+Public studentName As String
+Public studentAddress As String
 Public cashPaid As Double
 Public cashSet As Boolean
 Private Sub cmdCancel_Click()
@@ -183,6 +185,12 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
         MsgBox p.Item("message"), vbInformation
         cmdProceed.enabled = False
+        
+        frmReceiptPrint.fName = studentName
+        frmReceiptPrint.fAddress = studentAddress
+        frmReceiptPrint.pAmount = cashPaid
+        frmReceiptPrint.Show vbModal
+        
         frmAccountant.ReloadData
 
         Unload Me
