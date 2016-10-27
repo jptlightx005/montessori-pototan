@@ -83,6 +83,15 @@ Begin VB.Form frmReceiptPrint
       GridLinesFixed  =   3
       BorderStyle     =   0
       Appearance      =   0
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
    End
    Begin VB.Line Line5 
       X1              =   1320

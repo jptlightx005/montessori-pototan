@@ -425,7 +425,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         lblGrade.Caption = grade(selectedStudent("current_grade"))
         lblPayment.Caption = Format(selectedStudent("total_payment"), "P##,##0.00")
         lblMatriculation.Caption = Format(selectedStudent("total_matriculation"), "P##,##0.00")
-        Dim balanceLeft As Integer
+        Dim balanceLeft As Long
         balanceLeft = selectedStudent("total_matriculation") - selectedStudent("total_payment")
         lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
         
