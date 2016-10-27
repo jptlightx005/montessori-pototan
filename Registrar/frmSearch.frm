@@ -169,6 +169,14 @@ Private Sub cmdView_Click()
     End If
 End Sub
 
+Private Sub Form_Load()
+
+End Sub
+
+Private Sub Form_Resize()
+
+End Sub
+
 Private Sub sckMain_Connect()
     blnConnected = True
 End Sub

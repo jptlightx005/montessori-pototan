@@ -245,7 +245,6 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Form_Resize()
-    Debug.Print Me.Width & "=="
     gridStudents.Width = Me.Width - 556
     gridStudents.Height = Me.Height - 1455
     cmdClose.Left = Me.Width - 1650

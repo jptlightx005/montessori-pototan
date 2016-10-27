@@ -170,6 +170,9 @@ Private Sub cmdExport_Click()
     xlObject.Columns.EntireColumn.AutoFit
     ' This makes Excel visible
     xlObject.Visible = True
+    
+    gridStudents.ColSel = 0
+    gridStudents.RowSel = 0
 End Sub
 
 Private Sub cmdPrint_Click()
@@ -178,7 +181,7 @@ Private Sub cmdPrint_Click()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -195,7 +198,7 @@ Private Sub cmdPrint_Click()
         cmdClose.Visible = True
      'Printer.EndDoc
    Next
-errHandler:
+ErrHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
