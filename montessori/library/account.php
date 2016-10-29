@@ -42,16 +42,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$query = "UPDATE `montessori_queue` SET `status` = 'onprocess' WHERE `Queue_ID` = '$queue_id'";
 
 					if(mysql_query($query)){
-						$query = "SELECT Student_ID FROM montessori_records WHERE `Queue_ID` = '$queue_id'";
+						$query = "SELECT ID FROM montessori_records WHERE `Queue_ID` = '$queue_id'";
 						$result = mysql_query($query);
 						if($result){
 							$record = mysql_fetch_assoc($result);
 							if($record){
-								$student_id = addslashes($record['Student_ID']);
-								$first_name = addslashes($_POST['first_name']);
-								$middle_name = addslashes($_POST['middle_name']);
-								$last_name = addslashes($_POST['last_name']);
-								$home_address = addslashes($_POST['home_address']);
+                                $student_id = addslashes($record['ID']);
                                 $month_now = date('n');
                                 $year_now = date('Y');
                                 if($month_now > 6){
@@ -62,13 +58,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                     $school_year =  "$y-$year_now";
                                 }
 								$total_matriculation = addslashes($_POST['total_matriculation']);
-								$current_grade = addslashes($_POST['current_grade']);
-								$query = "INSERT INTO `montessori_accounts` (Student_ID, Queue_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_matriculation, total_payment) VALUES ('$student_id', '$queue_id', '$first_name', '$middle_name', '$last_name', '$home_address', '$school_year', '$current_grade', $total_matriculation, 0)";
+
+								$query = "INSERT INTO `montessori_accounts` (Student_ID, school_year, total_matriculation, total_payment) VALUES ('$student_id', '$school_year', $total_matriculation, 0)";
 								$result = mysql_query($query);
 								if($result){
 									$json = array("response" => 1, "message" => $student_id);
 								}else{
-									$json = array("response" => 0, "message" => "An error has occured while saving!");
+									$json = array("response" => 0, "message" => "An error has occured while saving!", "query" => $query);
 								}
 							}else{
 								$json = array("response" => 0, "message" => "Student not found!");
@@ -80,11 +76,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$json = array("response" => 0, "message" => "An error has occured while saving!");
 					}
 				}else{
-					$json = array("response" => 0, "message" => "An error has occured while saving!", "query" => $query);
+					$json = array("response" => 0, "message" => "An error has occured while saving!");
 				}
 			}else if($action == "search_student"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
-				$query = "SELECT * FROM montessori_accounts WHERE Student_ID = '$student_id'";
+				$query = "SELECT Student_ID, Queue_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_payment, total_matriculation, latest_payment FROM montessori_records INNER JOIN montessori_accounts ON montessori_records.ID = montessori_accounts.Student_ID WHERE Student_ID = '$student_id'";
 				$result = mysql_query($query);
 				if($result){
 					$record = mysql_fetch_assoc($result);
@@ -113,12 +109,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			}else if($action == "student_payment"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 				$balance_paid = isset($_POST['balance_paid']) ? mysql_real_escape_string($_POST['balance_paid']) : "";
-				$query = "UPDATE `montessori_accounts` SET `total_payment` = $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
+				$query = "UPDATE `montessori_accounts` SET total_payment = total_payment + $balance_paid, `latest_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
 
-				if(mysql_query($query))
-					$json = array("response" => 1, "message" => "Balance successfully updated!", "query" => $query);
-				else
+				if(mysql_query($query)){
+                    $query = "INSERT INTO `montessori_transactions` VALUES (NULL, $student_id, $balance_paid, CURRENT_TIMESTAMP)";
+                    if(mysql_query($query)){
+                        $json = array("response" => 1, "message" => "Balance successfully updated!");
+                    }else {
+                        $json = array("response" => 0, "message" => "An error has occured while updating!");
+                    }
+				}else{
 					$json = array("response" => 0, "message" => "An error has occured while updating!");
+                }
 			}else if ($action == "update_student"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 
@@ -138,22 +140,28 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 				$query = "UPDATE `montessori_records` SET $setFieldValue WHERE `Student_ID` = '$student_id'";
 
-				if(mysql_query($query)){
-					$current_grade = $_POST['current_grade'];
-					$first_name = $_POST['first_name'];
-					$middle_name = $_POST['middle_name'];
-					$last_name = $_POST['last_name'];
-					$home_address = $_POST['home_address'];
+                if(mysql_query($query))
+                    $json = array("response" => 1, "message" => "Student Information successfully updated!", "query" => $query);
+                else
+                    $json = array("response" => 0, "message" => "An error has occured while updating!");
 
-					$query = "UPDATE `montessori_accounts` SET first_name = '$first_name', middle_name = '$middle_name', last_name = '$last_name', home_address = '$home_address', current_grade = '$current_grade' WHERE `Student_ID` = '$student_id'";
-					if(mysql_query($query))
-						$json = array("response" => 1, "message" => "Student Information successfully updated!", "query" => $query);
-					else
-						$json = array("response" => 0, "message" => "An error has occured while updating!");
+			}else if ($action == "transaction_list"){
+
+                $filter_date =  $_POST['filter_date'];
+                $query = "SELECT montessori_transactions.ID, first_name, last_name, current_grade, payment, date_of_payment FROM montessori_records INNER JOIN montessori_transactions ON montessori_records.ID = montessori_transactions.Student_ID WHERE CAST(date_of_payment AS Date) = '$filter_date'";
+
+                $result = mysql_query($query);
+				$studentcount = mysql_num_rows($result);
+				if($studentcount > 0){
+					while($row = mysql_fetch_assoc($result)){
+						 $rows[] = $row;
+					}
+
+					$json = array("response" => 1, "message" => $rows);
 				}else{
-					$json = array("response" => 0, "message" => "An error has occured while updating!");
+					$json = array("response" => 0, "message" => "No results");
 				}
-			}
+            }
 		}else{
 			$json = array("response" => -1, "message" => "Invalid Request");
 		}

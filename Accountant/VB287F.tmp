@@ -1,13 +1,14 @@
 VERSION 5.00
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Begin VB.Form frmStudentListPrint 
+Begin VB.Form frmTotalTransaction 
    BackColor       =   &H00FFFFFF&
-   Caption         =   "Student List"
-   ClientHeight    =   7380
-   ClientLeft      =   60
-   ClientTop       =   390
-   ClientWidth     =   9345
+   Caption         =   "Form1"
+   ClientHeight    =   7455
+   ClientLeft      =   120
+   ClientTop       =   450
+   ClientWidth     =   9000
    BeginProperty Font 
       Name            =   "Arial"
       Size            =   15.75
@@ -18,8 +19,8 @@ Begin VB.Form frmStudentListPrint
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7380
-   ScaleWidth      =   9345
+   ScaleHeight     =   7455
+   ScaleWidth      =   9000
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdExport 
       Caption         =   "Export"
@@ -33,34 +34,17 @@ Begin VB.Form frmStudentListPrint
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   360
-      TabIndex        =   4
+      Left            =   120
+      TabIndex        =   6
       Top             =   6840
       Width           =   1215
    End
-   Begin MSComDlg.CommonDialog cmnDlg 
-      Left            =   4440
-      Top             =   3480
-      _ExtentX        =   847
-      _ExtentY        =   847
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   1920
+      Top             =   6960
+      _ExtentX        =   741
+      _ExtentY        =   741
       _Version        =   393216
-   End
-   Begin VB.CommandButton cmdClose 
-      Caption         =   "Close"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   6480
-      TabIndex        =   3
-      Top             =   6840
-      Width           =   1215
    End
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
@@ -74,29 +58,50 @@ Begin VB.Form frmStudentListPrint
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   7800
-      TabIndex        =   2
+      Left            =   7560
+      TabIndex        =   1
       Top             =   6840
       Width           =   1215
    End
+   Begin VB.CommandButton cmdClose 
+      Caption         =   "Close"
+      BeginProperty Font 
+         Name            =   "Arial Narrow"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   6240
+      TabIndex        =   0
+      Top             =   6840
+      Width           =   1215
+   End
+   Begin MSComDlg.CommonDialog cmnDlg 
+      Left            =   5640
+      Top             =   6840
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
       Height          =   5895
-      Left            =   360
-      TabIndex        =   0
+      Left            =   120
+      TabIndex        =   2
       Top             =   840
       Width           =   8655
       _ExtentX        =   15266
       _ExtentY        =   10398
       _Version        =   393216
-      Cols            =   5
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
       GridColor       =   0
-      WordWrap        =   -1  'True
       GridLines       =   3
       GridLinesFixed  =   3
-      AllowUserResizing=   1
       BorderStyle     =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -109,13 +114,12 @@ Begin VB.Form frmStudentListPrint
          Strikethrough   =   0   'False
       EndProperty
    End
-   Begin VB.Label lblGrade 
-      Alignment       =   2  'Center
+   Begin VB.Label Label2 
       BackColor       =   &H00FFFFFF&
-      Caption         =   "Grade 3"
+      Caption         =   "Date:"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   15.75
+         Name            =   "Arial"
+         Size            =   12
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -123,26 +127,60 @@ Begin VB.Form frmStudentListPrint
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   360
-      TabIndex        =   1
-      Top             =   240
+      Left            =   480
+      TabIndex        =   5
+      Top             =   480
+      Width           =   735
+   End
+   Begin VB.Label lblDate 
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "October 29, 2016"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   1320
+      TabIndex        =   4
+      Top             =   480
+      Width           =   4695
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Total Transactions"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   3
+      Top             =   120
       Width           =   8655
    End
 End
-Attribute VB_Name = "frmStudentListPrint"
+Attribute VB_Name = "frmTotalTransaction"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
-Public studentList As Collection
-Public listGrade As String
-
-Dim xlObject As Excel.Application
-Dim xlWB As Excel.Workbook
-
 Const heightDifference As Integer = 2130
-Const widthDifference As Integer = 780
+Const widthDifference As Integer = 585
+
+Dim transRecord As Collection
+Dim dateNow As Date
+
 Private Sub cmdClose_Click()
     Unload Me
 End Sub
@@ -196,9 +234,9 @@ Private Sub cmdPrint_Click()
         cmdPrint.Visible = False
         cmdClose.Visible = False
         PrintForm
-        cmdExport.Visible = True
         cmdPrint.Visible = True
         cmdClose.Visible = True
+        cmdExport.Visible = True
      'Printer.EndDoc
    Next
 ErrHandler:
@@ -206,64 +244,102 @@ ErrHandler:
    Exit Sub
 End Sub
 
-Private Sub Command1_Click()
-    
+Private Sub Form_Load()
+
+    Dim listParams As Dictionary
+    Set listParams = New Dictionary
+    listParams.Add "usrn", acctadmin.usrn
+    listParams.Add "pssw", acctadmin.pssw
+    listParams.Add "role", acctadmin.role
+    listParams.Add "action", aTRANSACTION_LIST
+    listParams.Add "filter_date", Format$(Now, "yyyy-mm-dd")
+    blnConnected = False
+
+    Call sendRequest(sckMain, hAPI_ACCOUNT, listParams, hPOST_METHOD)
 End Sub
 
-Private Sub Form_Load()
+Private Sub RefreshTableView()
     gridStudents.Cols = 5
     gridStudents.rows = 20
     gridStudents.TextMatrix(0, 1) = "First Name"
-    gridStudents.TextMatrix(0, 2) = "Middle Name"
-    gridStudents.TextMatrix(0, 3) = "Last Name"
-    gridStudents.TextMatrix(0, 4) = "Gender"
+    gridStudents.TextMatrix(0, 2) = "Last Name"
+    gridStudents.TextMatrix(0, 3) = "Grade"
+    gridStudents.TextMatrix(0, 4) = "Payment"
     
-    Dim i As Integer
     Dim totalWidth As Integer
-    Dim totalHeight As Integer
     totalWidth = 0
-    totalHeight = gridStudents.RowHeight(0) * gridStudents.rows
+        
+    Dim i As Integer
     For i = 0 To 4
-        gridStudents.Row = 0
-        gridStudents.Col = i
-        gridStudents.CellFontBold = True
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
     Next
-    
-    For i = 1 To studentList.Count
+    MsgBox transRecord.Count
+    For i = 1 To transRecord.Count
         Dim studentInfo As Dictionary
-        Set studentInfo = studentList(i)
+        Set studentInfo = transRecord(i)
         gridStudents.TextMatrix(i, 0) = Format(i, String(4, "0"))
         gridStudents.TextMatrix(i, 1) = studentInfo("first_name")
-        gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
-        gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
-        gridStudents.TextMatrix(i, 4) = studentInfo("gender")
+        gridStudents.TextMatrix(i, 2) = studentInfo("last_name")
+        gridStudents.TextMatrix(i, 3) = grade(studentInfo("current_grade"))
+        gridStudents.TextMatrix(i, 4) = studentInfo("payment")
         
         Dim j As Integer
+        
         For j = 0 To 4
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
             End If
         Next
-        totalHeight = totalHeight + gridStudents.RowHeight(i)
     Next
     For i = 0 To 4
         totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
-    Me.width = totalWidth + widthDifference + 50
-    Me.Height = totalHeight + heightDifference + 50
-    lblGrade.Caption = listGrade
+    Me.Width = totalWidth + 720
 End Sub
 
 Private Sub Form_Resize()
-    gridStudents.width = Me.width - widthDifference
-    lblGrade.width = Me.width - widthDifference
-    cmdClose.Left = Me.width - 2955
-    cmdPrint.Left = Me.width - 1635
+    gridStudents.Width = Me.Width - widthDifference
+    Label1.Width = Me.Width - widthDifference
+    cmdClose.Left = Me.Width - 2955
+    cmdPrint.Left = Me.Width - 1635
     
     gridStudents.Height = Me.Height - heightDifference
-    cmdExport.Top = Me.Height - 1110
-    cmdClose.Top = Me.Height - 1110
-    cmdPrint.Top = Me.Height - 1110
+    cmdExport.Top = Me.Height - 1185
+    cmdClose.Top = Me.Height - 1185
+    cmdPrint.Top = Me.Height - 1185
 End Sub
 
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+    
+    sckMain.GetData strResponse, vbString, bytesTotal
+    
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        Set transRecord = p.Item("message")
+        RefreshTableView
+    Else
+        MsgBox p.Item("message"), vbExclamation
+        cmdUpdate.enabled = False
+        cmdPrint.enabled = False
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    sckMain.Close
+End Sub
