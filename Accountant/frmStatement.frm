@@ -376,6 +376,6 @@ Private Sub Form_Load()
     balanceLeft = selectedStudent("total_matriculation") - selectedStudent("total_payment")
     lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
     
-    lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
+    lblPaidDate.Caption = Format(selectedStudent("latest_payment"), "mmmm dd, yyyy")
 End Sub
 
