@@ -93,6 +93,7 @@ Begin VB.Form frmStudentListPrint
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
       GridColor       =   0
+      WordWrap        =   -1  'True
       GridLines       =   3
       GridLinesFixed  =   3
       AllowUserResizing=   1
@@ -247,16 +248,16 @@ Private Sub Form_Load()
     For i = 0 To 4
         totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
-    Me.Width = totalWidth + widthDifference + 50
+    Me.width = totalWidth + widthDifference + 50
     Me.Height = totalHeight + heightDifference + 50
     lblGrade.Caption = listGrade
 End Sub
 
 Private Sub Form_Resize()
-    gridStudents.Width = Me.Width - widthDifference
-    lblGrade.Width = Me.Width - widthDifference
-    cmdClose.Left = Me.Width - 2955
-    cmdPrint.Left = Me.Width - 1635
+    gridStudents.width = Me.width - widthDifference
+    lblGrade.width = Me.width - widthDifference
+    cmdClose.Left = Me.width - 2955
+    cmdPrint.Left = Me.width - 1635
     
     gridStudents.Height = Me.Height - heightDifference
     cmdExport.Top = Me.Height - 1050
