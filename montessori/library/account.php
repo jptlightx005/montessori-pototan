@@ -113,12 +113,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			}else if($action == "student_payment"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 				$balance_paid = isset($_POST['balance_paid']) ? mysql_real_escape_string($_POST['balance_paid']) : "";
-				$query = "UPDATE `montessori_accounts` SET `total_payment` = $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
+				$query = "UPDATE `montessori_accounts` SET total_payment = total_payment + $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
 
-				if(mysql_query($query))
-					$json = array("response" => 1, "message" => "Balance successfully updated!", "query" => $query);
-				else
+				if(mysql_query($query)){
+                    $query = "INSERT INTO `montessori_transactions` VALUES (NULL, $student_id, $balance_paid)";
+                    if(mysql_query($query)){
+                        $json = array("response" => 1, "message" => "Balance successfully updated!");
+                    }else {
+                        $json = array("response" => 0, "message" => "An error has occured while updating!");
+                    }
+				}else{
 					$json = array("response" => 0, "message" => "An error has occured while updating!");
+                }
 			}else if ($action == "update_student"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 
@@ -153,7 +159,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				}else{
 					$json = array("response" => 0, "message" => "An error has occured while updating!");
 				}
-			}
+			}else if ($action == "transaction_list"){
+                $filter_date =  $_POST['filter_date'];
+                //$query = "SELECT * FROM "
+
+            }
 		}else{
 			$json = array("response" => -1, "message" => "Invalid Request");
 		}
