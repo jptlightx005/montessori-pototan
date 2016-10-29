@@ -107,6 +107,7 @@ Begin VB.Form frmStudentList
       _ExtentX        =   13361
       _ExtentY        =   9975
       _Version        =   393216
+      WordWrap        =   -1  'True
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   12
@@ -236,7 +237,7 @@ Private Sub RefreshTableView()
     For i = 0 To 5
         totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
-    Me.Width = totalWidth + 680
+    Me.width = totalWidth + 680
 End Sub
 
 Private Sub Form_Load()
@@ -245,12 +246,12 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Form_Resize()
-    gridStudents.Width = Me.Width - 556
+    gridStudents.width = Me.width - 556
     gridStudents.Height = Me.Height - 1455
-    cmdClose.Left = Me.Width - 1650
-    cmdPrint.Left = Me.Width - 2970
-    cmdView.Left = Me.Width - 4290
-    cmbGrade.Width = Me.Width - 4635
+    cmdClose.Left = Me.width - 1650
+    cmdPrint.Left = Me.width - 2970
+    cmdView.Left = Me.width - 4290
+    cmbGrade.width = Me.width - 4635
 End Sub
 
 Private Sub sckMain_Connect()

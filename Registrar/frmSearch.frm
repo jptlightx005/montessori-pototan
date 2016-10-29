@@ -3,15 +3,14 @@ Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmSearch 
    BackColor       =   &H00C0E0FF&
-   BorderStyle     =   1  'Fixed Single
    Caption         =   "Search Student"
    ClientHeight    =   5175
-   ClientLeft      =   5805
-   ClientTop       =   4140
+   ClientLeft      =   5880
+   ClientTop       =   4215
    ClientWidth     =   6810
    BeginProperty Font 
       Name            =   "Arial"
-      Size            =   12
+      Size            =   15.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,8 +18,6 @@ Begin VB.Form frmSearch
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   5175
    ScaleWidth      =   6810
    Begin MSWinsockLib.Winsock sckMain 
@@ -39,9 +36,19 @@ Begin VB.Form frmSearch
       _ExtentX        =   11456
       _ExtentY        =   4895
       _Version        =   393216
+      WordWrap        =   -1  'True
    End
    Begin VB.CommandButton cmdView 
       Caption         =   "View"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   5400
       TabIndex        =   4
@@ -50,6 +57,15 @@ Begin VB.Form frmSearch
    End
    Begin VB.CommandButton cmdCancel 
       Caption         =   "Cancel"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   5400
       TabIndex        =   3
@@ -58,6 +74,15 @@ Begin VB.Form frmSearch
    End
    Begin VB.CommandButton cmdSearch 
       Caption         =   "Search"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   5400
       TabIndex        =   2
@@ -65,6 +90,15 @@ Begin VB.Form frmSearch
       Width           =   1215
    End
    Begin VB.TextBox txtSearch 
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   360
       TabIndex        =   0
@@ -74,6 +108,15 @@ Begin VB.Form frmSearch
    Begin VB.Label Label1 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Search Last Name:"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   360
       TabIndex        =   1
@@ -128,8 +171,14 @@ Private Sub RefreshTableView()
     gridStudents.TextMatrix(0, 4) = "Gender"
     gridStudents.TextMatrix(0, 5) = "Grade"
     
-    
+    Dim totalWidth As Integer
+    totalWidth = 0
+        
     Dim i As Integer
+    For i = 0 To 5
+        gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
+    Next
+
     For i = 1 To searchResults.Count
         Dim studentInfo As Dictionary
         Set studentInfo = searchResults(i)
@@ -139,7 +188,20 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
         gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
+        
+        Dim j As Integer
+        
+        For j = 0 To 5
+            If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
+                gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
+            End If
+        Next
     Next
+    
+    For i = 0 To 5
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
+    Next
+    Me.width = totalWidth + 500
 End Sub
 
 Public Function grade(grd As String) As String
@@ -169,12 +231,16 @@ Private Sub cmdView_Click()
     End If
 End Sub
 
-Private Sub Form_Load()
-
+Private Sub Form_Resize()
+    txtSearch.width = Me.width - 2115
+    cmdSearch.Left = Me.width - 1650
+    cmdCancel.Left = Me.width - 1650
+    gridStudents.width = Me.width - 555
+    cmdView.Left = Me.width - 1650
 End Sub
 
-Private Sub Form_Resize()
-
+Private Sub gridStudents_EnterCell()
+    Debug.Print gridStudents.ColWidth(gridStudents.ColSel)
 End Sub
 
 Private Sub sckMain_Connect()

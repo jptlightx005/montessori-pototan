@@ -15,7 +15,7 @@ Sub Main()
 End Sub
 'Logs events on file
 Sub LogEvent(eventLog As String)
-On Error GoTo errHandler
+On Error GoTo ErrHandler
   Dim nUnit As Integer
   nUnit = FreeFile
   ' This assumes write access to the directory containing the program '
@@ -25,7 +25,7 @@ On Error GoTo errHandler
   Close nUnit
   Exit Sub
 
-errHandler:
+ErrHandler:
   'Failed to write log for some reason.'
   'Show MsgBox so error does not go unreported '
   MsgBox "Error in " & ProcName & vbNewLine & _
@@ -92,3 +92,10 @@ Public Function DoB(bm As Integer, bd As Integer, by As Integer) As String
     DoB = Format$(CDate((bm + 1) & "-" & bd & "-" & by), "yyyy-mm-dd")
 End Function
 
+Public Function ColWidth(width As Integer, maxWidth As Integer)
+    If width <= maxWidth Then
+        ColWidth = width
+    Else
+        ColWidth = maxWidth
+    End If
+End Function
