@@ -22,6 +22,15 @@ Begin VB.Form frmAccountant
    MinButton       =   0   'False
    ScaleHeight     =   8790
    ScaleWidth      =   7575
+   Begin VB.CommandButton cmdPrint 
+      Caption         =   "Print"
+      Enabled         =   0   'False
+      Height          =   495
+      Left            =   1680
+      TabIndex        =   29
+      Top             =   8160
+      Width           =   1215
+   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   120
       Top             =   7200
@@ -48,7 +57,7 @@ Begin VB.Form frmAccountant
    Begin VB.CommandButton cmdReset 
       Caption         =   "Reset"
       Height          =   495
-      Left            =   4080
+      Left            =   4320
       TabIndex        =   15
       Top             =   8160
       Width           =   1215
@@ -57,7 +66,7 @@ Begin VB.Form frmAccountant
       Caption         =   "Update"
       Enabled         =   0   'False
       Height          =   495
-      Left            =   2760
+      Left            =   3000
       TabIndex        =   14
       Top             =   8160
       Width           =   1215
@@ -334,6 +343,7 @@ Public Sub resetBoxes()
     Set selectedStudent = Nothing
     txtSearch.Text = ""
     cmdUpdate.enabled = False
+    cmdPrint.enabled = False
     lblID.Caption = "N/A"
     lblFullName.Caption = "N/A"
     lblAddress.Caption = "N/A"
@@ -345,6 +355,12 @@ Public Sub resetBoxes()
     lblBalance.Caption = "N/A"
     lblPaidDate.Caption = "N/A"
 End Sub
+
+Private Sub cmdPrint_Click()
+    Set frmStatement.selectedStudent = selectedStudent
+    frmStatement.Show vbModal
+End Sub
+
 Private Sub cmdReset_Click()
     Call resetBoxes
 End Sub
@@ -431,10 +447,11 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         
         lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
         cmdUpdate.enabled = True
-        
+        cmdPrint.enabled = True
     Else
         MsgBox p.Item("message"), vbExclamation
         cmdUpdate.enabled = False
+        cmdPrint.enabled = False
     End If
 End Sub
 
