@@ -69,15 +69,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Student ID Number:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   19
@@ -106,15 +97,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Full Name:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   17
@@ -125,15 +107,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Address:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   16
@@ -144,15 +117,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Grade:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   15
@@ -163,15 +127,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Total Payment:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   14
@@ -182,15 +137,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Paid Last:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   13
@@ -309,15 +255,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Total Matriculation:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   6
@@ -328,15 +265,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "Balance Left:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   5
@@ -383,15 +311,6 @@ Begin VB.Form frmStatement
       Alignment       =   1  'Right Justify
       BackColor       =   &H00FFFFFF&
       Caption         =   "School Year:"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   255
       Left            =   600
       TabIndex        =   2
@@ -459,3 +378,4 @@ Private Sub Form_Load()
     
     lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
 End Sub
+

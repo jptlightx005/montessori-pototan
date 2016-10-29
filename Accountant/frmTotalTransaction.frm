@@ -6,8 +6,8 @@ Begin VB.Form frmTotalTransaction
    BackColor       =   &H00FFFFFF&
    Caption         =   "Form1"
    ClientHeight    =   7455
-   ClientLeft      =   120
-   ClientTop       =   450
+   ClientLeft      =   5685
+   ClientTop       =   1800
    ClientWidth     =   9000
    BeginProperty Font 
       Name            =   "Arial"
@@ -21,7 +21,6 @@ Begin VB.Form frmTotalTransaction
    LinkTopic       =   "Form1"
    ScaleHeight     =   7455
    ScaleWidth      =   9000
-   StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdExport 
       Caption         =   "Export"
       BeginProperty Font 
@@ -88,13 +87,13 @@ Begin VB.Form frmTotalTransaction
       _Version        =   393216
    End
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
-      Height          =   5895
+      Height          =   5295
       Left            =   240
       TabIndex        =   2
       Top             =   840
       Width           =   8535
       _ExtentX        =   15055
-      _ExtentY        =   10398
+      _ExtentY        =   9340
       _Version        =   393216
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
@@ -113,6 +112,42 @@ Begin VB.Form frmTotalTransaction
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+   End
+   Begin VB.Label Label3 
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Total:"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   6480
+      TabIndex        =   8
+      Top             =   6240
+      Width           =   735
+   End
+   Begin VB.Label lblTotal 
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "700000"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   7320
+      TabIndex        =   7
+      Top             =   6240
+      Width           =   1455
    End
    Begin VB.Label Label2 
       BackColor       =   &H00FFFFFF&
@@ -175,7 +210,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Const heightDifference As Integer = 2130
+Const heightDifference As Integer = 2730
 Const widthDifference As Integer = 705
 
 Dim transRecord As Collection
@@ -220,7 +255,7 @@ Private Sub cmdPrint_Click()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo ErrHandler
+    On Error GoTo errHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -239,7 +274,7 @@ Private Sub cmdPrint_Click()
         cmdExport.Visible = True
      'Printer.EndDoc
    Next
-ErrHandler:
+errHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
@@ -273,7 +308,8 @@ Private Sub RefreshTableView()
     For i = 0 To 4
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
     Next
-    
+    Dim total As Long
+    total = 0
     For i = 1 To transRecord.Count
         Dim studentInfo As Dictionary
         Set studentInfo = transRecord(i)
@@ -282,7 +318,7 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 2) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 3) = grade(studentInfo("current_grade"))
         gridStudents.TextMatrix(i, 4) = studentInfo("payment")
-        
+        total = total + CLng(studentInfo("payment"))
         Dim j As Integer
         
         For j = 0 To 4
@@ -294,8 +330,11 @@ Private Sub RefreshTableView()
     For i = 0 To 4
         totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
+    
+    lblTotal.Caption = Format(total, "P##,##0.00")
+    
     Me.Width = totalWidth + 750
-    Me.Height = Me.Height + 450
+    Me.Height = Me.Height + 1500
 End Sub
 
 Private Sub Form_Resize()
@@ -303,11 +342,14 @@ Private Sub Form_Resize()
     Label1.Width = Me.Width - widthDifference
     cmdClose.Left = Me.Width - 2955
     cmdPrint.Left = Me.Width - 1635
-    
+    lblTotal.Left = Me.Width - 1920
+    Label3.Left = Me.Width - 2760
     gridStudents.Height = Me.Height - heightDifference
     cmdExport.Top = Me.Height - 1185
     cmdClose.Top = Me.Height - 1185
     cmdPrint.Top = Me.Height - 1185
+    lblTotal.Top = Me.Height - 1785
+    Label3.Top = Me.Height - 1785
 End Sub
 
 Private Sub sckMain_Connect()
@@ -327,6 +369,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
     If p.Item("response") = 1 Then
         Set transRecord = p.Item("message")
+        
         RefreshTableView
     Else
         MsgBox p.Item("message"), vbExclamation
