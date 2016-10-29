@@ -11,7 +11,7 @@ Begin VB.Form frmTotalTransaction
    ClientWidth     =   9000
    BeginProperty Font 
       Name            =   "Arial"
-      Size            =   12
+      Size            =   15.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -22,8 +22,25 @@ Begin VB.Form frmTotalTransaction
    ScaleHeight     =   7455
    ScaleWidth      =   9000
    StartUpPosition =   3  'Windows Default
-   Begin MSWinsockLib.Winsock sckMain 
+   Begin VB.CommandButton cmdExport 
+      Caption         =   "Export"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
       Left            =   120
+      TabIndex        =   6
+      Top             =   6840
+      Width           =   1215
+   End
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   1920
       Top             =   6960
       _ExtentX        =   741
       _ExtentY        =   741
@@ -72,16 +89,20 @@ Begin VB.Form frmTotalTransaction
    End
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
       Height          =   5895
-      Left            =   120
+      Left            =   240
       TabIndex        =   2
       Top             =   840
-      Width           =   8655
-      _ExtentX        =   15266
+      Width           =   8535
+      _ExtentX        =   15055
       _ExtentY        =   10398
       _Version        =   393216
       BackColorFixed  =   16777215
       BackColorSel    =   16777215
       BackColorBkg    =   16777215
+      GridColor       =   0
+      GridLines       =   3
+      GridLinesFixed  =   3
+      BorderStyle     =   0
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -154,8 +175,74 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim transRecord As Dictionary
+Const heightDifference As Integer = 2130
+Const widthDifference As Integer = 705
+
+Dim transRecord As Collection
 Dim dateNow As Date
+
+Private Sub cmdClose_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdExport_Click()
+    Set xlObject = New Excel.Application
+ 
+    'This Adds a new woorkbook, you could open the workbook from file also
+    Set xlWB = xlObject.Workbooks.Add
+                
+    Clipboard.Clear 'Clear the Clipboard
+    With gridStudents
+        'Select Full Contents (You could also select partial content)
+        .Col = 0               'From first column
+        .Row = 0               'From first Row (header)
+        .ColSel = .Cols - 1    'Select all columns
+        .RowSel = .rows - 1    'Select all rows
+        Clipboard.SetText .Clip 'Send to Clipboard
+    End With
+            
+    With xlObject.ActiveWorkbook.ActiveSheet
+        .Range("B5").Select 'Select Cell A1 (will paste from here, to different cells)
+        .Paste              'Paste clipboard contents
+    End With
+    
+    xlObject.Columns.EntireColumn.AutoFit
+    ' This makes Excel visible
+    xlObject.Visible = True
+    
+    gridStudents.ColSel = 0
+    gridStudents.RowSel = 0
+End Sub
+
+Private Sub cmdPrint_Click()
+    
+    Dim BeginPage, EndPage, NumCopies, Orientation, i
+    ' Set Cancel to True.
+    cmnDlg.PrinterDefault = True
+    cmnDlg.CancelError = True
+    On Error GoTo ErrHandler
+    ' Display the Print dialog box.
+    cmnDlg.ShowPrinter
+    
+    ' Get user-selected values from the dialog box.
+    BeginPage = cmnDlg.FromPage
+    EndPage = cmnDlg.ToPage
+    NumCopies = cmnDlg.Copies
+    Orientation = cmnDlg.Orientation
+    For i = 1 To NumCopies
+        cmdExport.Visible = False
+        cmdPrint.Visible = False
+        cmdClose.Visible = False
+        PrintForm
+        cmdPrint.Visible = True
+        cmdClose.Visible = True
+        cmdExport.Visible = True
+     'Printer.EndDoc
+   Next
+ErrHandler:
+   ' User pressed Cancel button.
+   Exit Sub
+End Sub
 
 Private Sub Form_Load()
 
@@ -171,6 +258,57 @@ Private Sub Form_Load()
     Call sendRequest(sckMain, hAPI_ACCOUNT, listParams, hPOST_METHOD)
 End Sub
 
+Private Sub RefreshTableView()
+    gridStudents.Cols = 5
+    gridStudents.rows = 20
+    gridStudents.TextMatrix(0, 1) = "First Name"
+    gridStudents.TextMatrix(0, 2) = "Last Name"
+    gridStudents.TextMatrix(0, 3) = "Grade"
+    gridStudents.TextMatrix(0, 4) = "Payment"
+    
+    Dim totalWidth As Integer
+    totalWidth = 0
+        
+    Dim i As Integer
+    For i = 0 To 4
+        gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
+    Next
+    
+    For i = 1 To transRecord.Count
+        Dim studentInfo As Dictionary
+        Set studentInfo = transRecord(i)
+        gridStudents.TextMatrix(i, 0) = Format(i, String(4, "0"))
+        gridStudents.TextMatrix(i, 1) = studentInfo("first_name")
+        gridStudents.TextMatrix(i, 2) = studentInfo("last_name")
+        gridStudents.TextMatrix(i, 3) = grade(studentInfo("current_grade"))
+        gridStudents.TextMatrix(i, 4) = studentInfo("payment")
+        
+        Dim j As Integer
+        
+        For j = 0 To 4
+            If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
+                gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
+            End If
+        Next
+    Next
+    For i = 0 To 4
+        totalWidth = totalWidth + gridStudents.ColWidth(i)
+    Next
+    Me.Width = totalWidth + 750
+    Me.Height = Me.Height + 450
+End Sub
+
+Private Sub Form_Resize()
+    gridStudents.Width = Me.Width - widthDifference
+    Label1.Width = Me.Width - widthDifference
+    cmdClose.Left = Me.Width - 2955
+    cmdPrint.Left = Me.Width - 1635
+    
+    gridStudents.Height = Me.Height - heightDifference
+    cmdExport.Top = Me.Height - 1185
+    cmdClose.Top = Me.Height - 1185
+    cmdPrint.Top = Me.Height - 1185
+End Sub
 
 Private Sub sckMain_Connect()
     blnConnected = True
@@ -188,24 +326,8 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim message As Dictionary
 
     If p.Item("response") = 1 Then
-        Set selectedStudent = p.Item("message")
-
-        Dim fullName As String
-        
-        lblID.Caption = selectedStudent("Student_ID")
-        lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
-        lblAddress.Caption = selectedStudent("home_address")
-        lblSchoolYear.Caption = selectedStudent("school_year")
-        lblGrade.Caption = grade(selectedStudent("current_grade"))
-        lblPayment.Caption = Format(selectedStudent("total_payment"), "P##,##0.00")
-        lblMatriculation.Caption = Format(selectedStudent("total_matriculation"), "P##,##0.00")
-        Dim balanceLeft As Long
-        balanceLeft = selectedStudent("total_matriculation") - selectedStudent("total_payment")
-        lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
-        
-        lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
-        cmdUpdate.enabled = True
-        cmdPrint.enabled = True
+        Set transRecord = p.Item("message")
+        RefreshTableView
     Else
         MsgBox p.Item("message"), vbExclamation
         cmdUpdate.enabled = False
@@ -215,7 +337,6 @@ End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
-    MsgBox "Is Called"
     sckMain.Close
 End Sub
 

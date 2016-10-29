@@ -1,5 +1,5 @@
  <?php
- 
+
 include_once('db.php');
 
 
@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	$pssw = isset($_POST['pssw']) ? mysql_real_escape_string($_POST['pssw']) : "";
 	$role = isset($_POST['role']) ? mysql_real_escape_string($_POST['role']) : "";
 	$action = isset($_POST['action']) ? mysql_real_escape_string($_POST['action']) : "";
-	
+
 	if(!empty($usrn) && !empty($pssw)){
 		// check authorization
 		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND `role` = '$role'";
@@ -21,11 +21,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$query = "SELECT * FROM `montessori_queue` WHERE `status` = 'onprocess'";
 				$result = mysql_query($query);
 				$onprocesscount = mysql_num_rows($result);
-					
+
 				$query = "SELECT Queue_ID, student_info FROM `montessori_queue` WHERE `status` = 'onqueue'";
 				$result = mysql_query($query);
 				$onqueuecount = mysql_num_rows($result);
-				
+
 				if($onqueuecount > 0){
 					while($row = mysql_fetch_assoc($result)){
 						 $rows[] = $row;
@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$query = "SELECT * FROM `montessori_queue` WHERE `student_info` = '$student_info'";
 				$result = mysql_query($query);
 				$sameinfocount =  mysql_num_rows($result);
-				
+
 				if($sameinfocount == 0){
 					$query = "INSERT INTO `montessori_queue` VALUES (NULL, '$usrn', '$registered_ip', '$student_info', 'onqueue', CURRENT_TIMESTAMP)";
 					if(mysql_query($query)){
@@ -58,19 +58,19 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						}else{
 							$json = array("response" => 0, "message" => "An error has occured while fetching!");
 						}
-						
+
 					}else{
 						$json = array("response" => 0, "message" => $query);
 					}
-					
+
 				}else{
 					$json = array("response" => 0, "message" => "The student already exists!");
 				}
 			}else if($action == "drop_student"){
 				$queue_id = isset($_POST['queue_id']) ? mysql_real_escape_string($_POST['queue_id']) : "";
-				
+
 				$query = "UPDATE `montessori_queue` SET `status` = 'dropped' WHERE `Queue_ID` = '$queue_id'";
-				
+
 				if(mysql_query($query)){
 					$json = array("response" => 1, "message" => "The student has been dropped!");
 				}
@@ -78,17 +78,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 		}else{
 			$json = array("response" => -1, "message" => "Invalid Request");
 		}
-		
+
 	}else{
 		$json = array("response" => -1, "message" => "Invalid Request");
 	}
 }
-	 
+
  @mysql_close($conn);
- 
+
  /* Output header */
  header('Content-type: application/json');
  //echo $json;
  echo json_encode($json);
-	 
+
 ?>

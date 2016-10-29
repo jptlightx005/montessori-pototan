@@ -22,11 +22,28 @@ Begin VB.Form frmAccountant
    MinButton       =   0   'False
    ScaleHeight     =   8790
    ScaleWidth      =   7575
+   Begin VB.CommandButton cmdTransaction 
+      Caption         =   "Transaction List"
+      BeginProperty Font 
+         Name            =   "Arial Narrow"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   3480
+      TabIndex        =   30
+      Top             =   2640
+      Width           =   1215
+   End
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
       Enabled         =   0   'False
       Height          =   495
-      Left            =   1680
+      Left            =   1800
       TabIndex        =   29
       Top             =   8160
       Width           =   1215
@@ -57,7 +74,7 @@ Begin VB.Form frmAccountant
    Begin VB.CommandButton cmdReset 
       Caption         =   "Reset"
       Height          =   495
-      Left            =   4320
+      Left            =   4440
       TabIndex        =   15
       Top             =   8160
       Width           =   1215
@@ -66,7 +83,7 @@ Begin VB.Form frmAccountant
       Caption         =   "Update"
       Enabled         =   0   'False
       Height          =   495
-      Left            =   3000
+      Left            =   3120
       TabIndex        =   14
       Top             =   8160
       Width           =   1215
@@ -384,6 +401,10 @@ Private Sub cmdSearch_Click()
     End If
 End Sub
 
+Private Sub cmdTransaction_Click()
+    frmTotalTransaction.Show vbModal
+End Sub
+
 Private Sub cmdUpdate_Click()
     frmTransaction.currentBalance = selectedStudent("total_payment")
     frmTransaction.studentID = selectedStudent("Student_ID")
@@ -435,7 +456,9 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         Dim fullName As String
         
         lblID.Caption = selectedStudent("Student_ID")
-        lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
+        Dim MNameArray() As Byte
+        MNameArray = StrConv(selectedStudent("middle_name"), vbFromUnicode)
+        lblFullName.Caption = selectedStudent("first_name") & " " & Chr(MNameArray(0)) & ". " & selectedStudent("last_name")
         lblAddress.Caption = selectedStudent("home_address")
         lblSchoolYear.Caption = selectedStudent("school_year")
         lblGrade.Caption = grade(selectedStudent("current_grade"))
@@ -445,7 +468,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         balanceLeft = selectedStudent("total_matriculation") - selectedStudent("total_payment")
         lblBalance.Caption = Format(balanceLeft, "P##,##0.00")
         
-        lblPaidDate.Caption = Format(selectedStudent("date_of_payment"), "mmmm dd, yyyy")
+        lblPaidDate.Caption = Format(selectedStudent("latest_payment"), "mmmm dd, yyyy")
         cmdUpdate.enabled = True
         cmdPrint.enabled = True
     Else

@@ -173,7 +173,7 @@ Public Sub loadData()
     lblAddress.Caption = student("home_address")
     
     lblGrade.Caption = grade(student("current_grade"))
-    lblPaidDate.Caption = Format(student("date_of_payment"), "mmmm dd, yyyy")
+    lblPaidDate.Caption = Format(student("latest_payment"), "mmmm dd, yyyy")
     
     cmdEnroll.enabled = False
     countdown = 3
