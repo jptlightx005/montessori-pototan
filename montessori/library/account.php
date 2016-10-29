@@ -116,7 +116,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$query = "UPDATE `montessori_accounts` SET total_payment = total_payment + $balance_paid, `date_of_payment` = CURRENT_TIMESTAMP WHERE `Student_ID` = '$student_id'";
 
 				if(mysql_query($query)){
-                    $query = "INSERT INTO `montessori_transactions` VALUES (NULL, $student_id, $balance_paid)";
+                    $query = "INSERT INTO `montessori_transactions` VALUES (NULL, $student_id, $balance_paid, CURRENT_TIMESTAMP)";
                     if(mysql_query($query)){
                         $json = array("response" => 1, "message" => "Balance successfully updated!");
                     }else {

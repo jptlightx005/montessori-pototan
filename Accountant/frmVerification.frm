@@ -129,7 +129,7 @@ Private Sub cmdProceed_Click()
             paymentParams.Add "role", acctadmin.role
             paymentParams.Add "action", aSTUDENT_PAYMENT
             paymentParams.Add "student_id", studentID
-            paymentParams.Add "balance_paid", currentBalance + cashPaid
+            paymentParams.Add "balance_paid", cashPaid
             blnConnected = False
             Call sendRequest(sckMain, hAPI_ACCOUNT, paymentParams, hPOST_METHOD)
         End If

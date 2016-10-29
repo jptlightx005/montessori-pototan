@@ -17,4 +17,4 @@ Public Const aUPDATE_STUDENT As String = "update_student"
 Public Const aQUEUE_LIST As String = "queue_list"
 Public Const aREGISTER_STUDENT As String = "register_student"
 Public Const aSTUDENT_PAYMENT As String = "student_payment"
-
+Public Const aTRANSACTION_LIST As String = "transaction_list"
