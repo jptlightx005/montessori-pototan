@@ -61,7 +61,7 @@ Begin VB.Form frmPriorityNumber
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
-      Caption         =   "Priority Number"
+      Caption         =   "Student ID"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12

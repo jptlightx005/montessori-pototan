@@ -813,19 +813,24 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
             Set message = p.Item("message")
             Set queueCollection = message("list")
             Dim j As Integer
-            For j = 1 To queueCollection.Count
+            For j = 1 To IIf(queueCollection.Count > 10, 10, queueCollection.Count)
                 Dim record As Dictionary
                 Set record = queueCollection(j)
                 Dim i As Integer
                 i = j - 1
     
-                lblID(i).Caption = record("Queue_ID")
-                Dim StudentInf() As String
+                lblID(i).Caption = record("Student_ID")
+                
                 Dim MNameArray() As Byte
-                StudentInf = Split(record("student_info"), "|")
-                MNameArray = StrConv(StudentInf(3), vbFromUnicode)
-                lblName(i).Caption = StudentInf(2) & " " & Chr(MNameArray(0)) & ". " & StudentInf(4)
-                lblGrade(i).Caption = grade(StudentInf(1), Me)
+                
+                MNameArray = StrConv(record("middle_name"), vbFromUnicode)
+                Dim MInitial As String
+                MInitial = ""
+                If Len(record("middle_name")) > 0 Then
+                    MInitial = Chr(MNameArray(0)) & ". "
+                End If
+                lblName(i).Caption = record("first_name") & " " & MInitial & record("last_name")
+                lblGrade(i).Caption = grade(record("current_grade"), Me)
             Next
             lblEnrollees.Caption = message("onqueue")
             lblOnProcessCount.Caption = message("onprocess")

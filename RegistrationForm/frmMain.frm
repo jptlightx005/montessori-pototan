@@ -1242,65 +1242,7 @@ End Sub
 'separated by the delimiter "|"
 Private Sub cmdSubmit_Click()
     If ValidateData() Then
-        Dim studentInf As String
-        'initializes the studentInf variable
-        studentInf = ""
-        'if student is new
-        studentInf = studentInf & chkNew.Value & "|"
-        'student's grade
-        studentInf = studentInf & grade(cmbGrade.ListIndex) & "|"
-        'student's name
-        studentInf = studentInf & Trim(txtFName.Text) & "|"
-        studentInf = studentInf & Trim(txtMName.Text) & "|"
-        studentInf = studentInf & Trim(txtLName.Text) & "|"
-        studentInf = studentInf & gender() & "|"
-        'student's date of birth
-        studentInf = studentInf & DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text)) & "|"
-        'place of birth
-        studentInf = studentInf & Trim(txtPlace.Text) & "|"
-        'father's name and occupation
-        studentInf = studentInf & Trim(txtFather.Text) & "|"
-        studentInf = studentInf & Trim(txtFocc.Text) & "|"
-        'mother's name and occupation
-        studentInf = studentInf & Trim(txtMother.Text) & "|"
-        studentInf = studentInf & Trim(txtMocc.Text) & "|"
-        'home address
-        'studentInf = studentInf & Trim(txtAddress.Text) & "|"
-        studentInf = studentInf & Trim(txtBrgy.Text) & "|"
-        studentInf = studentInf & Trim(txtCity.Text) & "|"
-        studentInf = studentInf & Trim(txtProvince.Text) & "|"
-        'telephone number
-        studentInf = studentInf & Trim(txtTelNo.Text) & "|"
-        'guardian info
-        studentInf = studentInf & Trim(txtGuardian.Text) & "|"
-        studentInf = studentInf & Trim(txtGRelation.Text) & "|"
-        'studentInf = studentInf & Trim(txtGAddress.Text) & "|"
-        studentInf = studentInf & Trim(txtGBrgy.Text) & "|"
-        studentInf = studentInf & Trim(txtGCity.Text) & "|"
-        studentInf = studentInf & Trim(txtGProvince.Text) & "|"
-        studentInf = studentInf & Trim(txtGTelNo.Text) & "|"
-        'last school attended and religion
-        studentInf = studentInf & Trim(txtLast.Text) & "|"
-        studentInf = studentInf & Trim(txtReligion.Text) & "|"
-        studentInf = studentInf & chkBaptized.Value & "|"
-        studentInf = studentInf & chkComm.Value
-        
-        Dim choice As Integer
-        choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
-        
-        If choice = vbYes Then
-            Dim studentParams As Dictionary
-            Set studentParams = New Dictionary
-            studentParams.Add "usrn", admin.usrn
-            studentParams.Add "pssw", admin.pssw
-            studentParams.Add "role", admin.role
-            studentParams.Add "action", aREGISTER_STUDENT
-            studentParams.Add "student_info", studentInf
-            studentParams.Add "registered_ip", localip
-            blnConnected = False
-            
-            Call sendRequest(sckMain, hAPI_QUEUE, studentParams, hPOST_METHOD)
-        End If
+        SubmitData
     Else
         MsgBox "Please fill in required data!", vbExclamation
     End If
@@ -1442,4 +1384,54 @@ Private Sub sckMain_Close()
     sckMain.Close
 End Sub
 
+Private Sub SubmitData()
+    Dim newRecord As Dictionary
+    Set newRecord = New Dictionary
 
+    newRecord.Add "current_grade", grade(cmbGrade.ListIndex)
+    newRecord.Add "last_name", Trim(txtLName.Text)
+    newRecord.Add "first_name", Trim(txtFName.Text)
+    newRecord.Add "middle_name", Trim(txtMName.Text)
+    newRecord.Add "gender", gender()
+    newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+    newRecord.Add "place_of_birth", Trim(txtPlace.Text)
+    newRecord.Add "fathers_name", Trim(txtFather.Text)
+    newRecord.Add "father_occupation", Trim(txtFocc.Text)
+    newRecord.Add "mothers_name", Trim(txtMother.Text)
+    newRecord.Add "mother_occupation", Trim(txtMocc.Text)
+    'newRecord.Add "home_address", Trim(txtAddress.Text)
+    Dim address As String
+    address = Trim(txtBrgy.Text) & " "
+    address = address & Trim(txtCity.Text) & " "
+    address = address & Trim(txtProvince.Text)
+    newRecord.Add "home_address", Trim(address)
+    
+    newRecord.Add "home_number", Trim(txtTelNo.Text)
+    newRecord.Add "guardian_name", Trim(txtGuardian.Text)
+    newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
+    'newRecord.Add "guardian_address", Trim(txtGAddress.Text)
+    Dim gaddress As String
+    address = Trim(txtGBrgy.Text) & " "
+    address = address & Trim(txtGCity.Text) & " "
+    address = address & Trim(txtGProvince.Text)
+    newRecord.Add "guardian_address", Trim(gaddress)
+    newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
+    newRecord.Add "last_school_attended", Trim(txtLast.Text)
+    newRecord.Add "religion", Trim(txtReligion.Text)
+    newRecord.Add "is_baptized", chkBaptized.Value
+    newRecord.Add "first_communion", chkComm.Value
+
+    Dim choice As Integer
+    choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
+    
+    If choice = vbYes Then
+        newRecord.Add "usrn", admin.usrn
+        newRecord.Add "pssw", admin.pssw
+        newRecord.Add "role", admin.role
+        newRecord.Add "action", aREGISTER_STUDENT
+        newRecord.Add "registered_ip", localip
+        blnConnected = False
+        
+        Call sendRequest(sckMain, hAPI_QUEUE, newRecord, hPOST_METHOD)
+    End If
+End Sub

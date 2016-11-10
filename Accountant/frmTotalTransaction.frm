@@ -1,10 +1,10 @@
 VERSION 5.00
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmTotalTransaction 
    BackColor       =   &H00FFFFFF&
-   Caption         =   "Form1"
+   Caption         =   "Total Transaction"
    ClientHeight    =   7455
    ClientLeft      =   5685
    ClientTop       =   1800
@@ -133,7 +133,7 @@ Begin VB.Form frmTotalTransaction
    End
    Begin VB.Label lblTotal 
       BackColor       =   &H00FFFFFF&
-      Caption         =   "700000"
+      Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -373,7 +373,6 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         RefreshTableView
     Else
         MsgBox p.Item("message"), vbExclamation
-        cmdUpdate.enabled = False
         cmdPrint.enabled = False
     End If
 End Sub
