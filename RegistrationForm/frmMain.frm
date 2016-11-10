@@ -1388,6 +1388,7 @@ Private Sub SubmitData()
     Dim newRecord As Dictionary
     Set newRecord = New Dictionary
 
+    newRecord.Add "is_new", chkNew.Value
     newRecord.Add "current_grade", grade(cmbGrade.ListIndex)
     newRecord.Add "last_name", Trim(txtLName.Text)
     newRecord.Add "first_name", Trim(txtFName.Text)

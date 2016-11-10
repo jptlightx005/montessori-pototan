@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$result = mysql_query($query);
 				$onprocesscount = mysql_num_rows($result);
 
-				$query = "SELECT Student_ID, first_name, middle_name, last_name, current_grade, status FROM `montessori_queue` INNER JOIN montessori_records ON montessori_records.ID = montessori_queue.Student_ID WHERE `status` = 'onqueue'";
+				$query = "SELECT Student_ID, is_new, first_name, middle_name, last_name, current_grade, status FROM `montessori_queue` INNER JOIN montessori_records ON montessori_records.ID = montessori_queue.Student_ID WHERE `status` = 'onqueue'";
 				$result = mysql_query($query);
 				$onqueuecount = mysql_num_rows($result);
 
@@ -38,6 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$json = array("response" => 1, "message" => $message);
 				}
 			}else if($action == "register_student"){
+                $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
                 $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
 
                 $fields = "(";
@@ -49,6 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "pssw" &&
 						$key != "role" &&
 						$key != "action" &&
+                        $key != "is_new" &&
                         $key != "registered_ip"){
 							$newValue = addslashes($value);
 							$fields .= "$key, ";
@@ -63,7 +65,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 				$result = mysql_query($query);
 				if($result){
-					$query = "INSERT INTO `montessori_queue` VALUES ((SELECT LAST_INSERT_ID()), '$usrn', '$registered_ip', 'onqueue', CURRENT_TIMESTAMP)";
+					$query = "INSERT INTO `montessori_queue` VALUES ((SELECT LAST_INSERT_ID()), '$usrn', '$registered_ip', '$is_new', 'onqueue', CURRENT_TIMESTAMP)";
 					if(mysql_query($query)){
 						$query = "SELECT LAST_INSERT_ID() as Student_ID";
 						$result = mysql_query($query);
