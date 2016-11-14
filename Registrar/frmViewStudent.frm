@@ -788,7 +788,7 @@ Public Sub LoadStudentInfo()
     txtLName.Text = studentInfo("last_name")
     txtFName.Text = studentInfo("first_name")
     txtMName.Text = studentInfo("last_name")
-    cmbGender.ListIndex = IIf(studentInfo("gender") = "M", 0, 1)
+    cmbGender.ListIndex = IIf(studentInfo("gender") = "Male", 0, 1)
     cmbMonth.ListIndex = Month(CDate(studentInfo("date_of_birth"))) - 1
     cmbDay.ListIndex = Day(CDate(studentInfo("date_of_birth"))) - 1
 

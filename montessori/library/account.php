@@ -26,6 +26,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "role" &&
 						$key != "action" &&
                         $key != "Student_ID" &&
+                        $key != "is_new" &&
 						$key != "total_matriculation"){
 							$newValue = addslashes($value);
 							$setFieldValue .= "`$key` = '$newValue', ";
@@ -50,7 +51,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         }
 						$total_matriculation = addslashes($_POST['total_matriculation']);
 
-						$query = "INSERT INTO `montessori_accounts` (Student_ID, school_year, total_matriculation, total_payment) VALUES ('$student_id', '$school_year', $total_matriculation, 0)";
+                        $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
+                        if($is_new == 1){
+                            $query = "INSERT INTO `montessori_accounts` (Student_ID, school_year, total_matriculation, total_payment) VALUES ('$student_id', '$school_year', $total_matriculation, 0)";
+                        }else{
+                            $query = "UPDATE `montessori_accounts` SET school_year = '$school_year', total_matriculation = $total_matriculation, total_payment = 0 WHERE Student_ID = '$student_id'";
+                        }
 						$result = mysql_query($query);
 						if($result){
 							$json = array("response" => 1, "message" => $student_id);

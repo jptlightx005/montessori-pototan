@@ -866,6 +866,7 @@ Begin VB.Form frmMain
       Left            =   2520
       TabIndex        =   1
       Top             =   2400
+      Value           =   1  'Checked
       Width           =   2175
    End
    Begin VB.Label lblSchoolYear 
@@ -1175,6 +1176,33 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
+Dim action As String
+Dim selectedStudent As Dictionary
+
+Private Sub chkNew_Click()
+    EnableDisableControls (chkNew.Value = 1)
+    If chkNew.Value = 0 Then
+        Dim inputID As String
+        inputID = InputBox("Enter student's ID")
+        If inputID <> "" Then
+            Dim enrollParams As Dictionary
+            Set enrollParams = New Dictionary
+            enrollParams.Add "usrn", admin.usrn
+            enrollParams.Add "pssw", admin.pssw
+            enrollParams.Add "role", admin.role
+            enrollParams.Add "action", aSEARCH_STUDENT
+            enrollParams.Add "student_id", inputID
+            blnConnected = False
+    
+            action = aSEARCH_STUDENT
+    
+            Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
+        Else
+            chkNew.Value = 1
+        End If
+    End If
+End Sub
+
 'checks if the selected month is a
 '31 day, 30 day or february and a leap year
 Private Sub cmbMonth_Click()
@@ -1231,7 +1259,7 @@ End Sub
 
 'clears the boxes
 Public Sub ClearBoxes()
-    chkNew = 0
+    chkNew = 1
     cmbGrade.ListIndex = -1
     txtFName.Text = ""
     txtMName.Text = ""
@@ -1278,7 +1306,11 @@ End Sub
 'separated by the delimiter "|"
 Private Sub cmdSubmit_Click()
     If ValidateData() Then
-        SubmitData
+        If chkNew.Value = 1 Then
+            SubmitData
+        Else
+            UpdateData
+        End If
     Else
         MsgBox "Please fill in required data!", vbExclamation
     End If
@@ -1380,16 +1412,25 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     Debug.Print JSON.toString(p)
     If p.Item("response") = 1 Then
-        Dim message As String
-        message = "The student has been registered!"
-        MsgBox message, vbOKOnly + vbInformation
-        frmPriorityNumber.queueID = p.Item("message")
-        frmPriorityNumber.studentName = Trim(txtLName.Text)
-        frmPriorityNumber.Show vbModal
-        
-        Call ClearBoxes
+        If action = aREGISTER_STUDENT Or action = aUPDATE_STUDENT Then
+            Dim message As String
+            message = "The student has been registered!"
+            MsgBox message, vbOKOnly + vbInformation
+            frmPriorityNumber.queueID = p.Item("message")
+            frmPriorityNumber.studentName = Trim(txtLName.Text)
+            frmPriorityNumber.Show vbModal
+            
+            Call ClearBoxes
+        ElseIf action = aSEARCH_STUDENT Then
+            Set selectedStudent = p.Item("message")
+            LoadStudentInfo
+        End If
     Else
-        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+        message = p.Item("message")
+        MsgBox message, vbOKOnly + vbExclamation
+        If action = aSEARCH_STUDENT Then
+            chkNew.Value = 1
+        End If
     End If
     
 End Sub
@@ -1449,10 +1490,115 @@ Private Sub SubmitData()
         newRecord.Add "usrn", admin.usrn
         newRecord.Add "pssw", admin.pssw
         newRecord.Add "role", admin.role
-        newRecord.Add "action", aREGISTER_STUDENT
+        action = aREGISTER_STUDENT
+        newRecord.Add "action", action
         newRecord.Add "registered_ip", localip
         blnConnected = False
         
         Call sendRequest(sckMain, hAPI_QUEUE, newRecord, hPOST_METHOD)
     End If
+End Sub
+
+Private Sub UpdateData()
+    Dim updateRecord As Dictionary
+    Set updateRecord = New Dictionary
+
+    updateRecord.Add "student_id", selectedStudent("ID")
+    updateRecord.Add "is_new", chkNew.Value
+    updateRecord.Add "current_grade", grade(cmbGrade.ListIndex)
+    
+    Dim choice As Integer
+    choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
+    
+    If choice = vbYes Then
+        updateRecord.Add "usrn", admin.usrn
+        updateRecord.Add "pssw", admin.pssw
+        updateRecord.Add "role", admin.role
+        action = aUPDATE_STUDENT
+        updateRecord.Add "action", action
+        updateRecord.Add "registered_ip", localip
+        blnConnected = False
+        
+        Call sendRequest(sckMain, hAPI_QUEUE, updateRecord, hPOST_METHOD)
+    End If
+End Sub
+
+Public Sub LoadStudentInfo()
+'Dim StudentInf() As String
+
+'StudentInf = Split(selectedStudent("student_info"), "|")
+    chkNew.Value = selectedStudent("is_new")
+    cmbGrade.ListIndex = setgrade(selectedStudent("current_grade"), Me)
+    txtLName.Text = selectedStudent("last_name")
+    txtFName.Text = selectedStudent("first_name")
+    txtMName.Text = selectedStudent("middle_name")
+    optMale.Value = selectedStudent("gender") = "Male"
+    optFemale.Value = selectedStudent("gender") = "Female"
+    Dim dateOfBirth As Date
+    dateOfBirth = CDate(selectedStudent("date_of_birth"))
+    cmbMonth.ListIndex = Month(dateOfBirth) - 1
+    cmbDay.ListIndex = Day(dateOfBirth) - 1
+
+    Dim i As Integer
+    For i = 0 To cmbYear.ListCount - 1
+        If cmbYear.List(i) = Year(dateOfBirth) Then
+            cmbYear.ListIndex = i
+            Exit For
+        End If
+    Next
+
+    txtPlace.Text = selectedStudent("place_of_birth")
+    txtFather.Text = selectedStudent("fathers_name")
+    txtFocc.Text = selectedStudent("father_occupation")
+    txtMother.Text = selectedStudent("mothers_name")
+    txtMocc.Text = selectedStudent("mother_occupation")
+    'txtAddress.Text = StudentInf(12)
+    txtBrgy.Text = selectedStudent("home_address_brgy")
+    txtCity.Text = selectedStudent("home_address_city")
+    txtProvince.Text = selectedStudent("home_address_province")
+    txtTelNo.Text = selectedStudent("home_number")
+
+    txtGuardian.Text = selectedStudent("guardian_name")
+    txtGRelation.Text = selectedStudent("guardian_relation")
+    'txtGAddress.Text = StudentInf(12)
+    txtGBrgy.Text = selectedStudent("guardian_address_brgy")
+    txtGCity.Text = selectedStudent("guardian_address_city")
+    txtGProvince.Text = selectedStudent("guardian_address_province")
+    txtGTelNo.Text = selectedStudent("guardian_number")
+    txtLast.Text = selectedStudent("last_school_attended")
+    txtReligion.Text = selectedStudent("religion")
+    chkBaptized.Value = selectedStudent("is_baptized")
+    chkComm.Value = selectedStudent("first_communion")
+End Sub
+
+Sub EnableDisableControls(Changeable As Boolean)
+    txtLName.enabled = Changeable
+    txtFName.enabled = Changeable
+    txtMName.enabled = Changeable
+    optMale.enabled = Changeable
+    optFemale.enabled = Changeable
+    cmbMonth.enabled = Changeable
+    cmbDay.enabled = Changeable
+    cmbYear.enabled = Changeable
+    txtPlace.enabled = Changeable
+    txtFather.enabled = Changeable
+    txtFocc.enabled = Changeable
+    'txtAddress.enabled = Changeable
+    txtBrgy.enabled = Changeable
+    txtCity.enabled = Changeable
+    txtProvince.enabled = Changeable
+    txtMother.enabled = Changeable
+    txtMocc.enabled = Changeable
+    txtTelNo.enabled = Changeable
+    txtGuardian.enabled = Changeable
+    'txtGAddress.enabled = Changeable
+    txtGBrgy.enabled = Changeable
+    txtGCity.enabled = Changeable
+    txtGProvince.enabled = Changeable
+    txtLast.enabled = Changeable
+    txtGRelation.enabled = Changeable
+    txtGTelNo.enabled = Changeable
+    txtReligion.enabled = Changeable
+    chkBaptized.enabled = Changeable
+    chkComm.enabled = Changeable
 End Sub

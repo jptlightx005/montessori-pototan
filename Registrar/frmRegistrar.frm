@@ -678,23 +678,19 @@ Private Sub cmdEnroll_Click()
     Dim inputID As String
     inputID = InputBox("Enter student's ID")
     If inputID <> "" Then
-        If IsNumeric(inputID) Then
-            Dim enrollParams As Dictionary
-            Set enrollParams = New Dictionary
-            enrollParams.Add "usrn", regadmin.usrn
-            enrollParams.Add "pssw", regadmin.pssw
-            enrollParams.Add "role", regadmin.role
-            enrollParams.Add "action", aSEARCH_STUDENT
-            enrollParams.Add "student_id", inputID
-            blnConnected = False
+        Dim enrollParams As Dictionary
+        Set enrollParams = New Dictionary
+        enrollParams.Add "usrn", regadmin.usrn
+        enrollParams.Add "pssw", regadmin.pssw
+        enrollParams.Add "role", regadmin.role
+        enrollParams.Add "action", aSEARCH_STUDENT
+        enrollParams.Add "student_id", inputID
+        blnConnected = False
 
-            action = aSEARCH_STUDENT
+        action = aSEARCH_STUDENT
 
-            Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
-            tmr_update.enabled = False
-        Else
-            MsgBox "Invalid Input!", vbExclamation
-        End If
+        Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
+        tmr_update.enabled = False
     End If
 End Sub
 

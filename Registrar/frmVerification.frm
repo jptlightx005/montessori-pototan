@@ -879,7 +879,7 @@ Public Sub LoadStudentInfo()
     txtLName.Text = selectedStudent("last_name")
     txtFName.Text = selectedStudent("first_name")
     txtMName.Text = selectedStudent("middle_name")
-    cmbGender.ListIndex = IIf(selectedStudent("gender") = "M", 0, 1)
+    cmbGender.ListIndex = IIf(selectedStudent("gender") = "Male", 0, 1)
     Dim dateOfBirth As Date
     dateOfBirth = CDate(selectedStudent("date_of_birth"))
     cmbMonth.ListIndex = Month(dateOfBirth) - 1
@@ -1054,6 +1054,7 @@ Private Sub cmdRegister_Click()
             updateRecord.Add "role", regadmin.role
             updateRecord.Add "action", aREGISTER_STUDENT
 
+            updateRecord.Add "is_new", chkNew.Value
             updateRecord.Add "Student_ID", selectedStudent("ID")
             updateRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
             updateRecord.Add "last_name", Trim(txtLName.Text)
