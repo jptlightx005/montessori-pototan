@@ -8,25 +8,25 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     Dim strData As String
     Dim strPostData As String
     Dim strHeaders As String
-    
+
     Dim strHTTP As String
     Dim x As Integer
-    
+
     strPostData = ""
     strHeaders = ""
     'Debug.Print ("Endpoint: " & endpoint)
     'Debug.Print ("params" & JSON.toString(formData))
     If blnConnected Then Exit Sub
-    
+
     ' get the url
     eUrl = ExtractUrl(ipaddress & endpoint)
-    
+
     If eUrl.Host = vbNullString Then
         MsgBox "Invalid Host", vbCritical, "ERROR"
-    
+
         Exit Sub
     End If
-     ' configure winsock
+    ' configure winsock
     sckTarget.RemoteHost = eUrl.Host
 
     If eUrl.Scheme = "http" Then
@@ -40,7 +40,7 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     Else
         MsgBox "Invalid protocol schema"
     End If
-    
+
     ' build encoded data the data is url encoded in the form
     ' var1=value&var2=value
     strData = ""
@@ -48,15 +48,15 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
     For Each key In formData.keys
         strData = strData & key & "=" & formData(key) & "&"
     Next
-                            
+
     If eUrl.Query <> vbNullString Then
         eUrl.URI = eUrl.URI & "?" & eUrl.Query
     End If
-    
+
     ' check if any variables were supplied
     If strData <> vbNullString Then
         strData = Left(strData, Len(strData) - 1)
-    
+
         If strMethod = "GET" Then
             ' if this is a GET request then the URL encoded data
             ' is appended to the URI with a ?
@@ -73,13 +73,13 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
             strPostData = strData
             strHeaders = "Content-Type: application/x-www-form-urlencoded" & vbCrLf & _
                          "Content-Length: " & Len(strPostData) & vbCrLf
-                         
+
         End If
     End If
-    
+
     ' clear the old HTTP response
     Dim response As String
-    
+
     ' build the HTTP request in the form
     '
     ' {REQ METHOD} URI HTTP/1.0
@@ -95,12 +95,12 @@ Public Sub sendRequest(ByRef sckTarget As Winsock, endpoint As String, formData 
 
     response = strHTTP
     sckTarget.Connect
-    
+
     ' wait for a connection
     While Not blnConnected
         DoEvents
     Wend
-    
+
     ' send the HTTP request
     sckTarget.SendData strHTTP
 End Sub
@@ -110,25 +110,25 @@ Public Sub sendAnotherRequest(ByRef sckTarget As Winsock, endpoint As String, fo
     Dim strData As String
     Dim strPostData As String
     Dim strHeaders As String
-    
+
     Dim strHTTP As String
     Dim x As Integer
-    
+
     strPostData = ""
     strHeaders = ""
     'Debug.Print ("Endpoint: " & endpoint)
     'Debug.Print ("params" & JSON.toString(formData))
     If blnConnected Then Exit Sub
-    
+
     ' get the url
     eUrl = ExtractUrl(ipaddress & endpoint)
-    
+
     If eUrl.Host = vbNullString Then
         MsgBox "Invalid Host", vbCritical, "ERROR"
-    
+
         Exit Sub
     End If
-     ' configure winsock
+    ' configure winsock
     sckTarget.RemoteHost = eUrl.Host
 
     If eUrl.Scheme = "http" Then
@@ -142,7 +142,7 @@ Public Sub sendAnotherRequest(ByRef sckTarget As Winsock, endpoint As String, fo
     Else
         MsgBox "Invalid protocol schema"
     End If
-    
+
     ' build encoded data the data is url encoded in the form
     ' var1=value&var2=value
     strData = ""
@@ -150,15 +150,15 @@ Public Sub sendAnotherRequest(ByRef sckTarget As Winsock, endpoint As String, fo
     For Each key In formData.keys
         strData = strData & key & "=" & formData(key) & "&"
     Next
-                            
+
     If eUrl.Query <> vbNullString Then
         eUrl.URI = eUrl.URI & "?" & eUrl.Query
     End If
-    
+
     ' check if any variables were supplied
     If strData <> vbNullString Then
         strData = Left(strData, Len(strData) - 1)
-    
+
         If strMethod = "GET" Then
             ' if this is a GET request then the URL encoded data
             ' is appended to the URI with a ?
@@ -175,13 +175,13 @@ Public Sub sendAnotherRequest(ByRef sckTarget As Winsock, endpoint As String, fo
             strPostData = strData
             strHeaders = "Content-Type: application/x-www-form-urlencoded" & vbCrLf & _
                          "Content-Length: " & Len(strPostData) & vbCrLf
-                         
+
         End If
     End If
-    
+
     ' clear the old HTTP response
     Dim response As String
-    
+
     ' build the HTTP request in the form
     '
     ' {REQ METHOD} URI HTTP/1.0
@@ -197,12 +197,12 @@ Public Sub sendAnotherRequest(ByRef sckTarget As Winsock, endpoint As String, fo
 
     response = strHTTP
     sckTarget.Connect
-    
+
     ' wait for a connection
     While Not blnConnected
         DoEvents
     Wend
-    
+
     ' send the HTTP request
     sckTarget.SendData strHTTP
 End Sub

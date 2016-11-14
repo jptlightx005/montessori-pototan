@@ -149,35 +149,35 @@ End Sub
 
 Private Sub cmdExport_Click()
     Set xlObject = New Excel.Application
- 
+
     'This Adds a new woorkbook, you could open the workbook from file also
     Set xlWB = xlObject.Workbooks.Add
-                
-    Clipboard.Clear 'Clear the Clipboard
+
+    Clipboard.Clear    'Clear the Clipboard
     With gridStudents
         'Select Full Contents (You could also select partial content)
         .Col = 0               'From first column
         .Row = 0               'From first Row (header)
         .ColSel = .Cols - 1    'Select all columns
         .RowSel = .rows - 1    'Select all rows
-        Clipboard.SetText .Clip 'Send to Clipboard
+        Clipboard.SetText .Clip    'Send to Clipboard
     End With
-            
+
     With xlObject.ActiveWorkbook.ActiveSheet
-        .Range("B5").Select 'Select Cell A1 (will paste from here, to different cells)
+        .Range("B5").Select    'Select Cell A1 (will paste from here, to different cells)
         .Paste              'Paste clipboard contents
     End With
-    
+
     xlObject.Columns.EntireColumn.AutoFit
     ' This makes Excel visible
     xlObject.Visible = True
-    
+
     gridStudents.ColSel = 0
     gridStudents.RowSel = 0
 End Sub
 
 Private Sub cmdPrint_Click()
-    
+
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
@@ -185,7 +185,7 @@ Private Sub cmdPrint_Click()
     On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
-    
+
     ' Get user-selected values from the dialog box.
     BeginPage = cmnDlg.FromPage
     EndPage = cmnDlg.ToPage
@@ -199,15 +199,15 @@ Private Sub cmdPrint_Click()
         cmdExport.Visible = True
         cmdPrint.Visible = True
         cmdClose.Visible = True
-     'Printer.EndDoc
-   Next
+        'Printer.EndDoc
+    Next
 ErrHandler:
-   ' User pressed Cancel button.
-   Exit Sub
+    ' User pressed Cancel button.
+    Exit Sub
 End Sub
 
 Private Sub Command1_Click()
-    
+
 End Sub
 
 Private Sub Form_Load()
@@ -217,7 +217,7 @@ Private Sub Form_Load()
     gridStudents.TextMatrix(0, 2) = "Middle Name"
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
-    
+
     Dim i As Integer
     Dim totalWidth As Integer
     Dim totalHeight As Integer
@@ -229,7 +229,7 @@ Private Sub Form_Load()
         gridStudents.CellFontBold = True
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
     Next
-    
+
     For i = 1 To studentList.Count
         Dim studentInfo As Dictionary
         Set studentInfo = studentList(i)
@@ -238,7 +238,7 @@ Private Sub Form_Load()
         gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
-        
+
         Dim j As Integer
         For j = 0 To 4
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
@@ -260,7 +260,7 @@ Private Sub Form_Resize()
     lblGrade.width = Me.width - widthDifference
     cmdClose.Left = Me.width - 2955
     cmdPrint.Left = Me.width - 1635
-    
+
     gridStudents.Height = Me.Height - heightDifference
     cmdExport.Top = Me.Height - 1110
     cmdClose.Top = Me.Height - 1110

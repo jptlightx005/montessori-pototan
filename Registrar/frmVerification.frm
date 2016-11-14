@@ -23,6 +23,7 @@ Begin VB.Form frmVerification
    ScaleHeight     =   8220
    ScaleWidth      =   12405
    Begin VB.ComboBox cmbGender 
+      Enabled         =   0   'False
       Height          =   390
       ItemData        =   "frmVerification.frx":0000
       Left            =   240
@@ -35,6 +36,7 @@ Begin VB.Form frmVerification
    Begin VB.CheckBox chkNew 
       BackColor       =   &H00C0E0FF&
       Caption         =   "New Student"
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -51,6 +53,7 @@ Begin VB.Form frmVerification
       Width           =   2175
    End
    Begin VB.ComboBox cmbGrade 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -70,6 +73,7 @@ Begin VB.Form frmVerification
       Width           =   2055
    End
    Begin VB.TextBox txtFName 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -86,6 +90,7 @@ Begin VB.Form frmVerification
       Width           =   2295
    End
    Begin VB.TextBox txtMName 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -102,6 +107,7 @@ Begin VB.Form frmVerification
       Width           =   2055
    End
    Begin VB.TextBox txtLName 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -118,6 +124,7 @@ Begin VB.Form frmVerification
       Width           =   2535
    End
    Begin VB.ComboBox cmbMonth 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -137,6 +144,7 @@ Begin VB.Form frmVerification
       Width           =   1215
    End
    Begin VB.ComboBox cmbDay 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -154,6 +162,7 @@ Begin VB.Form frmVerification
       Width           =   1215
    End
    Begin VB.ComboBox cmbYear 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -171,6 +180,7 @@ Begin VB.Form frmVerification
       Width           =   1215
    End
    Begin VB.TextBox txtPlace 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -187,6 +197,7 @@ Begin VB.Form frmVerification
       Width           =   2535
    End
    Begin VB.TextBox txtReligion 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -203,6 +214,7 @@ Begin VB.Form frmVerification
       Width           =   2655
    End
    Begin VB.TextBox txtLast 
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   11.25
@@ -272,6 +284,7 @@ Begin VB.Form frmVerification
       Top             =   2400
       Width           =   6015
       Begin VB.TextBox txtMocc 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   35
@@ -279,6 +292,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtMother 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   34
@@ -286,6 +300,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtFocc 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   33
@@ -293,6 +308,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtFather 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   32
@@ -354,6 +370,7 @@ Begin VB.Form frmVerification
       Top             =   2400
       Width           =   6015
       Begin VB.TextBox txtCity 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   26
@@ -361,6 +378,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtTelNo 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   25
@@ -368,6 +386,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtBrgy 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   24
@@ -375,6 +394,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtProvince 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   23
@@ -463,6 +483,7 @@ Begin VB.Form frmVerification
       Top             =   4560
       Width           =   8775
       Begin VB.TextBox txtGTelNo 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   5880
          TabIndex        =   15
@@ -470,6 +491,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtGRelation 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   14
@@ -477,6 +499,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtGuardian 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   240
          TabIndex        =   13
@@ -484,6 +507,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtGCity 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   5880
          TabIndex        =   12
@@ -491,6 +515,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtGBrgy 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   11
@@ -498,6 +523,7 @@ Begin VB.Form frmVerification
          Width           =   2655
       End
       Begin VB.TextBox txtGProvince 
+         Enabled         =   0   'False
          Height          =   375
          Left            =   3120
          TabIndex        =   10
@@ -845,47 +871,50 @@ Public selectedStudent As Dictionary
 
 'Loads current student's information
 Public Sub LoadStudentInfo()
-    Dim StudentInf() As String
+'Dim StudentInf() As String
 
-    'StudentInf = Split(selectedStudent("student_info"), "|")
-    chkNew.Value = selectedStudent("")
-    cmbGrade.ListIndex = grade(StudentInf(1), Me)
-    txtLName.Text = StudentInf(4)
-    txtFName.Text = StudentInf(2)
-    txtMName.Text = StudentInf(3)
-    cmbGender.ListIndex = IIf(StudentInf(5) = "M", 0, 1)
-    cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
-    cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
-    
+'StudentInf = Split(selectedStudent("student_info"), "|")
+    chkNew.Value = selectedStudent("is_new")
+    cmbGrade.ListIndex = grade(selectedStudent("current_grade"), Me)
+    txtLName.Text = selectedStudent("last_name")
+    txtFName.Text = selectedStudent("first_name")
+    txtMName.Text = selectedStudent("middle_name")
+    cmbGender.ListIndex = IIf(selectedStudent("gender") = "M", 0, 1)
+    Dim dateOfBirth As Date
+    dateOfBirth = CDate(selectedStudent("date_of_birth"))
+    cmbMonth.ListIndex = Month(dateOfBirth) - 1
+    cmbDay.ListIndex = Day(dateOfBirth) - 1
+
     Dim i As Integer
     For i = 0 To cmbYear.ListCount - 1
-        If cmbYear.List(i) = Year(CDate(StudentInf(6))) Then
+        If cmbYear.List(i) = Year(dateOfBirth) Then
             cmbYear.ListIndex = i
             Exit For
         End If
     Next
 
-    txtPlace.Text = StudentInf(7)
-    txtFather.Text = StudentInf(8)
-    txtFocc.Text = StudentInf(9)
-    txtMother.Text = StudentInf(10)
-    txtMocc.Text = StudentInf(11)
+    txtPlace.Text = selectedStudent("place_of_birth")
+    txtFather.Text = selectedStudent("fathers_name")
+    txtFocc.Text = selectedStudent("father_occupation")
+    txtMother.Text = selectedStudent("mothers_name")
+    txtMocc.Text = selectedStudent("mother_occupation")
     'txtAddress.Text = StudentInf(12)
-    txtBrgy.Text = StudentInf(12)
-    txtCity.Text = StudentInf(13)
-    txtProvince.Text = StudentInf(14)
-    txtTelNo.Text = StudentInf(15)
-    txtGuardian.Text = StudentInf(16)
-    txtGRelation.Text = StudentInf(17)
+    txtBrgy.Text = selectedStudent("home_address_brgy")
+    txtCity.Text = selectedStudent("home_address_city")
+    txtProvince.Text = selectedStudent("home_address_province")
+    txtTelNo.Text = selectedStudent("home_number")
+
+    txtGuardian.Text = selectedStudent("guardian_name")
+    txtGRelation.Text = selectedStudent("guardian_relation")
     'txtGAddress.Text = StudentInf(12)
-    txtGBrgy.Text = StudentInf(18)
-    txtGCity.Text = StudentInf(19)
-    txtGProvince.Text = StudentInf(20)
-    txtGTelNo.Text = StudentInf(21)
-    txtLast.Text = StudentInf(22)
-    txtReligion.Text = StudentInf(23)
-    chkBaptized.Value = StudentInf(24)
-    chkComm.Value = StudentInf(25)
+    txtGBrgy.Text = selectedStudent("guardian_address_brgy")
+    txtGCity.Text = selectedStudent("guardian_address_city")
+    txtGProvince.Text = selectedStudent("guardian_address_province")
+    txtGTelNo.Text = selectedStudent("guardian_number")
+    txtLast.Text = selectedStudent("last_school_attended")
+    txtReligion.Text = selectedStudent("religion")
+    chkBaptized.Value = selectedStudent("is_baptized")
+    chkComm.Value = selectedStudent("first_communion")
 End Sub
 
 Private Sub chkBCert_Click()
@@ -909,33 +938,33 @@ End Sub
 Private Sub cmbMonth_Click()
     Dim i As Integer
     Select Case cmbMonth.ListIndex
-        Case 0, 2, 4, 6, 7, 9, 11
-            cmbDay.Clear
-            For i = 1 To 31
-                cmbDay.AddItem (i)
-            Next
-        Case 3, 5, 8, 10
-            cmbDay.Clear
-            For i = 1 To 30
-                cmbDay.AddItem (i)
-            Next
-        Case 1
-            cmbDay.Clear
-            If cmbYear.ListIndex >= 0 Then
-                If cmbYear.Text Mod 4 = 0 Then
-                    For i = 1 To 29
-                        cmbDay.AddItem (i)
-                    Next
-                Else
-                    For i = 1 To 28
-                        cmbDay.AddItem (i)
-                    Next
-                End If
+    Case 0, 2, 4, 6, 7, 9, 11
+        cmbDay.Clear
+        For i = 1 To 31
+            cmbDay.AddItem (i)
+        Next
+    Case 3, 5, 8, 10
+        cmbDay.Clear
+        For i = 1 To 30
+            cmbDay.AddItem (i)
+        Next
+    Case 1
+        cmbDay.Clear
+        If cmbYear.ListIndex >= 0 Then
+            If cmbYear.Text Mod 4 = 0 Then
+                For i = 1 To 29
+                    cmbDay.AddItem (i)
+                Next
             Else
                 For i = 1 To 28
                     cmbDay.AddItem (i)
                 Next
             End If
+        Else
+            For i = 1 To 28
+                cmbDay.AddItem (i)
+            Next
+        End If
     End Select
 End Sub
 
@@ -986,12 +1015,12 @@ Sub EnableDisableControls()
     txtReligion.enabled = Changeable
     chkBaptized.enabled = Changeable
     chkComm.enabled = Changeable
-    
+
     chkBCert.enabled = Not Changeable
     chkReport.enabled = Not Changeable
     chkNoReport.enabled = Not Changeable
     cmdRegister.enabled = IIf(Changeable, False, chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
-    
+
     'Enables the save button
     cmdSave.enabled = Changeable
 End Sub
@@ -1016,52 +1045,52 @@ Private Sub cmdRegister_Click()
         If CheckMatriculation() = False Then
             Exit Sub
         End If
-        
+
         If Validation() Then
-            Dim newRecord As Dictionary
-            Set newRecord = New Dictionary
-            newRecord.Add "usrn", regadmin.usrn
-            newRecord.Add "pssw", regadmin.pssw
-            newRecord.Add "role", regadmin.role
-            newRecord.Add "action", aREGISTER_STUDENT
-        
-            newRecord.Add "Queue_ID", selectedStudent("Queue_ID")
-            newRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
-            newRecord.Add "last_name", Trim(txtLName.Text)
-            newRecord.Add "first_name", Trim(txtFName.Text)
-            newRecord.Add "middle_name", Trim(txtMName.Text)
-            newRecord.Add "gender", cmbGender.Text
-            newRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-            newRecord.Add "place_of_birth", Trim(txtPlace.Text)
-            newRecord.Add "fathers_name", Trim(txtFather.Text)
-            newRecord.Add "father_occupation", Trim(txtFocc.Text)
-            newRecord.Add "mothers_name", Trim(txtMother.Text)
-            newRecord.Add "mother_occupation", Trim(txtMocc.Text)
-            'newRecord.Add "home_address", Trim(txtAddress.Text)
-            Dim address As String
-            address = Trim(txtBrgy.Text) & " "
-            address = address & Trim(txtCity.Text) & " "
-            address = address & Trim(txtProvince.Text)
-            newRecord.Add "home_address", Trim(address)
-            
-            newRecord.Add "home_number", Trim(txtTelNo.Text)
-            newRecord.Add "guardian_name", Trim(txtGuardian.Text)
-            newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
-            'newRecord.Add "guardian_address", Trim(txtGAddress.Text)
-            Dim gaddress As String
-            address = Trim(txtGBrgy.Text) & " "
-            address = address & Trim(txtGCity.Text) & " "
-            address = address & Trim(txtGProvince.Text)
-            newRecord.Add "guardian_address", Trim(gaddress)
-            newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
-            newRecord.Add "last_school_attended", Trim(txtLast.Text)
-            newRecord.Add "religion", Trim(txtReligion.Text)
-            newRecord.Add "is_baptized", chkBaptized.Value
-            newRecord.Add "first_communion", chkComm.Value
-            newRecord.Add "total_matriculation", txtMatriculation.Text
-            
+            Dim updateRecord As Dictionary
+            Set updateRecord = New Dictionary
+            updateRecord.Add "usrn", regadmin.usrn
+            updateRecord.Add "pssw", regadmin.pssw
+            updateRecord.Add "role", regadmin.role
+            updateRecord.Add "action", aREGISTER_STUDENT
+
+            updateRecord.Add "Student_ID", selectedStudent("ID")
+            updateRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+            updateRecord.Add "last_name", Trim(txtLName.Text)
+            updateRecord.Add "first_name", Trim(txtFName.Text)
+            updateRecord.Add "middle_name", Trim(txtMName.Text)
+            updateRecord.Add "gender", cmbGender.Text
+            updateRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+            updateRecord.Add "place_of_birth", Trim(txtPlace.Text)
+            updateRecord.Add "fathers_name", Trim(txtFather.Text)
+
+            updateRecord.Add "father_occupation", Trim(txtFocc.Text)
+            updateRecord.Add "mothers_name", Trim(txtMother.Text)
+            updateRecord.Add "mother_occupation", Trim(txtMocc.Text)
+            'updateRecord.Add "home_address", Trim(txtAddress.Text)
+
+            updateRecord.Add "home_address_brgy", Trim(txtBrgy.Text)
+            updateRecord.Add "home_address_city", Trim(txtCity.Text)
+            updateRecord.Add "home_address_province", Trim(txtProvince.Text)
+
+            updateRecord.Add "home_number", Trim(txtTelNo.Text)
+            updateRecord.Add "guardian_name", Trim(txtGuardian.Text)
+            updateRecord.Add "guardian_relation", Trim(txtGRelation.Text)
+            'updateRecord.Add "guardian_address", Trim(txtGAddress.Text)
+
+            updateRecord.Add "guardian_address_brgy", Trim(txtGBrgy.Text)
+            updateRecord.Add "guardian_address_city", Trim(txtGCity.Text)
+            updateRecord.Add "guardian_address_province", Trim(txtGProvince.Text)
+
+            updateRecord.Add "guardian_number", Trim(txtGTelNo.Text)
+            updateRecord.Add "last_school_attended", Trim(txtLast.Text)
+            updateRecord.Add "religion", Trim(txtReligion.Text)
+            updateRecord.Add "is_baptized", chkBaptized.Value
+            updateRecord.Add "first_communion", chkComm.Value
+            updateRecord.Add "total_matriculation", txtMatriculation.Text
+
             blnConnected = False
-            Call sendRequest(sckMain, hAPI_ACCOUNT, newRecord, hPOST_METHOD)
+            Call sendRequest(sckMain, hAPI_ACCOUNT, updateRecord, hPOST_METHOD)
         Else
             MsgBox "Please fill in required data!", vbExclamation
         End If
@@ -1070,20 +1099,20 @@ End Sub
 
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
-        Case 0:
-            setgrade = "preschool"
-        Case 1:
-            setgrade = "grade1"
-        Case 2:
-            setgrade = "grade2"
-        Case 3:
-            setgrade = "grade3"
-        Case 4:
-            setgrade = "grade4"
-        Case 5:
-            setgrade = "grade5"
-        Case 6:
-            setgrade = "grade6"
+    Case 0:
+        setgrade = "preschool"
+    Case 1:
+        setgrade = "grade1"
+    Case 2:
+        setgrade = "grade2"
+    Case 3:
+        setgrade = "grade3"
+    Case 4:
+        setgrade = "grade4"
+    Case 5:
+        setgrade = "grade5"
+    Case 6:
+        setgrade = "grade6"
     End Select
 End Function
 
@@ -1105,7 +1134,7 @@ Private Sub Form_Load()
         cmbYear.AddItem (i)
     Next
     Changeable = False
-    
+
     Call LoadStudentInfo
 End Sub
 Private Sub sckMain_Connect()
@@ -1115,36 +1144,33 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-    
+
     sckMain.GetData strResponse, vbString, bytesTotal
     Debug.Print (strResponse)
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    
+
     If p.Item("response") = 1 Then
         Dim message As String
         message = "The student has been registered!"
-        
+
         MsgBox message, vbOKOnly + vbInformation
-        
-        frmStudentIDPrint.studentID = p.Item("message")
-        frmStudentIDPrint.studentName = Trim(txtLName.Text)
-        frmStudentIDPrint.Show vbModal
+
         Unload Me
     Else
-        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation    'prompts
     End If
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
-    
+
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    
+
     sckMain.Close
 End Sub
 
@@ -1162,7 +1188,7 @@ Private Function Validation() As Boolean
     isValid = isValid And txtBrgy.Text <> ""
     isValid = isValid And txtCity.Text <> ""
     isValid = isValid And txtProvince.Text <> ""
-    
+
     Validation = isValid
 End Function
 

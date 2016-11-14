@@ -90,11 +90,11 @@ Public studentName As String
 
 Private Sub Form_Activate()
     On Error GoTo ErrHandler
-    
+
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
-    
+
     ' Get user-selected values from the dialog box.
     BeginPage = cmnDlg.FromPage
     EndPage = cmnDlg.ToPage
@@ -102,22 +102,22 @@ Private Sub Form_Activate()
     Orientation = cmnDlg.Orientation
     For i = 1 To NumCopies
 
-     PrintForm
+        PrintForm
 
-     'Printer.EndDoc
-   Next
-   Exit Sub
+        'Printer.EndDoc
+    Next
+    Exit Sub
 ErrHandler:
-   ' User pressed Cancel button.
-   Exit Sub
+    ' User pressed Cancel button.
+    Exit Sub
 End Sub
 
 Private Sub Form_Load()
     lblStudentID.Caption = studentID
     lblLastName.Caption = studentName
-    
+
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    
+
 End Sub

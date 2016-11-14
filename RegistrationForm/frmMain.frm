@@ -1300,33 +1300,6 @@ Private Function DoB(bm As Integer, bd As Integer, by As Integer) As String
     DoB = Format$(CDate((bm + 1) & "-" & bd & "-" & by), "yyyy-mm-dd")
 End Function
 
-'this serves as a testing information
-Private Sub cmdTester_Click()
-    cmbGrade.ListIndex = 3
-    txtFName.Text = "Liza"
-    txtMName.Text = "Gil"
-    txtLName.Text = "Soberano"
-    optFemale.Value = True
-    cmbMonth.ListIndex = 3
-    cmbDay.ListIndex = 10
-    cmbYear.ListIndex = 6
-    txtPlace.Text = "Pototan, Iloilo"
-    txtFather.Text = "Enrique T. Soberano"
-    txtFocc.Text = "Teacher"
-    txtMother.Text = "Sue G. Soberano"
-    txtMocc.Text = "Teacher"
-    txtAddress.Text = "Brgy. Cau-ayan Pototan, Iloilo"
-    txtTelNo.Text = "022 329 3293"
-    txtGuardian.Text = "Sue G. Soberano"
-    txtGRelation.Text = "Mother"
-    txtGAddress.Text = "Brgy. Cau-ayan Pototan, Iloilo"
-    txtGTelNo.Text = "022 329 3293"
-    txtLast.Text = "Rizal Elementary School"
-    txtReligion.Text = "Roman Catholic"
-    chkBaptized.Value = 1
-    chkComm.Value = 1
-End Sub
-
 Private Sub Form_Load()
     'indicates the admin that logged into the system
     lbladmin = admin.usrn
@@ -1401,21 +1374,19 @@ Private Sub SubmitData()
     newRecord.Add "mothers_name", Trim(txtMother.Text)
     newRecord.Add "mother_occupation", Trim(txtMocc.Text)
     'newRecord.Add "home_address", Trim(txtAddress.Text)
-    Dim address As String
-    address = Trim(txtBrgy.Text) & " "
-    address = address & Trim(txtCity.Text) & " "
-    address = address & Trim(txtProvince.Text)
-    newRecord.Add "home_address", Trim(address)
+    newRecord.Add "home_address_brgy", Trim(txtBrgy.Text)
+    newRecord.Add "home_address_city", Trim(txtCity.Text)
+    newRecord.Add "home_address_province", Trim(txtProvince.Text)
     
     newRecord.Add "home_number", Trim(txtTelNo.Text)
     newRecord.Add "guardian_name", Trim(txtGuardian.Text)
     newRecord.Add "guardian_relation", Trim(txtGRelation.Text)
     'newRecord.Add "guardian_address", Trim(txtGAddress.Text)
-    Dim gaddress As String
-    address = Trim(txtGBrgy.Text) & " "
-    address = address & Trim(txtGCity.Text) & " "
-    address = address & Trim(txtGProvince.Text)
-    newRecord.Add "guardian_address", Trim(gaddress)
+
+    newRecord.Add "guardian_address_brgy", Trim(txtGBrgy.Text)
+    newRecord.Add "guardian_address_city", Trim(txtGCity.Text)
+    newRecord.Add "guardian_address_province", Trim(txtGProvince.Text)
+    
     newRecord.Add "guardian_number", Trim(txtGTelNo.Text)
     newRecord.Add "last_school_attended", Trim(txtLast.Text)
     newRecord.Add "religion", Trim(txtReligion.Text)

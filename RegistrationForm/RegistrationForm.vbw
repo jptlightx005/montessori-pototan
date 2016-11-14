@@ -1,8 +1,8 @@
 frmMain = 115, 29, 919, 679, , 22, -11, 963, 837, C
-frmLogin = 224, 50, 942, 666, C, 249, 198, 967, 814, C
+frmLogin = 224, 50, 942, 666, , 249, 198, 967, 814, C
 RegistrationFormModule = 183, 35, 901, 629, C
 frmSplash = 250, 250, 959, 857, C, 225, 225, 934, 832, C
-administrator = 0, 0, 0, 0, C
+administrator = 250, 250, 960, 857, C
 Constants = 112, -9, 822, 598, 
 cStringBuilder = 0, 0, 0, 0, C
 INIread = 175, 9, 1139, 547, C

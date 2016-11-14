@@ -338,7 +338,7 @@ Private Sub cmdPrint_Click()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -357,7 +357,7 @@ Private Sub cmdPrint_Click()
         cmdClose.Visible = True
      'Printer.EndDoc
    Next
-errHandler:
+ErrHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
@@ -367,7 +367,11 @@ Private Sub Form_Load()
         
     lblID.Caption = selectedStudent("Student_ID")
     lblFullName.Caption = selectedStudent("first_name") & " " & selectedStudent("last_name")
-    lblAddress.Caption = selectedStudent("home_address")
+    Dim studentAddress As String
+    studentAddress = selectedStudent("home_address_brgy")
+    studentAddress = studentAddress & ", " & selectedStudent("home_address_city")
+    studentAddress = studentAddress & ", " & selectedStudent("home_address_province")
+    lblAddress.Caption = studentAddress
     lblSchoolYear.Caption = selectedStudent("school_year")
     lblGrade.Caption = grade(selectedStudent("current_grade"))
     lblPayment.Caption = Format(selectedStudent("total_payment"), "P##,##0.00")

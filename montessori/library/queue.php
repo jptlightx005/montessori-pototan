@@ -22,7 +22,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				$result = mysql_query($query);
 				$onprocesscount = mysql_num_rows($result);
 
-				$query = "SELECT Student_ID, is_new, first_name, middle_name, last_name, current_grade, status FROM `montessori_queue` INNER JOIN montessori_records ON montessori_records.ID = montessori_queue.Student_ID WHERE `status` = 'onqueue'";
+				// $query = "SELECT Student_ID, first_name, middle_name, last_name, current_grade, status FROM `montessori_queue` INNER JOIN montessori_records ON montessori_records.ID = montessori_queue.Student_ID WHERE `status` = 'onqueue'";
+                $query = "SELECT * FROM montessori_records AS r JOIN montessori_queue AS q ON r.ID = q.Student_ID  WHERE `status` = 'onqueue'";
 				$result = mysql_query($query);
 				$onqueuecount = mysql_num_rows($result);
 
@@ -79,15 +80,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 							$json = array("response" => 0, "message" => "An error has occured while fetching!");
 						}
 					}else{
-						$json = array("response" => 0, "message" => "An error has occured while saving!");
+						$json = array("response" => 0, "message" => "An error has occured while saving!", "query2" => $query);
 					}
 				}else{
 					$json = array("response" => 0, "message" => "An error has occured while saving!", "query" => $query);
 				}
 			}else if($action == "drop_student"){
-				$queue_id = isset($_POST['queue_id']) ? mysql_real_escape_string($_POST['queue_id']) : "";
+				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 
-				$query = "UPDATE `montessori_queue` SET `status` = 'dropped' WHERE `Queue_ID` = '$queue_id'";
+				$query = "UPDATE `montessori_queue` SET `status` = 'dropped' WHERE `Student_ID` = '$student_id'";
 
 				if(mysql_query($query)){
 					$json = array("response" => 1, "message" => "The student has been dropped!");

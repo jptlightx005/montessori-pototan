@@ -164,9 +164,9 @@ Public Sub searchStudent()
     searchParams.Add "action", aSEARCH_STUDENT
     searchParams.Add "filter_key", "last_name"
     searchParams.Add "filter_value", txtSearch.Text
-    
+
     blnConnected = False
-    
+
     Call sendRequest(sckMain, hAPI_STUDENTS, searchParams, hPOST_METHOD)
 End Sub
 
@@ -179,10 +179,10 @@ Private Sub RefreshTableView()
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
     gridStudents.TextMatrix(0, 5) = "Grade"
-    
+
     Dim totalWidth As Integer
     totalWidth = 0
-        
+
     Dim i As Integer
     For i = 0 To 5
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
@@ -197,16 +197,16 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
         gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
-        
+
         Dim j As Integer
-        
+
         For j = 0 To 5
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
             End If
         Next
     Next
-    
+
     For i = 0 To 5
         totalWidth = totalWidth + gridStudents.ColWidth(i)
     Next
@@ -215,20 +215,20 @@ End Sub
 
 Public Function grade(grd As String) As String
     Select Case grd
-        Case "preschool"
-            grade = "Nursery"
-        Case "grade1"
-            grade = "Grade I"
-        Case "grade2"
-            grade = "Grade II"
-        Case "grade3"
-            grade = "Grade III"
-        Case "grade4"
-            grade = "Grade IV"
-        Case "grade5"
-            grade = "Grade V"
-        Case "grade6"
-            grade = "Grade VI"
+    Case "preschool"
+        grade = "Nursery"
+    Case "grade1"
+        grade = "Grade I"
+    Case "grade2"
+        grade = "Grade II"
+    Case "grade3"
+        grade = "Grade III"
+    Case "grade4"
+        grade = "Grade IV"
+    Case "grade5"
+        grade = "Grade V"
+    Case "grade6"
+        grade = "Grade VI"
     End Select
 End Function
 
@@ -259,9 +259,9 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-    
+
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     Debug.Print (JSON.toString(p))
@@ -269,7 +269,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
     If p.Item("response") = 1 Then
         Set searchResults = p.Item("message")
-        
+
         Call RefreshTableView
     Else
         Set searchResults = New Collection
