@@ -843,7 +843,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   375
       ItemData        =   "frmMain.frx":0068
-      Left            =   6720
+      Left            =   5760
       List            =   "frmMain.frx":0081
       Style           =   2  'Dropdown List
       TabIndex        =   2
@@ -863,10 +863,46 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   315
-      Left            =   3480
+      Left            =   2520
       TabIndex        =   1
       Top             =   2400
       Width           =   2175
+   End
+   Begin VB.Label lblSchoolYear 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "2016-2017"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   9600
+      TabIndex        =   64
+      Top             =   2400
+      Width           =   1215
+   End
+   Begin VB.Label Label16 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "School Year"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   8040
+      TabIndex        =   63
+      Top             =   2400
+      Width           =   1455
    End
    Begin VB.Label Label21 
       BackColor       =   &H00C0E0FF&
@@ -881,7 +917,7 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   5880
+      Left            =   4920
       TabIndex        =   43
       Top             =   2400
       Width           =   1575
@@ -1316,6 +1352,19 @@ Private Sub Form_Load()
     For i = Year(Now) - 2 To Year(Now) - 20 Step -1
         cmbYear.AddItem (i)
     Next
+    Dim yearNow As String
+    Dim y As String
+    yearNow = CStr(Year(Now))
+    Debug.Print "month is " & Month(Now)
+    If Month(Now) > 6 Then
+        Debug.Print yearNow
+        y = CStr(Year(Now) + 1)
+        lblSchoolYear.Caption = yearNow & "-" & y
+    Else
+        Debug.Print yearNow
+        y = CStr(Year(Now) - 1)
+        lblSchoolYear.Caption = y & "-" & yearNow
+    End If
 End Sub
 Private Sub sckMain_Connect()
     blnConnected = True
