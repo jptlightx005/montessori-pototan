@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2016 at 02:06 PM
+-- Generation Time: Nov 16, 2016 at 04:25 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -53,6 +53,8 @@ CREATE TABLE `montessori_admin` (
   `usrn` text NOT NULL,
   `pssw` text NOT NULL,
   `role` text NOT NULL,
+  `admin_name` text NOT NULL,
+  `email` text NOT NULL,
   `login_count` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -60,13 +62,17 @@ CREATE TABLE `montessori_admin` (
 -- Dumping data for table `montessori_admin`
 --
 
-INSERT INTO `montessori_admin` (`ID`, `usrn`, `pssw`, `role`, `login_count`) VALUES
-(01, 'pmontessori', 'pmontessori', 'master', 0),
-(02, 'admin1', 'admin1pssw', 'admin', 52),
-(03, 'admin2', 'admin2pssw', 'admin', 0),
-(04, 'admin3', 'admin3pssw', 'admin', 0),
-(05, 'registraros', 'regpssw', 'registrar', 405),
-(06, 'acctos', 'accpssw', 'accountant', 164);
+INSERT INTO `montessori_admin` (`ID`, `usrn`, `pssw`, `role`, `admin_name`, `email`, `login_count`) VALUES
+(01, 'pmontessori', 'pmontessori', 'master', '', '', 3),
+(02, 'admin1', 'admin1pssw', 'admin', '', '', 52),
+(03, 'admin2', 'admin2pssw', 'admin', '', '', 0),
+(04, 'admin3', 'admin3pssw', 'admin', '', '', 0),
+(05, 'registraros', 'regpssw', 'registrar', '', '', 405),
+(06, 'acctos', 'accpssw', 'accountant', '', '', 164),
+(07, 'one', 'more', 'admin', 'HEHE', 'try@again.now', 0),
+(08, 'admin', 'password', 'registrar', 'John Smith', 'la@a.a', 0),
+(09, 'another', 'admin', 'admin', 'Full name', 'is@saved.a', 0),
+(10, 'ashita', 'miete', 'accountant', 'Yori', 'yume@kataru.kotoba', 1);
 
 -- --------------------------------------------------------
 
@@ -202,7 +208,7 @@ ALTER TABLE `montessori_transactions`
 -- AUTO_INCREMENT for table `montessori_admin`
 --
 ALTER TABLE `montessori_admin`
-  MODIFY `ID` int(2) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(2) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `montessori_records`
 --
