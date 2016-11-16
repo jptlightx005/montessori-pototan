@@ -27,6 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "action" &&
                         $key != "Student_ID" &&
                         $key != "is_new" &&
+                        $key != "school_year" &&
 						$key != "total_matriculation"){
 							$newValue = addslashes($value);
 							$setFieldValue .= "`$key` = '$newValue', ";
@@ -40,16 +41,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$query = "UPDATE `montessori_queue` SET `status` = 'onprocess' WHERE `Student_ID` = '$student_id'";
 
 					if(mysql_query($query)){
-                        $month_now = date('n');
-                        $year_now = date('Y');
-                        if($month_now > 6){
-                            $y = $year_now + 1;
-                            $school_year =  "$year_now-$y";
-                        }else{
-                            $y = $year_now - 1;
-                            $school_year =  "$y-$year_now";
-                        }
-						$total_matriculation = addslashes($_POST['total_matriculation']);
+
+            $school_year =  addslashes($_POST['school_year']);
+  					$total_matriculation = addslashes($_POST['total_matriculation']);
 
                         $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
                         if($is_new == 1){

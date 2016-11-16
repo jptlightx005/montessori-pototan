@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Begin VB.Form frmMain 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -22,6 +22,23 @@ Begin VB.Form frmMain
    MinButton       =   0   'False
    ScaleHeight     =   9675
    ScaleWidth      =   12780
+   Begin VB.TextBox txtSchoolYear 
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   9480
+      TabIndex        =   64
+      Text            =   "2016-2017"
+      Top             =   2400
+      Width           =   2055
+   End
    Begin VB.Frame Frame3 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Guardian Information"
@@ -869,24 +886,6 @@ Begin VB.Form frmMain
       Value           =   1  'Checked
       Width           =   2175
    End
-   Begin VB.Label lblSchoolYear 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "2016-2017"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   11.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   9600
-      TabIndex        =   64
-      Top             =   2400
-      Width           =   1215
-   End
    Begin VB.Label Label16 
       BackColor       =   &H00C0E0FF&
       Caption         =   "School Year"
@@ -1391,11 +1390,11 @@ Private Sub Form_Load()
     If Month(Now) > 6 Then
         Debug.Print yearNow
         y = CStr(Year(Now) + 1)
-        lblSchoolYear.Caption = yearNow & "-" & y
+        txtSchoolYear.Text = yearNow & "-" & y
     Else
         Debug.Print yearNow
         y = CStr(Year(Now) - 1)
-        lblSchoolYear.Caption = y & "-" & yearNow
+        txtSchoolYear.Text = y & "-" & yearNow
     End If
 End Sub
 Private Sub sckMain_Connect()
@@ -1452,6 +1451,7 @@ Private Sub SubmitData()
     Set newRecord = New Dictionary
 
     newRecord.Add "is_new", chkNew.Value
+    newRecord.Add "school_year", txtSchoolYear.Text
     newRecord.Add "current_grade", grade(cmbGrade.ListIndex)
     newRecord.Add "last_name", Trim(txtLName.Text)
     newRecord.Add "first_name", Trim(txtFName.Text)

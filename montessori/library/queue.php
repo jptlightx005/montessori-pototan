@@ -39,10 +39,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$json = array("response" => 1, "message" => $message);
 				}
 			}else if($action == "register_student"){
-                $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
-                $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
-
-                $fields = "(";
+        $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
+        $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
+        $school_year = isset($_POST['school_year']) ? mysql_real_escape_string($_POST['school_year']) : "";
+        $fields = "(";
 				$values = "(";
 
 				foreach($_POST as $key => $value){
@@ -51,8 +51,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "pssw" &&
 						$key != "role" &&
 						$key != "action" &&
-                        $key != "is_new" &&
-                        $key != "registered_ip"){
+            $key != "is_new" &&
+            $key != "school_year" &&
+            $key != "registered_ip"){
 							$newValue = addslashes($value);
 							$fields .= "$key, ";
 							$values .= "'$newValue', ";
@@ -66,7 +67,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 				$result = mysql_query($query);
 				if($result){
-					$query = "INSERT INTO `montessori_queue` VALUES ((SELECT LAST_INSERT_ID()), '$usrn', '$registered_ip', '$is_new', 'onqueue', CURRENT_TIMESTAMP)";
+					$query = "INSERT INTO `montessori_queue` VALUES ((SELECT LAST_INSERT_ID()), '$usrn', '$registered_ip', '$is_new', '$school_year', 'onqueue', CURRENT_TIMESTAMP)";
 					if(mysql_query($query)){
 						$query = "SELECT LAST_INSERT_ID() as Student_ID";
 						$result = mysql_query($query);

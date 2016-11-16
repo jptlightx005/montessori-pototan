@@ -1,4 +1,4 @@
-frmMain = 95, 90, 956, 616, , 22, -11, 963, 837, C
+frmMain = 27, 1, 888, 527, , -210, 37, 731, 452, C
 frmLogin = 224, 50, 942, 666, , 249, 198, 967, 814, C
 RegistrationFormModule = 183, 35, 901, 629, 
 frmSplash = 250, 250, 959, 857, C, 225, 225, 934, 832, C
@@ -9,5 +9,5 @@ INIread = 175, 9, 1139, 547, C
 INIwrite = 0, 0, 0, 0, C
 JSON = 0, 0, 0, 0, C
 url_helper = -74, 164, 978, 486, C
-WebCommunicator = -26, 102, 1018, 416, 
+WebCommunicator = -26, 102, 1014, 416, 
 frmPriorityNumber = 306, 2, 1015, 609, C, 150, 150, 859, 757, C

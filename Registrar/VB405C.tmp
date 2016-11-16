@@ -1083,6 +1083,7 @@ Private Sub cmdRegister_Click()
 
             updateRecord.Add "is_new", chkNew.Value
             updateRecord.Add "school_year", txtSchoolYear.Text
+            
             updateRecord.Add "Student_ID", selectedStudent("ID")
             updateRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
             updateRecord.Add "last_name", Trim(txtLName.Text)
