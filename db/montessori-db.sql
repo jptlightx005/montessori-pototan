@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2016 at 05:04 PM
+-- Generation Time: Nov 16, 2016 at 02:06 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -39,7 +39,8 @@ CREATE TABLE `montessori_accounts` (
 --
 
 INSERT INTO `montessori_accounts` (`Student_ID`, `school_year`, `total_matriculation`, `total_payment`, `latest_payment`) VALUES
-(0001, '2016-2017', 25000, 7000, '2016-11-14');
+(0001, '2016-2017', 25000, 12000, '2016-11-16'),
+(0002, '2016-2017', 25000, 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -61,11 +62,11 @@ CREATE TABLE `montessori_admin` (
 
 INSERT INTO `montessori_admin` (`ID`, `usrn`, `pssw`, `role`, `login_count`) VALUES
 (01, 'pmontessori', 'pmontessori', 'master', 0),
-(02, 'admin1', 'admin1pssw', 'admin', 49),
+(02, 'admin1', 'admin1pssw', 'admin', 52),
 (03, 'admin2', 'admin2pssw', 'admin', 0),
 (04, 'admin3', 'admin3pssw', 'admin', 0),
-(05, 'registraros', 'regpssw', 'registrar', 395),
-(06, 'acctos', 'accpssw', 'accountant', 159);
+(05, 'registraros', 'regpssw', 'registrar', 405),
+(06, 'acctos', 'accpssw', 'accountant', 164);
 
 -- --------------------------------------------------------
 
@@ -78,6 +79,7 @@ CREATE TABLE `montessori_queue` (
   `usrn` text NOT NULL,
   `rf_ip` text NOT NULL,
   `is_new` int(11) NOT NULL,
+  `temp_school_year` text NOT NULL,
   `status` text NOT NULL,
   `date_registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -86,8 +88,9 @@ CREATE TABLE `montessori_queue` (
 -- Dumping data for table `montessori_queue`
 --
 
-INSERT INTO `montessori_queue` (`Student_ID`, `usrn`, `rf_ip`, `is_new`, `status`, `date_registered`) VALUES
-(0001, 'admin1', '127.0.0.1', 0, 'enrolled', '2016-11-14 23:08:27');
+INSERT INTO `montessori_queue` (`Student_ID`, `usrn`, `rf_ip`, `is_new`, `temp_school_year`, `status`, `date_registered`) VALUES
+(0001, 'admin1', '127.0.0.1', 0, '2016-2018', 'onqueue', '2016-11-16 14:52:44'),
+(0002, 'admin1', '127.0.0.1', 1, '2016-2017', 'onprocess', '2016-11-16 14:39:31');
 
 -- --------------------------------------------------------
 
@@ -130,7 +133,8 @@ CREATE TABLE `montessori_records` (
 --
 
 INSERT INTO `montessori_records` (`ID`, `current_grade`, `last_name`, `first_name`, `middle_name`, `gender`, `date_of_birth`, `place_of_birth`, `fathers_name`, `father_occupation`, `mothers_name`, `mother_occupation`, `home_address_brgy`, `home_address_city`, `home_address_province`, `home_number`, `guardian_name`, `guardian_relation`, `guardian_address_brgy`, `guardian_address_city`, `guardian_address_province`, `guardian_number`, `last_school_attended`, `religion`, `is_baptized`, `first_communion`, `date_enrolled`) VALUES
-(0001, 'grade3', 'Tokunaga', 'Hideaki', 'Ito', 'Male', '2009-06-05', '', '', '', '', '', 'Ichiban', 'Daijina', 'Mono Ga', '', '', '', '', '', '', '', '', '', 1, 0, '2016-11-14 23:08:27');
+(0001, 'grade3', 'Tokunaga', 'Hideaki', 'Tokunaga', 'Male', '2009-06-05', '', '', '', '', '', 'Ichiban', 'Daijina', 'Mono Ga', 'A', '', '', '', '', '', '', '', '', 1, 1, '2016-11-14 23:08:27'),
+(0002, 'grade3', 'Dachi', 'Yoshinobou', 'Tomo', 'Female', '1996-11-12', '', '', '', '', '', 'Tokyo', 'Japan', 'Japanese', '', '', '', '', '', '', '', '', '', 1, 1, '2016-11-16 14:39:31');
 
 -- --------------------------------------------------------
 
@@ -151,7 +155,8 @@ CREATE TABLE `montessori_transactions` (
 
 INSERT INTO `montessori_transactions` (`ID`, `Student_ID`, `payment`, `date_of_payment`) VALUES
 (0001, 0001, 5000, '2016-11-14 23:37:41'),
-(0002, 0001, 2000, '2016-11-14 23:39:26');
+(0002, 0001, 2000, '2016-11-14 23:39:26'),
+(0003, 0001, 5000, '2016-11-16 15:11:11');
 
 --
 -- Indexes for dumped tables
@@ -202,12 +207,12 @@ ALTER TABLE `montessori_admin`
 -- AUTO_INCREMENT for table `montessori_records`
 --
 ALTER TABLE `montessori_records`
-  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `montessori_transactions`
 --
 ALTER TABLE `montessori_transactions`
-  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
