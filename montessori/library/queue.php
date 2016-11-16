@@ -96,9 +96,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				}
 			}else if($action == "update_student"){
                 $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
+                $school_year = isset($_POST['school_year']) ? mysql_real_escape_string($_POST['school_year']) : "";
                 $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
                 $student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
-                $query = "UPDATE `montessori_queue` SET usrn = '$usrn', rf_ip = '$registered_ip', is_new = '$is_new', status = 'onqueue', date_registered = CURRENT_TIMESTAMP WHERE Student_ID = $student_id";
+                $query = "UPDATE `montessori_queue` SET usrn = '$usrn', rf_ip = '$registered_ip', is_new = '$is_new', temp_school_year = '$school_year', status = 'onqueue', date_registered = CURRENT_TIMESTAMP WHERE Student_ID = $student_id";
                 if(mysql_query($query)){
                     $json = array("response" => 1, "message" => $student_id);
                 }else{

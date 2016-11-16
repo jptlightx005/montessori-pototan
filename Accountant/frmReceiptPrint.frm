@@ -1,11 +1,11 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmReceiptPrint 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Receipt"
-   ClientHeight    =   7290
+   ClientHeight    =   7995
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   6015
@@ -21,12 +21,12 @@ Begin VB.Form frmReceiptPrint
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7290
+   ScaleHeight     =   7995
    ScaleWidth      =   6015
    StartUpPosition =   3  'Windows Default
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   360
-      Top             =   6600
+      Top             =   7200
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -45,7 +45,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   495
       Left            =   3240
       TabIndex        =   6
-      Top             =   6720
+      Top             =   7320
       Width           =   1215
    End
    Begin VB.CommandButton cmdPrint 
@@ -62,14 +62,14 @@ Begin VB.Form frmReceiptPrint
       Height          =   495
       Left            =   4560
       TabIndex        =   5
-      Top             =   6720
+      Top             =   7320
       Width           =   1215
    End
    Begin MSFlexGridLib.MSFlexGrid gridAmount 
       Height          =   3735
       Left            =   240
       TabIndex        =   4
-      Top             =   1200
+      Top             =   1800
       Width           =   5535
       _ExtentX        =   9763
       _ExtentY        =   6588
@@ -93,23 +93,42 @@ Begin VB.Form frmReceiptPrint
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Label lbl_exel 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "EXEL Montessori de Pototan"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   360
+      TabIndex        =   11
+      Top             =   240
+      Width           =   5055
+   End
    Begin VB.Line Line5 
       X1              =   1320
       X2              =   5400
-      Y1              =   1000
-      Y2              =   1000
+      Y1              =   1605
+      Y2              =   1605
    End
    Begin VB.Line Line4 
       X1              =   1320
       X2              =   5400
-      Y1              =   500
-      Y2              =   500
+      Y1              =   1095
+      Y2              =   1095
    End
    Begin VB.Line Line3 
       X1              =   4080
       X2              =   5760
-      Y1              =   5280
-      Y2              =   5280
+      Y1              =   5880
+      Y2              =   5880
    End
    Begin VB.Label lblTotalAmount 
       BackColor       =   &H00FFFFFF&
@@ -126,7 +145,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   4080
       TabIndex        =   10
-      Top             =   5040
+      Top             =   5640
       Width           =   1695
    End
    Begin VB.Label Label4 
@@ -145,20 +164,20 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   2640
       TabIndex        =   9
-      Top             =   5040
+      Top             =   5640
       Width           =   1215
    End
    Begin VB.Line Line2 
       X1              =   360
       X2              =   5760
-      Y1              =   6300
-      Y2              =   6300
+      Y1              =   6900
+      Y2              =   6900
    End
    Begin VB.Line Line1 
       X1              =   360
       X2              =   5760
-      Y1              =   6025
-      Y2              =   6025
+      Y1              =   6630
+      Y2              =   6630
    End
    Begin VB.Label lblAmountWords 
       BackColor       =   &H00FFFFFF&
@@ -175,7 +194,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   615
       Left            =   360
       TabIndex        =   8
-      Top             =   5760
+      Top             =   6360
       Width           =   5415
    End
    Begin VB.Label Label7 
@@ -193,7 +212,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   360
       TabIndex        =   7
-      Top             =   5400
+      Top             =   6000
       Width           =   1935
    End
    Begin VB.Label lblAddress 
@@ -211,7 +230,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   1320
       TabIndex        =   3
-      Top             =   720
+      Top             =   1320
       Width           =   4095
    End
    Begin VB.Label lblFullName 
@@ -229,7 +248,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   1320
       TabIndex        =   2
-      Top             =   240
+      Top             =   840
       Width           =   4095
    End
    Begin VB.Label Label2 
@@ -247,7 +266,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   240
       TabIndex        =   1
-      Top             =   720
+      Top             =   1320
       Width           =   975
    End
    Begin VB.Label Label1 
@@ -265,7 +284,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   360
       TabIndex        =   0
-      Top             =   240
+      Top             =   840
       Width           =   855
    End
 End
@@ -295,7 +314,7 @@ Private Sub cmdPrint_Click()
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -312,7 +331,7 @@ Private Sub cmdPrint_Click()
         cmdCancel.Visible = True
      'Printer.EndDoc
    Next
-errHandler:
+ErrHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub

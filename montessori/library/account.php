@@ -124,12 +124,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				}
 				$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);
 
-				$query = "UPDATE `montessori_records` SET $setFieldValue WHERE `Student_ID` = '$student_id'";
+				$query = "UPDATE `montessori_records` SET $setFieldValue WHERE `ID` = '$student_id'";
 
                 if(mysql_query($query))
-                    $json = array("response" => 1, "message" => "Student Information successfully updated!", "query" => $query);
+                    $json = array("response" => 1, "message" => "Student Information successfully updated!");
                 else
-                    $json = array("response" => 0, "message" => "An error has occured while updating!");
+                    $json = array("response" => 0, "message" => "An error has occured while updating!", "query" => $query);
 
 			}else if ($action == "transaction_list"){
 

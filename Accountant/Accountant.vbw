@@ -1,5 +1,5 @@
 AccountantModule = 104, 94, 915, 644, C
-frmTransaction = 43, 101, 762, 386, , 151, 346, 962, 756, C
+frmTransaction = 43, 101, 762, 386, , 141, 224, 620, 634, C
 frmSplash = 82, 173, 982, 665, C, 110, 145, 921, 695, C
 administrator = 0, 0, 0, 0, C
 Constants = 213, 90, 1025, 640, C
@@ -11,7 +11,7 @@ url_helper = 0, 0, 0, 0, C
 WebCommunicator = 22, 29, 945, 472, 
 student = 0, 0, 0, 0, C
 frmLogin = 37, 73, 863, 643, C, 125, 125, 834, 732, C
-frmAccountant = 76, 90, 999, 533, , 228, -17, 1040, 725, C
+frmAccountant = 76, 90, 999, 533, , -75, 225, 491, 768, C
 frmTotalTransaction = 35, 38, 955, 520, , 1, 23, 710, 430, C
-frmReceiptPrint = 74, 255, 961, 808, , 23, 30, 894, 599, C
+frmReceiptPrint = 74, 255, 961, 808, , 91, 14, 748, 476, C
 frmStatement = 93, 278, 965, 704, , 83, 225, 947, 751, C

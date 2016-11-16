@@ -4,7 +4,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmStudentListPrint 
    BackColor       =   &H00FFFFFF&
    Caption         =   "Student List"
-   ClientHeight    =   7380
+   ClientHeight    =   8040
    ClientLeft      =   60
    ClientTop       =   390
    ClientWidth     =   9345
@@ -18,12 +18,12 @@ Begin VB.Form frmStudentListPrint
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7380
+   ScaleHeight     =   8040
    ScaleWidth      =   9345
    StartUpPosition =   3  'Windows Default
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   4440
-      Top             =   3480
+      Top             =   4080
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -42,7 +42,7 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   6480
       TabIndex        =   3
-      Top             =   6840
+      Top             =   7440
       Width           =   1215
    End
    Begin VB.CommandButton cmdPrint 
@@ -59,14 +59,14 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   7800
       TabIndex        =   2
-      Top             =   6840
+      Top             =   7440
       Width           =   1215
    End
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
       Height          =   5895
       Left            =   360
       TabIndex        =   0
-      Top             =   840
+      Top             =   1440
       Width           =   8655
       _ExtentX        =   15266
       _ExtentY        =   10398
@@ -92,6 +92,25 @@ Begin VB.Form frmStudentListPrint
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Label lbl_exel 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "EXEL Montessori de Pototan"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   120
+      TabIndex        =   4
+      Top             =   240
+      Width           =   9135
+   End
    Begin VB.Label lblGrade 
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
@@ -99,7 +118,7 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   360
       TabIndex        =   1
-      Top             =   240
+      Top             =   840
       Width           =   8655
    End
 End
@@ -202,6 +221,7 @@ End Sub
 Private Sub Form_Resize()
     gridStudents.width = Me.width - widthDifference
     lblGrade.width = Me.width - widthDifference
+    lbl_exel.width = Me.width
     cmdClose.Left = Me.width - 2955
     cmdPrint.Left = Me.width - 1635
 
