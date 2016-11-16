@@ -223,20 +223,20 @@ Option Explicit
 
 'Calls the global login method
 Private Sub cmdLogIn_Click()
-    'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text, chkRemember.Value,)
+'Call LogIn(txtUsrn.Text, txtPssw.Text, txtIP.Text, chkRemember.Value,)
     Dim loginParams As Dictionary
     Set loginParams = New Dictionary
     loginParams.Add "usrn", txtUsrn.Text
     loginParams.Add "pssw", txtPssw.Text
     loginParams.Add "role", "registrar"
-    ipaddress = txtIP.Text 'inserts the ip entered to the global variable
-    
+    ipaddress = txtIP.Text    'inserts the ip entered to the global variable
+
     regadmin.usrn = txtUsrn.Text
     regadmin.pssw = txtPssw.Text
     regadmin.role = "registrar"
-    
+
     Call EnableDisableControls(False)
-    
+
     Call sendRequest(sckMain, hAPI_LOGIN, loginParams, hPOST_METHOD)
 End Sub
 
@@ -244,7 +244,7 @@ Private Sub EnableDisableControls(enabled As Boolean)
     txtUsrn.enabled = enabled
     txtPssw.enabled = enabled
     txtIP.enabled = enabled
-    
+
     chkRemember.enabled = enabled
     cmdLogIn.enabled = enabled
 End Sub
@@ -296,15 +296,15 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-    
+
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    
+
     If p.Item("response") = 1 Then
-        localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
-        
+        localip = sckMain.localip    'sets the program's local ip to the computer's network ip address
+
         Dim rememberValues As Boolean
         rememberValues = chkRemember.Value
         Dim usrname As String
@@ -312,30 +312,30 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         usrname = IIf(rememberValues, txtUsrn.Text, "")
         ipadd = IIf(rememberValues, ipaddress, "")
         Call SaveSettings(usrname, ipadd)
-        
+
         'prompts the user has logged in successfully
-        MsgBox p.Item("message"), vbOKOnly + vbInformation 'prompts
+        MsgBox p.Item("message"), vbOKOnly + vbInformation    'prompts
         'sets the registrar form's labels with the current entries
         frmRegistrar.lbladmin = regadmin.usrn
         frmRegistrar.lblIP = localip
-        
+
         'shows the registrar form
         frmRegistrar.Show
-        
-        Unload Me 'exits the current form
+
+        Unload Me    'exits the current form
     Else
         regadmin.usrn = ""
         regadmin.pssw = ""
         regadmin.role = ""
-        MsgBox p.Item("message"), vbOKOnly + vbExclamation 'prompts
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation    'prompts
     End If
     Call EnableDisableControls(True)
-    
+
 End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
-    
+
     sckMain.Close
     Call EnableDisableControls(True)
 End Sub

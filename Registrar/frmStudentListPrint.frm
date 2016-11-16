@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmStudentListPrint 
    BackColor       =   &H00FFFFFF&
    Caption         =   "Student List"
@@ -21,23 +21,6 @@ Begin VB.Form frmStudentListPrint
    ScaleHeight     =   7380
    ScaleWidth      =   9345
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton cmdExport 
-      Caption         =   "Export"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   360
-      TabIndex        =   4
-      Top             =   6840
-      Width           =   1215
-   End
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   4440
       Top             =   3480
@@ -48,7 +31,7 @@ Begin VB.Form frmStudentListPrint
    Begin VB.CommandButton cmdClose 
       Caption         =   "Close"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -65,7 +48,7 @@ Begin VB.Form frmStudentListPrint
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -113,15 +96,6 @@ Begin VB.Form frmStudentListPrint
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
       Caption         =   "Grade 3"
-      BeginProperty Font 
-         Name            =   "Arial Narrow"
-         Size            =   15.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   495
       Left            =   360
       TabIndex        =   1
@@ -138,9 +112,6 @@ Option Explicit
 Public studentList As Collection
 Public listGrade As String
 
-Dim xlObject As Excel.Application
-Dim xlWB As Excel.Workbook
-
 Const heightDifference As Integer = 2130
 Const widthDifference As Integer = 780
 Private Sub cmdClose_Click()
@@ -148,36 +119,11 @@ Private Sub cmdClose_Click()
 End Sub
 
 Private Sub cmdExport_Click()
-    Set xlObject = New Excel.Application
- 
-    'This Adds a new woorkbook, you could open the workbook from file also
-    Set xlWB = xlObject.Workbooks.Add
-                
-    Clipboard.Clear 'Clear the Clipboard
-    With gridStudents
-        'Select Full Contents (You could also select partial content)
-        .Col = 0               'From first column
-        .Row = 0               'From first Row (header)
-        .ColSel = .Cols - 1    'Select all columns
-        .RowSel = .rows - 1    'Select all rows
-        Clipboard.SetText .Clip 'Send to Clipboard
-    End With
-            
-    With xlObject.ActiveWorkbook.ActiveSheet
-        .Range("B5").Select 'Select Cell A1 (will paste from here, to different cells)
-        .Paste              'Paste clipboard contents
-    End With
-    
-    xlObject.Columns.EntireColumn.AutoFit
-    ' This makes Excel visible
-    xlObject.Visible = True
-    
-    gridStudents.ColSel = 0
-    gridStudents.RowSel = 0
+
 End Sub
 
 Private Sub cmdPrint_Click()
-    
+
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
@@ -185,29 +131,27 @@ Private Sub cmdPrint_Click()
     On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
-    
+
     ' Get user-selected values from the dialog box.
     BeginPage = cmnDlg.FromPage
     EndPage = cmnDlg.ToPage
     NumCopies = cmnDlg.Copies
     Orientation = cmnDlg.Orientation
     For i = 1 To NumCopies
-        cmdExport.Visible = False
         cmdPrint.Visible = False
         cmdClose.Visible = False
         PrintForm
-        cmdExport.Visible = True
         cmdPrint.Visible = True
         cmdClose.Visible = True
-     'Printer.EndDoc
-   Next
+        'Printer.EndDoc
+    Next
 ErrHandler:
-   ' User pressed Cancel button.
-   Exit Sub
+    ' User pressed Cancel button.
+    Exit Sub
 End Sub
 
 Private Sub Command1_Click()
-    
+
 End Sub
 
 Private Sub Form_Load()
@@ -217,7 +161,7 @@ Private Sub Form_Load()
     gridStudents.TextMatrix(0, 2) = "Middle Name"
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
-    
+
     Dim i As Integer
     Dim totalWidth As Integer
     Dim totalHeight As Integer
@@ -229,7 +173,7 @@ Private Sub Form_Load()
         gridStudents.CellFontBold = True
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
     Next
-    
+
     For i = 1 To studentList.Count
         Dim studentInfo As Dictionary
         Set studentInfo = studentList(i)
@@ -238,7 +182,7 @@ Private Sub Form_Load()
         gridStudents.TextMatrix(i, 2) = studentInfo("middle_name")
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
-        
+
         Dim j As Integer
         For j = 0 To 4
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
@@ -260,9 +204,8 @@ Private Sub Form_Resize()
     lblGrade.width = Me.width - widthDifference
     cmdClose.Left = Me.width - 2955
     cmdPrint.Left = Me.width - 1635
-    
+
     gridStudents.Height = Me.Height - heightDifference
-    cmdExport.Top = Me.Height - 1110
     cmdClose.Top = Me.Height - 1110
     cmdPrint.Top = Me.Height - 1110
 End Sub

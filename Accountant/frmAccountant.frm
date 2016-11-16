@@ -351,6 +351,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim selectedStudent As Dictionary
+Dim studentAddress As String
 
 Private Sub cmdLogOut_Click()
     Call Logout
@@ -384,20 +385,16 @@ End Sub
 
 Private Sub cmdSearch_Click()
     If txtSearch.Text <> "" Then
-        If IsNumeric(txtSearch.Text) Then
-            Dim searchParams As Dictionary
-            Set searchParams = New Dictionary
-            searchParams.Add "usrn", acctadmin.usrn
-            searchParams.Add "pssw", acctadmin.pssw
-            searchParams.Add "role", acctadmin.role
-            searchParams.Add "action", aSEARCH_STUDENT
-            searchParams.Add "student_id", txtSearch.Text
-            blnConnected = False
+        Dim searchParams As Dictionary
+        Set searchParams = New Dictionary
+        searchParams.Add "usrn", acctadmin.usrn
+        searchParams.Add "pssw", acctadmin.pssw
+        searchParams.Add "role", acctadmin.role
+        searchParams.Add "action", aSEARCH_STUDENT
+        searchParams.Add "student_id", txtSearch.Text
+        blnConnected = False
 
-            Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
-        Else
-            MsgBox "Invalid Input!", vbExclamation
-        End If
+        Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
     End If
 End Sub
 
@@ -409,7 +406,7 @@ Private Sub cmdUpdate_Click()
     frmTransaction.currentBalance = selectedStudent("total_payment")
     frmTransaction.studentID = selectedStudent("Student_ID")
     frmTransaction.studentName = selectedStudent("first_name") & " " & selectedStudent("last_name")
-    frmTransaction.studentAddress = selectedStudent("home_address")
+    frmTransaction.studentAddress = studentAddress
     frmTransaction.Show vbModal
 End Sub
 
@@ -459,7 +456,11 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         Dim MNameArray() As Byte
         MNameArray = StrConv(selectedStudent("middle_name"), vbFromUnicode)
         lblFullName.Caption = selectedStudent("first_name") & " " & Chr(MNameArray(0)) & ". " & selectedStudent("last_name")
-        lblAddress.Caption = selectedStudent("home_address")
+        
+        studentAddress = selectedStudent("home_address_brgy")
+        studentAddress = studentAddress & ", " & selectedStudent("home_address_city")
+        studentAddress = studentAddress & ", " & selectedStudent("home_address_province")
+        lblAddress.Caption = studentAddress
         lblSchoolYear.Caption = selectedStudent("school_year")
         lblGrade.Caption = grade(selectedStudent("current_grade"))
         lblPayment.Caption = Format(selectedStudent("total_payment"), "P##,##0.00")
@@ -473,8 +474,6 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
         cmdPrint.enabled = True
     Else
         MsgBox p.Item("message"), vbExclamation
-        cmdUpdate.enabled = False
-        cmdPrint.enabled = False
     End If
 End Sub
 

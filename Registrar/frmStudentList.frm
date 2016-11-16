@@ -151,11 +151,11 @@ Private Sub cmdView_Click()
         searchParams.Add "action", aSEARCH_STUDENT
         searchParams.Add "filter_key", "current_grade"
         searchParams.Add "filter_value", setgrade(cmbGrade.ListIndex)
-    
+
         blnConnected = False
-    
+
         Call sendRequest(sckMain, hAPI_STUDENTS, searchParams, hPOST_METHOD)
-        
+
     Else
         MsgBox "Please select a grade!", vbInformation
     End If
@@ -163,39 +163,39 @@ End Sub
 
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
-        Case 0:
-            setgrade = "preschool"
-        Case 1:
-            setgrade = "grade1"
-        Case 2:
-            setgrade = "grade2"
-        Case 3:
-            setgrade = "grade3"
-        Case 4:
-            setgrade = "grade4"
-        Case 5:
-            setgrade = "grade5"
-        Case 6:
-            setgrade = "grade6"
+    Case 0:
+        setgrade = "preschool"
+    Case 1:
+        setgrade = "grade1"
+    Case 2:
+        setgrade = "grade2"
+    Case 3:
+        setgrade = "grade3"
+    Case 4:
+        setgrade = "grade4"
+    Case 5:
+        setgrade = "grade5"
+    Case 6:
+        setgrade = "grade6"
     End Select
 End Function
 
 Public Function grade(grd As String) As String
     Select Case grd
-        Case "preschool"
-            grade = "Nursery"
-        Case "grade1"
-            grade = "Grade I"
-        Case "grade2"
-            grade = "Grade II"
-        Case "grade3"
-            grade = "Grade III"
-        Case "grade4"
-            grade = "Grade IV"
-        Case "grade5"
-            grade = "Grade V"
-        Case "grade6"
-            grade = "Grade VI"
+    Case "preschool"
+        grade = "Nursery"
+    Case "grade1"
+        grade = "Grade I"
+    Case "grade2"
+        grade = "Grade II"
+    Case "grade3"
+        grade = "Grade III"
+    Case "grade4"
+        grade = "Grade IV"
+    Case "grade5"
+        grade = "Grade V"
+    Case "grade6"
+        grade = "Grade VI"
     End Select
 End Function
 
@@ -207,15 +207,15 @@ Private Sub RefreshTableView()
     gridStudents.TextMatrix(0, 3) = "Last Name"
     gridStudents.TextMatrix(0, 4) = "Gender"
     gridStudents.TextMatrix(0, 5) = "Grade"
-    
+
     Dim totalWidth As Integer
     totalWidth = 0
-        
+
     Dim i As Integer
     For i = 0 To 4
         gridStudents.ColWidth(i) = TextWidth(gridStudents.TextMatrix(0, i))
     Next
-    
+
     For i = 1 To searchResults.Count
         Dim studentInfo As Dictionary
         Set studentInfo = searchResults(i)
@@ -225,9 +225,9 @@ Private Sub RefreshTableView()
         gridStudents.TextMatrix(i, 3) = studentInfo("last_name")
         gridStudents.TextMatrix(i, 4) = studentInfo("gender")
         gridStudents.TextMatrix(i, 5) = grade(studentInfo("current_grade"))
-        
+
         Dim j As Integer
-        
+
         For j = 0 To 5
             If TextWidth(gridStudents.TextMatrix(i, j)) > gridStudents.ColWidth(j) Then
                 gridStudents.ColWidth(j) = TextWidth(gridStudents.TextMatrix(i, j))
@@ -261,9 +261,9 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-    
+
     sckMain.GetData strResponse, vbString, bytesTotal
-    
+
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
     Debug.Print (JSON.toString(p))

@@ -54,21 +54,21 @@ Public Sub Logout()
     frmLogin.Show
 End Sub
 
-Public Function setgrade(grd As String, ByRef sender As Object)
+Public Function grade(grd As String, ByVal sender As Object)
     Select Case grd
     Case "preschool"
-        setgrade = 0
+        grade = IIf(sender Is frmRegistrar, "Nursery", 0)
     Case "grade1"
-        setgrade = 1
+        grade = IIf(sender Is frmRegistrar, "Grade I", 1)
     Case "grade2"
-        setgrade = 2
+        grade = IIf(sender Is frmRegistrar, "Grade II", 2)
     Case "grade3"
-        setgrade = 3
+        grade = IIf(sender Is frmRegistrar, "Grade III", 3)
     Case "grade4"
-        setgrade = 4
+        grade = IIf(sender Is frmRegistrar, "Grade IV", 4)
     Case "grade5"
-        setgrade = 5
+        grade = IIf(sender Is frmRegistrar, "Grade V", 5)
     Case "grade6"
-        setgrade = 6
+        grade = IIf(sender Is frmRegistrar, "Grade VI", 6)
     End Select
 End Function

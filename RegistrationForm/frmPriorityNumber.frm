@@ -3,7 +3,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmPriorityNumber 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Priority Number"
+   Caption         =   "Student Number"
    ClientHeight    =   2310
    ClientLeft      =   8085
    ClientTop       =   3135
@@ -61,7 +61,7 @@ Begin VB.Form frmPriorityNumber
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
-      Caption         =   "Priority Number"
+      Caption         =   "Student ID"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12

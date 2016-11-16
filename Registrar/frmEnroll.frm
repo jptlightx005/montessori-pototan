@@ -170,11 +170,15 @@ Public status As String
 Public Sub loadData()
     lblID.Caption = student("Student_ID")
     lblFullName.Caption = student("first_name") & " " & student("last_name")
-    lblAddress.Caption = student("home_address")
-    
+    Dim studentAddress As String
+    studentAddress = student("home_address_brgy")
+    studentAddress = studentAddress & ", " & student("home_address_city")
+    studentAddress = studentAddress & ", " & student("home_address_province")
+    lblAddress.Caption = studentAddress
+
     lblGrade.Caption = grade(student("current_grade"))
     lblPaidDate.Caption = Format(student("latest_payment"), "mmmm dd, yyyy")
-    
+
     cmdEnroll.enabled = False
     countdown = 3
     tmrEnable.enabled = True
@@ -182,24 +186,24 @@ End Sub
 
 Public Function grade(grd As String) As String
     Select Case grd
-        Case "preschool"
-            grade = "Nursery"
-        Case "grade1"
-            grade = "Grade I"
-        Case "grade2"
-            grade = "Grade II"
-        Case "grade3"
-            grade = "Grade III"
-        Case "grade4"
-            grade = "Grade IV"
-        Case "grade5"
-            grade = "Grade V"
-        Case "grade6"
-            grade = "Grade VI"
+    Case "preschool"
+        grade = "Nursery"
+    Case "grade1"
+        grade = "Grade I"
+    Case "grade2"
+        grade = "Grade II"
+    Case "grade3"
+        grade = "Grade III"
+    Case "grade4"
+        grade = "Grade IV"
+    Case "grade5"
+        grade = "Grade V"
+    Case "grade6"
+        grade = "Grade VI"
     End Select
 End Function
 Private Sub cmdReset_Click()
-    
+
 End Sub
 
 Private Sub cmdBack_Click()
@@ -213,10 +217,10 @@ Private Sub cmdEnroll_Click()
     enrollParams.Add "pssw", regadmin.pssw
     enrollParams.Add "role", regadmin.role
     enrollParams.Add "action", aENROLL_STUDENT
-    
-    enrollParams.Add "queue_id", student("Queue_ID")
+
+    enrollParams.Add "student_id", student("ID")
     blnConnected = False
-    
+
     Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
 End Sub
 
@@ -242,7 +246,7 @@ End Sub
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-    
+
     sckMain.GetData strResponse, vbString, bytesTotal
     Debug.Print strResponse
     Dim p As Object
@@ -261,13 +265,12 @@ End Sub
 
 Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "Connection Error"
-    MsgBox "Is Called"
     sckMain.Close
 End Sub
 
 Private Sub sckMain_Close()
     blnConnected = False
-    tmr_update.enabled = True
+    tmrEnable.enabled = True
     sckMain.Close
 End Sub
 

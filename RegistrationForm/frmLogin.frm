@@ -280,7 +280,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     
     Dim p As Object
     Set p = JSON.parse(getJSONFromResponse(strResponse))
-    Debug.Print JSON.toString(p)
+    Debug.Print strResponse
     If p.Item("response") = 1 Then
         localip = sckMain.localip 'sets the program's local ip to the computer's network ip address
         
