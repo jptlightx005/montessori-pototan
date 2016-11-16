@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Begin VB.Form frmSearch 
    BackColor       =   &H00C0E0FF&
    Caption         =   "Search Student"
@@ -234,7 +234,7 @@ End Function
 
 Private Sub cmdView_Click()
     Debug.Print ("ROWSEL IS " & gridStudents.RowSel)
-    If gridStudents.ColSel > 0 Then
+    If gridStudents.RowSel > 0 Then
         Set frmViewStudent.studentInfo = searchResults(gridStudents.RowSel)
         frmViewStudent.Show vbModal
     End If

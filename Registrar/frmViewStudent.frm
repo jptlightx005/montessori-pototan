@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Begin VB.Form frmViewStudent 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -787,7 +787,7 @@ Public Sub LoadStudentInfo()
     cmbGrade.ListIndex = grade(studentInfo("current_grade"), Me)
     txtLName.Text = studentInfo("last_name")
     txtFName.Text = studentInfo("first_name")
-    txtMName.Text = studentInfo("last_name")
+    txtMName.Text = studentInfo("middle_name")
     cmbGender.ListIndex = IIf(studentInfo("gender") = "Male", 0, 1)
     cmbMonth.ListIndex = Month(CDate(studentInfo("date_of_birth"))) - 1
     cmbDay.ListIndex = Day(CDate(studentInfo("date_of_birth"))) - 1
@@ -883,7 +883,7 @@ Private Sub cmdSave_Click()
     updatedRecord.Add "pssw", regadmin.pssw
     updatedRecord.Add "role", regadmin.role
     updatedRecord.Add "action", aUPDATE_STUDENT
-    updatedRecord.Add "student_id", studentInfo("Student_ID")
+    updatedRecord.Add "student_id", studentInfo("ID")
 
     updatedRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
     updatedRecord.Add "last_name", txtLName.Text

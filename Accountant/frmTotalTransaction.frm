@@ -5,7 +5,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmTotalTransaction 
    BackColor       =   &H00FFFFFF&
    Caption         =   "Total Transaction"
-   ClientHeight    =   7455
+   ClientHeight    =   8340
    ClientLeft      =   5685
    ClientTop       =   1800
    ClientWidth     =   9000
@@ -19,11 +19,11 @@ Begin VB.Form frmTotalTransaction
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7455
+   ScaleHeight     =   8340
    ScaleWidth      =   9000
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   1920
-      Top             =   6960
+      Top             =   7800
       _ExtentX        =   741
       _ExtentY        =   741
       _Version        =   393216
@@ -42,7 +42,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   495
       Left            =   7560
       TabIndex        =   1
-      Top             =   6840
+      Top             =   7680
       Width           =   1215
    End
    Begin VB.CommandButton cmdClose 
@@ -59,12 +59,12 @@ Begin VB.Form frmTotalTransaction
       Height          =   495
       Left            =   6240
       TabIndex        =   0
-      Top             =   6840
+      Top             =   7680
       Width           =   1215
    End
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   5640
-      Top             =   6840
+      Top             =   7680
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -73,7 +73,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   5295
       Left            =   240
       TabIndex        =   2
-      Top             =   840
+      Top             =   1680
       Width           =   8535
       _ExtentX        =   15055
       _ExtentY        =   9340
@@ -96,6 +96,25 @@ Begin VB.Form frmTotalTransaction
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Label lbl_exel 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "EXEL Montessori de Pototan"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   120
+      TabIndex        =   8
+      Top             =   240
+      Width           =   8775
+   End
    Begin VB.Label Label3 
       BackColor       =   &H00FFFFFF&
       Caption         =   "Total:"
@@ -111,7 +130,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   255
       Left            =   6480
       TabIndex        =   7
-      Top             =   6240
+      Top             =   7080
       Width           =   735
    End
    Begin VB.Label lblTotal 
@@ -129,7 +148,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   375
       Left            =   7320
       TabIndex        =   6
-      Top             =   6240
+      Top             =   7080
       Width           =   1455
    End
    Begin VB.Label Label2 
@@ -147,7 +166,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   495
       Left            =   480
       TabIndex        =   5
-      Top             =   480
+      Top             =   1320
       Width           =   735
    End
    Begin VB.Label lblDate 
@@ -165,7 +184,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   255
       Left            =   1320
       TabIndex        =   4
-      Top             =   480
+      Top             =   1320
       Width           =   4695
    End
    Begin VB.Label Label1 
@@ -184,7 +203,7 @@ Begin VB.Form frmTotalTransaction
       Height          =   255
       Left            =   120
       TabIndex        =   3
-      Top             =   120
+      Top             =   960
       Width           =   8655
    End
 End
@@ -292,6 +311,7 @@ Private Sub RefreshTableView()
 End Sub
 
 Private Sub Form_Resize()
+    lbl_exel.Width = Me.Width - widthDifference
     gridStudents.Width = Me.Width - widthDifference
     Label1.Width = Me.Width - widthDifference
     cmdClose.Left = Me.Width - 2955
