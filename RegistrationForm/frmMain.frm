@@ -1506,6 +1506,7 @@ Private Sub UpdateData()
     updateRecord.Add "student_id", selectedStudent("ID")
     updateRecord.Add "is_new", chkNew.Value
     updateRecord.Add "current_grade", grade(cmbGrade.ListIndex)
+    updateRecord.Add "school_year", txtSchoolYear.Text
     
     Dim choice As Integer
     choice = MsgBox("Submit student's info? (Please re-check)", vbYesNo + vbQuestion, "Submission")
