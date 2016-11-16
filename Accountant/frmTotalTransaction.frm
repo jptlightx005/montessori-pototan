@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmTotalTransaction 
    BackColor       =   &H00FFFFFF&
@@ -21,23 +21,6 @@ Begin VB.Form frmTotalTransaction
    LinkTopic       =   "Form1"
    ScaleHeight     =   7455
    ScaleWidth      =   9000
-   Begin VB.CommandButton cmdExport 
-      Caption         =   "Export"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   120
-      TabIndex        =   6
-      Top             =   6840
-      Width           =   1215
-   End
    Begin MSWinsockLib.Winsock sckMain 
       Left            =   1920
       Top             =   6960
@@ -48,7 +31,7 @@ Begin VB.Form frmTotalTransaction
    Begin VB.CommandButton cmdPrint 
       Caption         =   "Print"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -65,7 +48,7 @@ Begin VB.Form frmTotalTransaction
    Begin VB.CommandButton cmdClose 
       Caption         =   "Close"
       BeginProperty Font 
-         Name            =   "Arial Narrow"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -127,7 +110,7 @@ Begin VB.Form frmTotalTransaction
       EndProperty
       Height          =   255
       Left            =   6480
-      TabIndex        =   8
+      TabIndex        =   7
       Top             =   6240
       Width           =   735
    End
@@ -145,7 +128,7 @@ Begin VB.Form frmTotalTransaction
       EndProperty
       Height          =   375
       Left            =   7320
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   6240
       Width           =   1455
    End
@@ -210,6 +193,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+
 Const heightDifference As Integer = 2730
 Const widthDifference As Integer = 705
 
@@ -220,42 +205,13 @@ Private Sub cmdClose_Click()
     Unload Me
 End Sub
 
-Private Sub cmdExport_Click()
-    Set xlObject = New Excel.Application
- 
-    'This Adds a new woorkbook, you could open the workbook from file also
-    Set xlWB = xlObject.Workbooks.Add
-                
-    Clipboard.Clear 'Clear the Clipboard
-    With gridStudents
-        'Select Full Contents (You could also select partial content)
-        .Col = 0               'From first column
-        .Row = 0               'From first Row (header)
-        .ColSel = .Cols - 1    'Select all columns
-        .RowSel = .rows - 1    'Select all rows
-        Clipboard.SetText .Clip 'Send to Clipboard
-    End With
-            
-    With xlObject.ActiveWorkbook.ActiveSheet
-        .Range("B5").Select 'Select Cell A1 (will paste from here, to different cells)
-        .Paste              'Paste clipboard contents
-    End With
-    
-    xlObject.Columns.EntireColumn.AutoFit
-    ' This makes Excel visible
-    xlObject.Visible = True
-    
-    gridStudents.ColSel = 0
-    gridStudents.RowSel = 0
-End Sub
-
 Private Sub cmdPrint_Click()
     
     Dim BeginPage, EndPage, NumCopies, Orientation, i
     ' Set Cancel to True.
     cmnDlg.PrinterDefault = True
     cmnDlg.CancelError = True
-    On Error GoTo errHandler
+    On Error GoTo ErrHandler
     ' Display the Print dialog box.
     cmnDlg.ShowPrinter
     
@@ -265,16 +221,14 @@ Private Sub cmdPrint_Click()
     NumCopies = cmnDlg.Copies
     Orientation = cmnDlg.Orientation
     For i = 1 To NumCopies
-        cmdExport.Visible = False
         cmdPrint.Visible = False
         cmdClose.Visible = False
         PrintForm
         cmdPrint.Visible = True
         cmdClose.Visible = True
-        cmdExport.Visible = True
      'Printer.EndDoc
    Next
-errHandler:
+ErrHandler:
    ' User pressed Cancel button.
    Exit Sub
 End Sub
@@ -345,7 +299,6 @@ Private Sub Form_Resize()
     lblTotal.Left = Me.Width - 1920
     Label3.Left = Me.Width - 2760
     gridStudents.Height = Me.Height - heightDifference
-    cmdExport.Top = Me.Height - 1185
     cmdClose.Top = Me.Height - 1185
     cmdPrint.Top = Me.Height - 1185
     lblTotal.Top = Me.Height - 1785

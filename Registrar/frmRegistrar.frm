@@ -699,7 +699,7 @@ Private Sub cmdLogOut_Click()
 End Sub
 
 Private Sub cmdSearch_Click()
-'tmr_update.Enabled = False
+    'tmr_update.Enabled = False
     frmSearch.Show vbModal
 End Sub
 
