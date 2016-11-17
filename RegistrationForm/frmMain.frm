@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -1413,11 +1413,8 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     If p.Item("response") = 1 Then
         If action = aREGISTER_STUDENT Or action = aUPDATE_STUDENT Then
             Dim message As String
-            message = "The student has been registered!"
+            message = p.Item("message")
             MsgBox message, vbOKOnly + vbInformation
-            frmPriorityNumber.queueID = p.Item("message")
-            frmPriorityNumber.studentName = Trim(txtLName.Text)
-            frmPriorityNumber.Show vbModal
             
             Call ClearBoxes
         ElseIf action = aSEARCH_STUDENT Then

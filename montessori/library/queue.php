@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	if(!empty($usrn) && !empty($pssw)){
 		// check authorization
-		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND `role` = '$role'";
+		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND (`role` = '$role' OR `role` = 'master')";
 		$result = mysql_query($query);
 		$num = mysql_num_rows($result);
 
@@ -39,10 +39,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 					$json = array("response" => 1, "message" => $message);
 				}
 			}else if($action == "register_student"){
-        $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
-        $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
-        $school_year = isset($_POST['school_year']) ? mysql_real_escape_string($_POST['school_year']) : "";
-        $fields = "(";
+                $is_new = isset($_POST['is_new']) ? mysql_real_escape_string($_POST['is_new']) : "";
+                $registered_ip = isset($_POST['registered_ip']) ? mysql_real_escape_string($_POST['registered_ip']) : "";
+                $school_year = isset($_POST['school_year']) ? mysql_real_escape_string($_POST['school_year']) : "";
+                $fields = "(";
 				$values = "(";
 
 				foreach($_POST as $key => $value){
@@ -51,9 +51,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 						$key != "pssw" &&
 						$key != "role" &&
 						$key != "action" &&
-            $key != "is_new" &&
-            $key != "school_year" &&
-            $key != "registered_ip"){
+                        $key != "is_new" &&
+                        $key != "school_year" &&
+                        $key != "registered_ip"){
 							$newValue = addslashes($value);
 							$fields .= "$key, ";
 							$values .= "'$newValue', ";
@@ -69,17 +69,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				if($result){
 					$query = "INSERT INTO `montessori_queue` VALUES ((SELECT LAST_INSERT_ID()), '$usrn', '$registered_ip', '$is_new', '$school_year', 'onqueue', CURRENT_TIMESTAMP)";
 					if(mysql_query($query)){
-						$query = "SELECT LAST_INSERT_ID() as Student_ID";
-						$result = mysql_query($query);
-						if($result){
-                            $record = mysql_fetch_assoc($result);
-							if($record)
-								$json = array("response" => 1, "message" => $record['Student_ID']);
-							else
-								$json = array("response" => 0, "message" => "Student not found!");
-						}else{
-							$json = array("response" => 0, "message" => "An error has occured while fetching!");
-						}
+						$json = array("response" => 1, "message" => "Successfully registered!");
 					}else{
 						$json = array("response" => 0, "message" => "An error has occured while saving!", "query2" => $query);
 					}

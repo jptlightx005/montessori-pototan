@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmVerification 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
@@ -1184,6 +1184,9 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
         MsgBox message, vbOKOnly + vbInformation
 
+        frmStudentIDPrint.studentID = p.Item("message")
+        frmStudentIDPrint.studentName = txtLName.Text
+        frmStudentIDPrint.Show vbModal
         Unload Me
     Else
         MsgBox p.Item("message"), vbOKOnly + vbExclamation    'prompts
