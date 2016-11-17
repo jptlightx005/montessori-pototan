@@ -63,7 +63,7 @@ Begin VB.Form frmEnroll
       Begin VB.Label Label1 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0E0FF&
-         Caption         =   "Student ID Number:"
+         Caption         =   "Student ID"
          Height          =   255
          Left            =   120
          TabIndex        =   10
@@ -168,7 +168,7 @@ Public student As Dictionary
 Public status As String
 
 Public Sub loadData()
-    lblID.Caption = student("Student_ID")
+    lblID.Caption = student("StudentID")
     lblFullName.Caption = student("first_name") & " " & student("last_name")
     Dim studentAddress As String
     studentAddress = student("home_address_brgy")

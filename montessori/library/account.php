@@ -12,14 +12,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	if(!empty($usrn) && !empty($pssw)){
 		// check authorization
-		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND `role` = '$role'";
+		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND (`role` = '$role' OR `role` = 'master')";
 		$result = mysql_query($query);
 		$num = mysql_num_rows($result);
 
 		if($num > 0){
 			if($action == "register_student"){
-				$setFieldValue = "";
+                $year_now = date("Y");
                 $student_id = $_POST["Student_ID"];
+                $studentID = "$year_now-$student_id";
+				$setFieldValue = "StudentID = '$studentID', ";
+
                 foreach($_POST as $key => $value){
 					if($key != "usrn" &&
 						$key != "pssw" &&
@@ -53,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         }
 						$result = mysql_query($query);
 						if($result){
-							$json = array("response" => 1, "message" => $student_id);
+							$json = array("response" => 1, "message" => $studentID);
 						}else{
 							$json = array("response" => 0, "message" => "An error has occured while saving!", "query" => $query);
 						}
@@ -66,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			}else if($action == "search_student"){
 				$student_id = isset($_POST['student_id']) ? mysql_real_escape_string($_POST['student_id']) : "";
 				// $query = "SELECT Student_ID, Queue_ID, first_name, middle_name, last_name, home_address, school_year, current_grade, total_payment, total_matriculation, latest_payment FROM montessori_records INNER JOIN montessori_accounts ON montessori_records.ID = montessori_accounts.Student_ID WHERE Student_ID = '$student_id'";
-                $query = "SELECT * FROM montessori_records AS r JOIN montessori_accounts AS a ON r.ID = a.Student_ID  WHERE CAST(ID AS CHAR(4)) = '$student_id'";
+                $query = "SELECT * FROM montessori_records AS r JOIN montessori_accounts AS a ON r.ID = a.Student_ID  WHERE StudentID = '$student_id'";
 				$result = mysql_query($query);
 				if($result){
 					$record = mysql_fetch_assoc($result);

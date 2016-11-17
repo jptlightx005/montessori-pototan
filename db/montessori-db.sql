@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2016 at 04:25 PM
+-- Generation Time: Nov 17, 2016 at 06:01 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -39,8 +39,9 @@ CREATE TABLE `montessori_accounts` (
 --
 
 INSERT INTO `montessori_accounts` (`Student_ID`, `school_year`, `total_matriculation`, `total_payment`, `latest_payment`) VALUES
-(0001, '2016-2017', 25000, 12000, '2016-11-16'),
-(0002, '2016-2017', 25000, 0, '0000-00-00');
+(0001, '2016-2018', 25000, 0, '2016-11-16'),
+(0002, '2016-2017', 25000, 0, '0000-00-00'),
+(0003, '2016-2017', 25000, 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -63,11 +64,11 @@ CREATE TABLE `montessori_admin` (
 --
 
 INSERT INTO `montessori_admin` (`ID`, `usrn`, `pssw`, `role`, `admin_name`, `email`, `login_count`) VALUES
-(01, 'pmontessori', 'pmontessori', 'master', '', '', 3),
-(02, 'admin1', 'admin1pssw', 'admin', '', '', 52),
+(01, 'pmontessori', 'pmontessori', 'master', '', '', 6),
+(02, 'admin1', 'admin1pssw', 'admin', '', '', 53),
 (03, 'admin2', 'admin2pssw', 'admin', '', '', 0),
 (04, 'admin3', 'admin3pssw', 'admin', '', '', 0),
-(05, 'registraros', 'regpssw', 'registrar', '', '', 405),
+(05, 'registraros', 'regpssw', 'registrar', '', '', 412),
 (06, 'acctos', 'accpssw', 'accountant', '', '', 164),
 (07, 'one', 'more', 'admin', 'HEHE', 'try@again.now', 0),
 (08, 'admin', 'password', 'registrar', 'John Smith', 'la@a.a', 0),
@@ -95,8 +96,9 @@ CREATE TABLE `montessori_queue` (
 --
 
 INSERT INTO `montessori_queue` (`Student_ID`, `usrn`, `rf_ip`, `is_new`, `temp_school_year`, `status`, `date_registered`) VALUES
-(0001, 'admin1', '127.0.0.1', 0, '2016-2018', 'onqueue', '2016-11-16 14:52:44'),
-(0002, 'admin1', '127.0.0.1', 1, '2016-2017', 'onprocess', '2016-11-16 14:39:31');
+(0001, 'admin1', '127.0.0.1', 0, '2016-2018', 'enrolled', '2016-11-16 14:52:44'),
+(0002, 'admin1', '127.0.0.1', 1, '2016-2017', 'onprocess', '2016-11-16 14:39:31'),
+(0003, 'admin1', '127.0.0.1', 1, '2016-2017', 'onprocess', '2016-11-18 00:48:31');
 
 -- --------------------------------------------------------
 
@@ -106,6 +108,7 @@ INSERT INTO `montessori_queue` (`Student_ID`, `usrn`, `rf_ip`, `is_new`, `temp_s
 
 CREATE TABLE `montessori_records` (
   `ID` int(4) UNSIGNED ZEROFILL NOT NULL,
+  `StudentID` varchar(9) NOT NULL,
   `current_grade` text NOT NULL,
   `last_name` text NOT NULL,
   `first_name` text NOT NULL,
@@ -138,9 +141,10 @@ CREATE TABLE `montessori_records` (
 -- Dumping data for table `montessori_records`
 --
 
-INSERT INTO `montessori_records` (`ID`, `current_grade`, `last_name`, `first_name`, `middle_name`, `gender`, `date_of_birth`, `place_of_birth`, `fathers_name`, `father_occupation`, `mothers_name`, `mother_occupation`, `home_address_brgy`, `home_address_city`, `home_address_province`, `home_number`, `guardian_name`, `guardian_relation`, `guardian_address_brgy`, `guardian_address_city`, `guardian_address_province`, `guardian_number`, `last_school_attended`, `religion`, `is_baptized`, `first_communion`, `date_enrolled`) VALUES
-(0001, 'grade3', 'Tokunaga', 'Hideaki', 'Tokunaga', 'Male', '2009-06-05', '', '', '', '', '', 'Ichiban', 'Daijina', 'Mono Ga', 'A', '', '', '', '', '', '', '', '', 1, 1, '2016-11-14 23:08:27'),
-(0002, 'grade3', 'Dachi', 'Yoshinobou', 'Tomo', 'Female', '1996-11-12', '', '', '', '', '', 'Tokyo', 'Japan', 'Japanese', '', '', '', '', '', '', '', '', '', 1, 1, '2016-11-16 14:39:31');
+INSERT INTO `montessori_records` (`ID`, `StudentID`, `current_grade`, `last_name`, `first_name`, `middle_name`, `gender`, `date_of_birth`, `place_of_birth`, `fathers_name`, `father_occupation`, `mothers_name`, `mother_occupation`, `home_address_brgy`, `home_address_city`, `home_address_province`, `home_number`, `guardian_name`, `guardian_relation`, `guardian_address_brgy`, `guardian_address_city`, `guardian_address_province`, `guardian_number`, `last_school_attended`, `religion`, `is_baptized`, `first_communion`, `date_enrolled`) VALUES
+(0001, '2016-0001', 'grade3', 'Tokunaga', 'Hideaki', 'Tokunaga', 'Male', '2009-06-05', '', '', '', '', '', 'Ichiban', 'Daijina', 'Mono Ga', 'A', '', '', '', '', '', '', '', '', 1, 1, '2016-11-14 23:08:27'),
+(0002, '', 'grade3', 'Dachi', 'Yoshinobou', 'Tomo', 'Female', '1996-11-12', '', '', '', '', '', 'Tokyo', 'Japan', 'Japanese', '', '', '', '', '', '', '', '', '', 1, 1, '2016-11-16 14:39:31'),
+(0003, '2016-0003', 'grade4', 'Hoshizora', 'Rin', 'Koizumi', 'Female', '2010-08-05', '', '', '', '', '', 'b', 'c', 's', '', '', '', '', '', '', '', '', '', 0, 0, '2016-11-18 00:48:31');
 
 -- --------------------------------------------------------
 
@@ -213,7 +217,7 @@ ALTER TABLE `montessori_admin`
 -- AUTO_INCREMENT for table `montessori_records`
 --
 ALTER TABLE `montessori_records`
-  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `montessori_transactions`
 --

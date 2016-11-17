@@ -259,7 +259,7 @@ Begin VB.Form frmAccountant
    Begin VB.Label Label1 
       Alignment       =   1  'Right Justify
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Student ID Number:"
+      Caption         =   "Student ID"
       Height          =   255
       Left            =   240
       TabIndex        =   7
@@ -422,7 +422,7 @@ Public Sub ReloadData()
     searchParams.Add "pssw", acctadmin.pssw
     searchParams.Add "role", acctadmin.role
     searchParams.Add "action", aSEARCH_STUDENT
-    searchParams.Add "student_id", selectedStudent("Student_ID")
+    searchParams.Add "student_id", selectedStudent("StudentID")
     blnConnected = False
 
     Call sendRequest(sckMain, hAPI_ACCOUNT, searchParams, hPOST_METHOD)
@@ -452,7 +452,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
         Dim fullName As String
         
-        lblID.Caption = selectedStudent("Student_ID")
+        lblID.Caption = selectedStudent("StudentID")
         Dim MNameArray() As Byte
         MNameArray = StrConv(selectedStudent("middle_name"), vbFromUnicode)
         lblFullName.Caption = selectedStudent("first_name") & " " & Chr(MNameArray(0)) & ". " & selectedStudent("last_name")

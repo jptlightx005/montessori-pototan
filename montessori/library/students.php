@@ -10,17 +10,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	if(!empty($usrn) && !empty($pssw)){
 		// check authorization
-		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND `role` = '$role'";
+		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND (`role` = '$role' OR `role` = 'master')";
 		$result = mysql_query($query);
 		$num = mysql_num_rows($result);
 
 		if($num > 0){
 			if($action == "search_student"){
 				$filter_key = isset($_POST['filter_key']) ? mysql_real_escape_string($_POST['filter_key']) : "";
-				$query = "SELECT * FROM `montessori_records`";
+				$query = "SELECT * FROM `montessori_records` AS r JOIN montessori_queue AS a ON r.ID = a.Student_ID WHERE status = 'enrolled'";
 				if($filter_key != ""){
 					$filter_value = isset($_POST['filter_value']) ? mysql_real_escape_string($_POST['filter_value']) : "";
-					$query .= " WHERE `$filter_key` LIKE '%$filter_value%'";
+					$query .= " AND `$filter_key` LIKE '%$filter_value%'";
 				}
 				$result = mysql_query($query);
 				$studentcount = mysql_num_rows($result);

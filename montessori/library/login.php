@@ -1,5 +1,5 @@
  <?php
- 
+
 include_once('db.php');
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	$role = isset($_POST['role']) ? mysql_real_escape_string($_POST['role']) : "";
 	if(!empty($usrn) && !empty($pssw)){
 		// check account
-		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND `role` = '$role'";
+		$query = "SELECT * FROM `montessori_admin` WHERE `usrn` = '$usrn' AND `pssw` = '$pssw' AND (`role` = '$role' OR `role` = 'master')";
 		$result = mysql_query($query);
 		$num = mysql_num_rows($result);
 
@@ -25,12 +25,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 		$json = array("response" => -1, "message" => "Please enter username and password!");
 	}
 }
-	 
+
  @mysql_close($conn);
- 
+
  /* Output header */
  header('Content-type: application/json');
- 
+
  echo json_encode($json);
-	 
+
 ?>

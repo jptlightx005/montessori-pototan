@@ -519,7 +519,7 @@ Begin VB.Form frmRegistrar
       Begin VB.Label Label3 
          Alignment       =   2  'Center
          BackColor       =   &H00C0E0FF&
-         Caption         =   "Student ID"
+         Caption         =   "ID"
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   12
@@ -649,6 +649,7 @@ Option Explicit
 
 Dim queueCollection As Collection
 Dim action As String
+Dim totalResponse As String
 
 'Drops the current student
 Private Sub cmdDrop_Click()
@@ -700,18 +701,24 @@ End Sub
 
 Private Sub cmdSearch_Click()
     'tmr_update.Enabled = False
+    tmr_update.enabled = False
     frmSearch.Show vbModal
+    tmr_update.enabled = True
 End Sub
 
 Private Sub cmdStudentList_Click()
+    tmr_update.enabled = False
     frmStudentList.Show vbModal
+    tmr_update.enabled = True
 End Sub
 
 'Views the current student's information in the queue
 Private Sub cmdView_Click()
     If queueCollection.Count > 0 Then
         Set frmVerification.selectedStudent = queueCollection(1)
+        tmr_update.enabled = False
         frmVerification.Show vbModal
+        tmr_update.enabled = True
     End If
 End Sub
 
@@ -756,28 +763,43 @@ End Sub
 
 'Observes the database if enrollees keep increasing
 Private Sub tmr_update_Timer()
-    Call ClearBoxes
     Call LoadQueue
 End Sub
 
 
+
 Private Sub sckMain_Connect()
+    totalResponse = ""
     blnConnected = True
 End Sub
+
 
 ' this event occurs when data is arriving via winsock
 Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
-
+    
     sckMain.GetData strResponse, vbString, bytesTotal
-    'Debug.Print (strResponse)
+    
+    Debug.Print strResponse
+    
+    totalResponse = totalResponse & strResponse
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
     Dim p As Object
-    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Set p = JSON.parse(getJSONFromResponse(totalResponse))
     'Debug.Print (JSON.toString(p))
     Dim message As Dictionary
-
+    'Debug.Print ("Test : " & bytesTotal & " : " & strResponse)
     If p.Item("response") = 1 Then
         If action = aQUEUE_LIST Then
+            Call ClearBoxes
             Set message = p.Item("message")
             Set queueCollection = message("list")
             Dim j As Integer
@@ -811,12 +833,14 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
 
         ElseIf action = aSEARCH_STUDENT Then
             Set frmEnroll.student = p.Item("message")
+            tmr_update.enabled = False
             frmEnroll.Show vbModal
+            tmr_update.enabled = True
         End If
 
     Else
         If action = aQUEUE_LIST Then
-            Debug.Print (strResponse)
+            
             Set message = p.Item("message")
             lblEnrollees.Caption = message("onqueue")
             lblOnProcessCount.Caption = message("onprocess")
@@ -824,15 +848,7 @@ Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
             MsgBox p.Item("message"), vbExclamation
         End If
     End If
-End Sub
-
-Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    MsgBox Description, vbExclamation, "Connection Error"
-    MsgBox "Is Called"
-    sckMain.Close
-End Sub
-
-Private Sub sckMain_Close()
+    
     blnConnected = False
     tmr_update.enabled = True
     sckMain.Close
