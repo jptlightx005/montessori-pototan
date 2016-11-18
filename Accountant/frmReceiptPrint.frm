@@ -5,7 +5,7 @@ Begin VB.Form frmReceiptPrint
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Receipt"
-   ClientHeight    =   7995
+   ClientHeight    =   8955
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   6015
@@ -21,12 +21,12 @@ Begin VB.Form frmReceiptPrint
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7995
+   ScaleHeight     =   8955
    ScaleWidth      =   6015
    StartUpPosition =   3  'Windows Default
    Begin MSComDlg.CommonDialog cmnDlg 
       Left            =   360
-      Top             =   7200
+      Top             =   7920
       _ExtentX        =   847
       _ExtentY        =   847
       _Version        =   393216
@@ -43,9 +43,9 @@ Begin VB.Form frmReceiptPrint
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3240
+      Left            =   3360
       TabIndex        =   6
-      Top             =   7320
+      Top             =   8280
       Width           =   1215
    End
    Begin VB.CommandButton cmdPrint 
@@ -60,16 +60,16 @@ Begin VB.Form frmReceiptPrint
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   4560
+      Left            =   4680
       TabIndex        =   5
-      Top             =   7320
+      Top             =   8280
       Width           =   1215
    End
    Begin MSFlexGridLib.MSFlexGrid gridAmount 
       Height          =   3735
       Left            =   240
       TabIndex        =   4
-      Top             =   1800
+      Top             =   2520
       Width           =   5535
       _ExtentX        =   9763
       _ExtentY        =   6588
@@ -93,6 +93,81 @@ Begin VB.Form frmReceiptPrint
          Strikethrough   =   0   'False
       EndProperty
    End
+   Begin VB.Label lblTeacher 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Cashier"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   15
+      Top             =   8520
+      Width           =   2775
+   End
+   Begin VB.Label lblTeacherName 
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "____________________"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   120
+      TabIndex        =   14
+      Top             =   8160
+      Width           =   3255
+   End
+   Begin VB.Label Label10 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "F. Parcon St."
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   -360
+      TabIndex        =   13
+      Top             =   600
+      Width           =   6495
+   End
+   Begin VB.Label Label3 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Pototan, Iloilo"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   -360
+      TabIndex        =   12
+      Top             =   960
+      Width           =   6495
+   End
    Begin VB.Label lbl_exel 
       Alignment       =   2  'Center
       BackColor       =   &H00FFFFFF&
@@ -115,20 +190,20 @@ Begin VB.Form frmReceiptPrint
    Begin VB.Line Line5 
       X1              =   1320
       X2              =   5400
-      Y1              =   1605
-      Y2              =   1605
+      Y1              =   2325
+      Y2              =   2325
    End
    Begin VB.Line Line4 
       X1              =   1320
       X2              =   5400
-      Y1              =   1095
-      Y2              =   1095
+      Y1              =   1815
+      Y2              =   1815
    End
    Begin VB.Line Line3 
       X1              =   4080
       X2              =   5760
-      Y1              =   5880
-      Y2              =   5880
+      Y1              =   6600
+      Y2              =   6600
    End
    Begin VB.Label lblTotalAmount 
       BackColor       =   &H00FFFFFF&
@@ -145,7 +220,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   4080
       TabIndex        =   10
-      Top             =   5640
+      Top             =   6360
       Width           =   1695
    End
    Begin VB.Label Label4 
@@ -164,20 +239,20 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   2640
       TabIndex        =   9
-      Top             =   5640
+      Top             =   6360
       Width           =   1215
    End
    Begin VB.Line Line2 
       X1              =   360
       X2              =   5760
-      Y1              =   6900
-      Y2              =   6900
+      Y1              =   7620
+      Y2              =   7620
    End
    Begin VB.Line Line1 
       X1              =   360
       X2              =   5760
-      Y1              =   6630
-      Y2              =   6630
+      Y1              =   7350
+      Y2              =   7350
    End
    Begin VB.Label lblAmountWords 
       BackColor       =   &H00FFFFFF&
@@ -194,7 +269,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   615
       Left            =   360
       TabIndex        =   8
-      Top             =   6360
+      Top             =   7080
       Width           =   5415
    End
    Begin VB.Label Label7 
@@ -212,7 +287,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   360
       TabIndex        =   7
-      Top             =   6000
+      Top             =   6720
       Width           =   1935
    End
    Begin VB.Label lblAddress 
@@ -230,7 +305,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   1320
       TabIndex        =   3
-      Top             =   1320
+      Top             =   2040
       Width           =   4095
    End
    Begin VB.Label lblFullName 
@@ -248,7 +323,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   1320
       TabIndex        =   2
-      Top             =   840
+      Top             =   1560
       Width           =   4095
    End
    Begin VB.Label Label2 
@@ -266,7 +341,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   240
       TabIndex        =   1
-      Top             =   1320
+      Top             =   2040
       Width           =   975
    End
    Begin VB.Label Label1 
@@ -284,7 +359,7 @@ Begin VB.Form frmReceiptPrint
       Height          =   255
       Left            =   360
       TabIndex        =   0
-      Top             =   840
+      Top             =   1560
       Width           =   855
    End
 End

@@ -1,7 +1,7 @@
 frmRegistrar = 95, 18, 962, 495, , 130, 130, 1001, 746, C
 RegistrarModule = -198, 54, 674, 547, C
 frmLogin = 180, 274, 885, 881, C, 156, 156, 1027, 582, C
-frmVerification = 97, 188, 874, 796, , 1, 6, 863, 710, C
+frmVerification = 35, 239, 812, 643, , 1, 6, 863, 710, C
 frmSplash = 0, 0, 0, 0, C, 78, 78, 949, 504, C
 frmEnroll = 50, 50, 760, 657, , 182, 182, 1053, 608, C
 frmSearch = 15, 60, 724, 601, , 73, 25, 944, 451, C
@@ -15,6 +15,6 @@ url_helper = 39, 6, 941, 425,
 WebCommunicator = 46, 77, 938, 551, 
 frmStudentList = 51, 134, 949, 750, , 143, 44, 1014, 553, C
 frmViewStudent = 31, -2, 694, 507, , -161, -3, 741, 458, C
-frmStudentListPrint = 36, 51, 681, 475, , 28, -1, 705, 418, C
+frmStudentListPrint = 36, 51, 681, 475, , 28, -1, 705, 549, C
 frmPriorityNumber = 0, 0, 0, 0, C, 0, 0, 0, 0, C
 frmStudentIDPrint = 75, 75, 785, 682, C, 50, 50, 760, 657, C
