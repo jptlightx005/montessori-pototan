@@ -4,9 +4,9 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmStudentListPrint 
    BackColor       =   &H00FFFFFF&
    Caption         =   "Student List"
-   ClientHeight    =   8040
-   ClientLeft      =   60
-   ClientTop       =   390
+   ClientHeight    =   9435
+   ClientLeft      =   225
+   ClientTop       =   -5265
    ClientWidth     =   9345
    BeginProperty Font 
       Name            =   "Arial"
@@ -18,7 +18,7 @@ Begin VB.Form frmStudentListPrint
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   8040
+   ScaleHeight     =   9435
    ScaleWidth      =   9345
    StartUpPosition =   3  'Windows Default
    Begin MSComDlg.CommonDialog cmnDlg 
@@ -42,7 +42,7 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   6480
       TabIndex        =   3
-      Top             =   7440
+      Top             =   8640
       Width           =   1215
    End
    Begin VB.CommandButton cmdPrint 
@@ -59,14 +59,14 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   7800
       TabIndex        =   2
-      Top             =   7440
+      Top             =   8640
       Width           =   1215
    End
    Begin MSFlexGridLib.MSFlexGrid gridStudents 
       Height          =   5895
       Left            =   360
       TabIndex        =   0
-      Top             =   1440
+      Top             =   2040
       Width           =   8655
       _ExtentX        =   15266
       _ExtentY        =   10398
@@ -91,6 +91,81 @@ Begin VB.Form frmStudentListPrint
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+   End
+   Begin VB.Label lblTeacher 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Teacher"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   360
+      TabIndex        =   8
+      Top             =   9000
+      Width           =   2775
+   End
+   Begin VB.Label lblTeacherName 
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "____________________"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   360
+      TabIndex        =   7
+      Top             =   8640
+      Width           =   3255
+   End
+   Begin VB.Label Label2 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "Pototan, Iloilo"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   6
+      Top             =   960
+      Width           =   9135
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "F. Parcon St."
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   12
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   5
+      Top             =   600
+      Width           =   9135
    End
    Begin VB.Label lbl_exel 
       Alignment       =   2  'Center
@@ -118,7 +193,7 @@ Begin VB.Form frmStudentListPrint
       Height          =   495
       Left            =   360
       TabIndex        =   1
-      Top             =   840
+      Top             =   1440
       Width           =   8655
    End
 End
@@ -131,7 +206,7 @@ Option Explicit
 Public studentList As Collection
 Public listGrade As String
 
-Const heightDifference As Integer = 2130
+Const heightDifference As Integer = 4110
 Const widthDifference As Integer = 780
 Private Sub cmdClose_Click()
     Unload Me
@@ -222,11 +297,15 @@ Private Sub Form_Resize()
     gridStudents.width = Me.width - widthDifference
     lblGrade.width = Me.width - widthDifference
     lbl_exel.width = Me.width
+    Label1.width = Me.width
+    Label2.width = Me.width
     cmdClose.Left = Me.width - 2955
     cmdPrint.Left = Me.width - 1635
 
     gridStudents.Height = Me.Height - heightDifference
-    cmdClose.Top = Me.Height - 1110
-    cmdPrint.Top = Me.Height - 1110
+    cmdClose.Top = Me.Height - 1360
+    cmdPrint.Top = Me.Height - 1360
+    lblTeacherName.Top = Me.Height - 1360
+    lblTeacher.Top = Me.Height - 1000
 End Sub
 
