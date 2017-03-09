@@ -1,12 +1,13 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmVerification 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Verification"
-   ClientHeight    =   3750
-   ClientLeft      =   4920
-   ClientTop       =   4140
-   ClientWidth     =   8595
+   ClientHeight    =   8220
+   ClientLeft      =   3390
+   ClientTop       =   1395
+   ClientWidth     =   12405
    BeginProperty Font 
       Name            =   "Arial"
       Size            =   12
@@ -19,353 +20,618 @@ Begin VB.Form frmVerification
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3750
-   ScaleWidth      =   8595
-   Begin VB.CommandButton cmdExpand 
-      Caption         =   "Expand"
-      Height          =   495
-      Left            =   7200
+   ScaleHeight     =   8220
+   ScaleWidth      =   12405
+   Begin VB.TextBox txtSchoolYear 
+      Height          =   390
+      Left            =   7560
+      TabIndex        =   64
+      Text            =   "2016-2017"
+      Top             =   1065
+      Width           =   1815
+   End
+   Begin VB.ComboBox cmbGender 
+      Enabled         =   0   'False
+      Height          =   390
+      ItemData        =   "frmVerification.frx":0000
+      Left            =   240
+      List            =   "frmVerification.frx":000A
+      Style           =   2  'Dropdown List
+      TabIndex        =   62
+      Top             =   1920
+      Width           =   2295
+   End
+   Begin VB.CheckBox chkNew 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "New Student"
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   240
+      TabIndex        =   52
+      Top             =   240
+      Width           =   2175
+   End
+   Begin VB.ComboBox cmbGrade 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      ItemData        =   "frmVerification.frx":001C
+      Left            =   3480
+      List            =   "frmVerification.frx":0035
+      Style           =   2  'Dropdown List
+      TabIndex        =   51
+      Top             =   240
+      Width           =   2055
+   End
+   Begin VB.TextBox txtFName 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   240
       TabIndex        =   50
-      Top             =   1800
+      Top             =   1080
+      Width           =   2295
+   End
+   Begin VB.TextBox txtMName 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   2640
+      TabIndex        =   49
+      Top             =   1080
+      Width           =   2055
+   End
+   Begin VB.TextBox txtLName 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   4800
+      TabIndex        =   48
+      Top             =   1080
+      Width           =   2535
+   End
+   Begin VB.ComboBox cmbMonth 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      ItemData        =   "frmVerification.frx":0059
+      Left            =   3000
+      List            =   "frmVerification.frx":0081
+      Style           =   2  'Dropdown List
+      TabIndex        =   47
+      Top             =   1920
       Width           =   1215
    End
-   Begin VB.Frame frameBio 
+   Begin VB.ComboBox cmbDay 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   4320
+      Style           =   2  'Dropdown List
+      TabIndex        =   46
+      Top             =   1920
+      Width           =   1215
+   End
+   Begin VB.ComboBox cmbYear 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   5640
+      Style           =   2  'Dropdown List
+      TabIndex        =   45
+      Top             =   1920
+      Width           =   1215
+   End
+   Begin VB.TextBox txtPlace 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   6960
+      TabIndex        =   44
+      Top             =   1920
+      Width           =   2535
+   End
+   Begin VB.TextBox txtReligion 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   9240
+      TabIndex        =   43
+      Top             =   6000
+      Width           =   2655
+   End
+   Begin VB.TextBox txtLast 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   9240
+      TabIndex        =   42
+      Top             =   5280
+      Width           =   2655
+   End
+   Begin VB.CheckBox chkBaptized 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Personal Info"
-      Height          =   495
+      Caption         =   "Baptized"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   9240
+      TabIndex        =   41
+      Top             =   6720
+      Width           =   2175
+   End
+   Begin VB.CheckBox chkComm 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "First Communion"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   9240
+      TabIndex        =   40
+      Top             =   7080
+      Width           =   2295
+   End
+   Begin VB.Frame Frame1 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Parents"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
       Left            =   120
-      TabIndex        =   15
-      Top             =   1680
-      Width           =   6855
-      Begin VB.ComboBox cmbGender 
-         Enabled         =   0   'False
-         Height          =   390
-         ItemData        =   "frmVerification.frx":0000
-         Left            =   120
-         List            =   "frmVerification.frx":000A
-         Style           =   2  'Dropdown List
-         TabIndex        =   34
-         Top             =   600
-         Width           =   975
-      End
-      Begin VB.ComboBox cmbMonth 
-         Enabled         =   0   'False
-         Height          =   390
-         ItemData        =   "frmVerification.frx":0014
-         Left            =   1560
-         List            =   "frmVerification.frx":003C
-         Style           =   2  'Dropdown List
-         TabIndex        =   33
-         Top             =   600
-         Width           =   1215
-      End
-      Begin VB.ComboBox cmbDay 
-         Enabled         =   0   'False
-         Height          =   390
-         Left            =   2880
-         Style           =   2  'Dropdown List
-         TabIndex        =   32
-         Top             =   600
-         Width           =   1215
-      End
-      Begin VB.ComboBox cmbYear 
-         Enabled         =   0   'False
-         Height          =   390
-         Left            =   4200
-         Style           =   2  'Dropdown List
-         TabIndex        =   31
-         Top             =   600
-         Width           =   1215
-      End
-      Begin VB.TextBox txtPlace 
-         Enabled         =   0   'False
-         Height          =   435
-         Left            =   5640
-         TabIndex        =   30
-         Top             =   600
-         Width           =   2535
-      End
-      Begin VB.TextBox txtFocc 
-         Enabled         =   0   'False
-         Height          =   375
-         Left            =   3000
-         TabIndex        =   29
-         Top             =   1440
-         Width           =   2655
-      End
-      Begin VB.TextBox txtFather 
-         Enabled         =   0   'False
-         Height          =   375
-         Left            =   120
-         TabIndex        =   28
-         Top             =   1440
-         Width           =   2655
-      End
+      TabIndex        =   31
+      Top             =   2400
+      Width           =   6015
       Begin VB.TextBox txtMocc 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   3000
-         TabIndex        =   27
-         Top             =   2160
+         Left            =   3120
+         TabIndex        =   35
+         Top             =   1440
          Width           =   2655
       End
       Begin VB.TextBox txtMother 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   120
+         Left            =   240
+         TabIndex        =   34
+         Top             =   1440
+         Width           =   2655
+      End
+      Begin VB.TextBox txtFocc 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   3120
+         TabIndex        =   33
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtFather 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   240
+         TabIndex        =   32
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.Label Label10 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Occupation"
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   39
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label9 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Mother's Name"
+         Height          =   495
+         Left            =   240
+         TabIndex        =   38
+         Top             =   1080
+         Width           =   2055
+      End
+      Begin VB.Label Label8 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Occupation"
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   37
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label7 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Father's Name"
+         Height          =   495
+         Left            =   240
+         TabIndex        =   36
+         Top             =   360
+         Width           =   2055
+      End
+   End
+   Begin VB.Frame Frame2 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Home Information"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   6240
+      TabIndex        =   22
+      Top             =   2400
+      Width           =   6015
+      Begin VB.TextBox txtCity 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   3120
          TabIndex        =   26
-         Top             =   2160
+         Top             =   720
          Width           =   2655
       End
       Begin VB.TextBox txtTelNo 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   5760
+         Left            =   3120
          TabIndex        =   25
-         Top             =   2160
-         Width           =   2415
+         Top             =   1440
+         Width           =   2655
       End
-      Begin VB.TextBox txtAddress 
+      Begin VB.TextBox txtBrgy 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   5760
+         Left            =   240
          TabIndex        =   24
+         Top             =   720
+         Width           =   2655
+      End
+      Begin VB.TextBox txtProvince 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   240
+         TabIndex        =   23
          Top             =   1440
-         Width           =   2415
+         Width           =   2655
+      End
+      Begin VB.Label Label12 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Telephone Number"
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   30
+         Top             =   1080
+         Width           =   2655
+      End
+      Begin VB.Label Label22 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Brgy/Street*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   29
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label23 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "City/Town*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   28
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label24 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Province*"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   495
+         Left            =   240
+         TabIndex        =   27
+         Top             =   1080
+         Width           =   2055
+      End
+   End
+   Begin VB.Frame Frame3 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Guardian Information"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   2055
+      Left            =   120
+      TabIndex        =   9
+      Top             =   4560
+      Width           =   8775
+      Begin VB.TextBox txtGTelNo 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   5880
+         TabIndex        =   15
+         Top             =   1440
+         Width           =   2655
       End
       Begin VB.TextBox txtGRelation 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   120
-         TabIndex        =   23
-         Top             =   3720
+         Left            =   240
+         TabIndex        =   14
+         Top             =   1440
          Width           =   2655
       End
       Begin VB.TextBox txtGuardian 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   120
-         TabIndex        =   22
-         Top             =   3000
+         Left            =   240
+         TabIndex        =   13
+         Top             =   720
          Width           =   2655
       End
-      Begin VB.TextBox txtGAddress 
+      Begin VB.TextBox txtGCity 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   3000
-         TabIndex        =   21
-         Top             =   3000
+         Left            =   5880
+         TabIndex        =   12
+         Top             =   720
          Width           =   2655
       End
-      Begin VB.TextBox txtGTelNo 
+      Begin VB.TextBox txtGBrgy 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   3000
-         TabIndex        =   20
-         Top             =   3720
+         Left            =   3120
+         TabIndex        =   11
+         Top             =   720
          Width           =   2655
       End
-      Begin VB.TextBox txtLast 
+      Begin VB.TextBox txtGProvince 
          Enabled         =   0   'False
          Height          =   375
-         Left            =   5760
-         TabIndex        =   19
-         Top             =   3000
-         Width           =   2415
-      End
-      Begin VB.TextBox txtReligion 
-         Enabled         =   0   'False
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   18
-         Top             =   3720
-         Width           =   2415
-      End
-      Begin VB.CheckBox chkComm 
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "First Communion"
-         Enabled         =   0   'False
-         Height          =   315
-         Left            =   2520
-         TabIndex        =   17
-         Top             =   4560
-         Width           =   2775
-      End
-      Begin VB.CheckBox chkBaptized 
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Baptized"
-         Enabled         =   0   'False
-         Height          =   315
-         Left            =   120
-         TabIndex        =   16
-         Top             =   4560
-         Width           =   2175
-      End
-      Begin VB.Label Label5 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Gender"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   49
-         Top             =   1080
-         Width           =   975
-      End
-      Begin VB.Label Label6 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Date of Birth"
-         Height          =   255
-         Left            =   1560
-         TabIndex        =   48
-         Top             =   1080
-         Width           =   3855
-      End
-      Begin VB.Label Label7 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Place of Birth"
-         Height          =   255
-         Left            =   5640
-         TabIndex        =   47
-         Top             =   1080
-         Width           =   2535
-      End
-      Begin VB.Label Label8 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Father"
-         Height          =   375
-         Left            =   120
-         TabIndex        =   46
-         Top             =   1800
-         Width           =   2655
-      End
-      Begin VB.Label Label9 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Occupation"
-         Height          =   375
-         Left            =   3000
-         TabIndex        =   45
-         Top             =   1800
-         Width           =   2655
-      End
-      Begin VB.Label Label1 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Mother"
-         Height          =   375
-         Left            =   120
-         TabIndex        =   44
-         Top             =   2520
-         Width           =   2655
-      End
-      Begin VB.Label Label10 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Occupation"
-         Height          =   375
-         Left            =   3000
-         TabIndex        =   43
-         Top             =   2520
-         Width           =   2655
-      End
-      Begin VB.Label Label11 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Address"
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   42
-         Top             =   1800
-         Width           =   2415
-      End
-      Begin VB.Label Label12 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Telephone Number"
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   41
-         Top             =   2520
-         Width           =   2415
-      End
-      Begin VB.Label Label13 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Guardian"
-         Height          =   375
-         Left            =   120
-         TabIndex        =   40
-         Top             =   3360
-         Width           =   2655
-      End
-      Begin VB.Label Label14 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Relation"
-         Height          =   375
-         Left            =   120
-         TabIndex        =   39
-         Top             =   4080
+         Left            =   3120
+         TabIndex        =   10
+         Top             =   1440
          Width           =   2655
       End
       Begin VB.Label Label15 
-         Alignment       =   2  'Center
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Address"
-         Height          =   375
-         Left            =   3000
-         TabIndex        =   38
-         Top             =   3360
-         Width           =   2415
-      End
-      Begin VB.Label Label16 
-         Alignment       =   2  'Center
          BackColor       =   &H00C0E0FF&
          Caption         =   "Telephone Number"
-         Height          =   375
-         Left            =   3000
-         TabIndex        =   37
-         Top             =   4080
-         Width           =   2415
+         Height          =   495
+         Left            =   5880
+         TabIndex        =   21
+         Top             =   1080
+         Width           =   2655
       End
-      Begin VB.Label Label17 
-         Alignment       =   2  'Center
+      Begin VB.Label Label14 
          BackColor       =   &H00C0E0FF&
-         Caption         =   "Last School"
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   36
-         Top             =   3360
-         Width           =   2415
+         Caption         =   "Relation"
+         Height          =   495
+         Left            =   240
+         TabIndex        =   20
+         Top             =   1080
+         Width           =   2055
       End
-      Begin VB.Label Label18 
-         Alignment       =   2  'Center
+      Begin VB.Label Label13 
          BackColor       =   &H00C0E0FF&
-         Caption         =   "Religion"
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   35
-         Top             =   4080
-         Width           =   2415
+         Caption         =   "Guardian"
+         Height          =   495
+         Left            =   240
+         TabIndex        =   19
+         Top             =   360
+         Width           =   2055
       End
+      Begin VB.Label Label11 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Brgy/Street"
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   18
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label25 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "City/Town"
+         Height          =   495
+         Left            =   5880
+         TabIndex        =   17
+         Top             =   360
+         Width           =   2055
+      End
+      Begin VB.Label Label26 
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Province"
+         Height          =   495
+         Left            =   3120
+         TabIndex        =   16
+         Top             =   1080
+         Width           =   2055
+      End
+   End
+   Begin VB.TextBox txtMatriculation 
+      Height          =   390
+      Left            =   4080
+      TabIndex        =   7
+      Text            =   "0"
+      Top             =   7080
+      Width           =   3015
+   End
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   6480
+      Top             =   7560
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemotePort      =   80
    End
    Begin VB.Frame frameReq 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Requirements"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1335
       Left            =   120
-      TabIndex        =   11
-      Top             =   2280
+      TabIndex        =   3
+      Top             =   6720
       Width           =   3615
       Begin VB.CheckBox chkBCert 
          BackColor       =   &H00C0E0FF&
          Caption         =   "Birth Certificate"
          Height          =   315
          Left            =   120
-         TabIndex        =   14
+         TabIndex        =   6
          Top             =   360
          Width           =   2295
       End
@@ -374,7 +640,7 @@ Begin VB.Form frmVerification
          Caption         =   "Report Card"
          Height          =   315
          Left            =   120
-         TabIndex        =   13
+         TabIndex        =   5
          Top             =   720
          Width           =   2295
       End
@@ -383,7 +649,7 @@ Begin VB.Form frmVerification
          Caption         =   "N/A"
          Height          =   315
          Left            =   2520
-         TabIndex        =   12
+         TabIndex        =   4
          Top             =   720
          Width           =   975
       End
@@ -392,17 +658,17 @@ Begin VB.Form frmVerification
       Caption         =   "Save"
       Enabled         =   0   'False
       Height          =   495
-      Left            =   7200
-      TabIndex        =   10
-      Top             =   3120
+      Left            =   11040
+      TabIndex        =   2
+      Top             =   1800
       Width           =   1215
    End
    Begin VB.CommandButton cmdEdit 
       Caption         =   "Edit"
       Height          =   495
-      Left            =   7200
-      TabIndex        =   9
-      Top             =   2400
+      Left            =   11040
+      TabIndex        =   1
+      Top             =   1200
       Width           =   1215
    End
    Begin VB.CommandButton cmdRegister 
@@ -410,99 +676,198 @@ Begin VB.Form frmVerification
       Enabled         =   0   'False
       Height          =   495
       Left            =   4080
-      TabIndex        =   8
-      Top             =   3120
+      TabIndex        =   0
+      Top             =   7560
       Width           =   1215
    End
-   Begin VB.ComboBox cmbGrade 
-      Enabled         =   0   'False
-      Height          =   435
-      ItemData        =   "frmVerification.frx":007C
-      Left            =   2640
-      List            =   "frmVerification.frx":0095
-      Style           =   2  'Dropdown List
-      TabIndex        =   7
-      Top             =   240
-      Width           =   2055
-   End
-   Begin VB.CheckBox chkNew 
+   Begin VB.Label Label16 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "New Student"
-      BeginProperty DataFormat 
-         Type            =   5
-         Format          =   ""
-         HaveTrueFalseNull=   1
-         TrueValue       =   "True"
-         FalseValue      =   "False"
-         NullValue       =   ""
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   1033
-         SubFormatType   =   7
+      Caption         =   "School Year"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
       EndProperty
-      Enabled         =   0   'False
-      Height          =   315
-      Left            =   240
-      TabIndex        =   6
-      Top             =   240
-      Width           =   2175
-   End
-   Begin VB.TextBox txtMName 
-      Enabled         =   0   'False
-      Height          =   435
-      Left            =   5520
-      TabIndex        =   2
-      Text            =   "Gil"
+      Height          =   375
+      Left            =   7560
+      TabIndex        =   63
       Top             =   720
-      Width           =   2775
+      Width           =   1455
    End
-   Begin VB.TextBox txtFName 
-      Enabled         =   0   'False
-      Height          =   435
-      Left            =   2640
-      TabIndex        =   1
-      Text            =   "Liza"
-      Top             =   720
-      Width           =   2775
-   End
-   Begin VB.TextBox txtLName 
-      Enabled         =   0   'False
-      Height          =   435
-      Left            =   240
-      TabIndex        =   0
-      Text            =   "Soberano"
-      Top             =   720
-      Width           =   2175
-   End
-   Begin VB.Label Label4 
-      Alignment       =   2  'Center
+   Begin VB.Label Label1 
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Middle Name"
-      Height          =   255
-      Left            =   5520
-      TabIndex        =   5
-      Top             =   1200
-      Width           =   2775
-   End
-   Begin VB.Label Label3 
-      Alignment       =   2  'Center
-      BackColor       =   &H00C0E0FF&
-      Caption         =   "First Name"
-      Height          =   255
-      Left            =   2640
-      TabIndex        =   4
-      Top             =   1200
-      Width           =   2775
+      Caption         =   "First Name*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   240
+      TabIndex        =   61
+      Top             =   720
+      Width           =   1575
    End
    Begin VB.Label Label2 
-      Alignment       =   2  'Center
       BackColor       =   &H00C0E0FF&
-      Caption         =   "Last Name"
-      Height          =   255
+      Caption         =   "Middle Name*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   2640
+      TabIndex        =   60
+      Top             =   720
+      Width           =   1935
+   End
+   Begin VB.Label Label3 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Last Name*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   4800
+      TabIndex        =   59
+      Top             =   720
+      Width           =   1575
+   End
+   Begin VB.Label Label4 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Gender*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
       Left            =   240
-      TabIndex        =   3
-      Top             =   1200
-      Width           =   2175
+      TabIndex        =   58
+      Top             =   1560
+      Width           =   1215
+   End
+   Begin VB.Label Label5 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Date of Birth*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   3000
+      TabIndex        =   57
+      Top             =   1560
+      Width           =   2295
+   End
+   Begin VB.Label Label6 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Place of Birth"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   6960
+      TabIndex        =   56
+      Top             =   1560
+      Width           =   2295
+   End
+   Begin VB.Label Label17 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Religion"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   9240
+      TabIndex        =   55
+      Top             =   5640
+      Width           =   2655
+   End
+   Begin VB.Label Label18 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Last School Attended"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   9240
+      TabIndex        =   54
+      Top             =   4920
+      Width           =   2895
+   End
+   Begin VB.Label Label21 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Grade*"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   2640
+      TabIndex        =   53
+      Top             =   240
+      Width           =   1575
+   End
+   Begin VB.Label Label19 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   "Matriculation"
+      Height          =   255
+      Left            =   4080
+      TabIndex        =   8
+      Top             =   6720
+      Width           =   1500
    End
 End
 Attribute VB_Name = "frmVerification"
@@ -521,107 +886,112 @@ Const expandHeight As Integer = 4560
 Const defaultButtonX As Integer = 7200
 Const defaultButtonY As Integer = 1680
 Const movedButtonX As Integer = 5880
-Const movedButtonY As Integer = 6960
+Const movedButtonY As Integer = 7680
 
-
+'default form height is 495
 
 Const collapsedWindowheight As Integer = 1
 Const expandedWindowheight As Integer = 8790
+
+Public selectedStudent As Dictionary
+
 'Loads current student's information
 Public Sub LoadStudentInfo()
-On Error GoTo ProcError
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-    rs.Open
-    Dim StudentInf() As String
-    Do Until rs.EOF
-        StudentInf = Split(rs("student_info"), "|")
-        chkNew.Value = StudentInf(0)
-        cmbGrade.ListIndex = grade(StudentInf(1), Me)
-        txtLName.Text = StudentInf(4)
-        txtFName.Text = StudentInf(2)
-        txtMName.Text = StudentInf(3)
-        cmbGender.Text = StudentInf(5)
-        cmbMonth.ListIndex = Month(CDate(StudentInf(6))) - 1
-        cmbDay.ListIndex = Day(CDate(StudentInf(6))) - 1
-        cmbYear.Text = Year(CDate(StudentInf(6)))
-        txtPlace.Text = StudentInf(7)
-        txtFather.Text = StudentInf(8)
-        txtFocc.Text = StudentInf(9)
-        txtMother.Text = StudentInf(10)
-        txtMocc.Text = StudentInf(11)
-        txtAddress.Text = StudentInf(12)
-        txtTelNo.Text = StudentInf(13)
-        txtGuardian.Text = StudentInf(14)
-        txtGRelation.Text = StudentInf(15)
-        txtGAddress.Text = StudentInf(16)
-        txtGTelNo.Text = StudentInf(17)
-        txtLast.Text = StudentInf(18)
-        txtReligion.Text = StudentInf(19)
-        chkBaptized.Value = StudentInf(20)
-        chkComm.Value = StudentInf(21)
-        Exit Sub
-    Loop
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+'Dim StudentInf() As String
+
+'StudentInf = Split(selectedStudent("student_info"), "|")
+    chkNew.Value = selectedStudent("is_new")
+    txtSchoolYear.Text = selectedStudent("temp_school_year")
+    cmbGrade.ListIndex = grade(selectedStudent("current_grade"), Me)
+    txtLName.Text = selectedStudent("last_name")
+    txtFName.Text = selectedStudent("first_name")
+    txtMName.Text = selectedStudent("middle_name")
+    cmbGender.ListIndex = IIf(selectedStudent("gender") = "Male", 0, 1)
+    Dim dateOfBirth As Date
+    dateOfBirth = CDate(selectedStudent("date_of_birth"))
+    cmbMonth.ListIndex = Month(dateOfBirth) - 1
+    cmbDay.ListIndex = Day(dateOfBirth) - 1
+
+    Dim i As Integer
+    For i = 0 To cmbYear.ListCount - 1
+        If cmbYear.List(i) = Year(dateOfBirth) Then
+            cmbYear.ListIndex = i
+            Exit For
+        End If
+    Next
+
+    txtPlace.Text = selectedStudent("place_of_birth")
+    txtFather.Text = selectedStudent("fathers_name")
+    txtFocc.Text = selectedStudent("father_occupation")
+    txtMother.Text = selectedStudent("mothers_name")
+    txtMocc.Text = selectedStudent("mother_occupation")
+    'txtAddress.Text = StudentInf(12)
+    txtBrgy.Text = selectedStudent("home_address_brgy")
+    txtCity.Text = selectedStudent("home_address_city")
+    txtProvince.Text = selectedStudent("home_address_province")
+    txtTelNo.Text = selectedStudent("home_number")
+
+    txtGuardian.Text = selectedStudent("guardian_name")
+    txtGRelation.Text = selectedStudent("guardian_relation")
+    'txtGAddress.Text = StudentInf(12)
+    txtGBrgy.Text = selectedStudent("guardian_address_brgy")
+    txtGCity.Text = selectedStudent("guardian_address_city")
+    txtGProvince.Text = selectedStudent("guardian_address_province")
+    txtGTelNo.Text = selectedStudent("guardian_number")
+    txtLast.Text = selectedStudent("last_school_attended")
+    txtReligion.Text = selectedStudent("religion")
+    chkBaptized.Value = selectedStudent("is_baptized")
+    chkComm.Value = selectedStudent("first_communion")
 End Sub
 
 Private Sub chkBCert_Click()
-    cmdRegister.Enabled = (chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
+    cmdRegister.enabled = (chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
 End Sub
 
 Private Sub chkNoReport_Click()
     If chkNoReport.Value = 1 Then
         chkReport.Value = 0
-        chkReport.Enabled = False
+        chkReport.enabled = False
     Else
-        chkReport.Enabled = True
+        chkReport.enabled = True
     End If
-    cmdRegister.Enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
+    cmdRegister.enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
 End Sub
 
 Private Sub chkReport_Click()
-    cmdRegister.Enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
+    cmdRegister.enabled = chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1)
 End Sub
 
 Private Sub cmbMonth_Click()
     Dim i As Integer
     Select Case cmbMonth.ListIndex
-        Case 0, 2, 4, 6, 7, 9, 11
-            cmbDay.Clear
-            For i = 1 To 31
-                cmbDay.AddItem (i)
-            Next
-        Case 3, 5, 8, 10
-            cmbDay.Clear
-            For i = 1 To 30
-                cmbDay.AddItem (i)
-            Next
-        Case 1
-            cmbDay.Clear
-            If cmbYear.ListIndex >= 0 Then
-                If cmbYear.Text Mod 4 = 0 Then
-                    For i = 1 To 29
-                        cmbDay.AddItem (i)
-                    Next
-                Else
-                    For i = 1 To 28
-                        cmbDay.AddItem (i)
-                    Next
-                End If
+    Case 0, 2, 4, 6, 7, 9, 11
+        cmbDay.Clear
+        For i = 1 To 31
+            cmbDay.AddItem (i)
+        Next
+    Case 3, 5, 8, 10
+        cmbDay.Clear
+        For i = 1 To 30
+            cmbDay.AddItem (i)
+        Next
+    Case 1
+        cmbDay.Clear
+        If cmbYear.ListIndex >= 0 Then
+            If cmbYear.Text Mod 4 = 0 Then
+                For i = 1 To 29
+                    cmbDay.AddItem (i)
+                Next
             Else
                 For i = 1 To 28
                     cmbDay.AddItem (i)
                 Next
             End If
+        Else
+            For i = 1 To 28
+                cmbDay.AddItem (i)
+            Next
+        End If
     End Select
 End Sub
 
@@ -642,38 +1012,44 @@ Private Sub cmbYear_Click()
 End Sub
 
 Sub EnableDisableControls()
-    chkNew.Enabled = Changeable
-    cmbGrade.Enabled = Changeable
-    txtLName.Enabled = Changeable
-    txtFName.Enabled = Changeable
-    txtMName.Enabled = Changeable
-    cmbGender.Enabled = Changeable
-    cmbMonth.Enabled = Changeable
-    cmbDay.Enabled = Changeable
-    cmbYear.Enabled = Changeable
-    txtPlace.Enabled = Changeable
-    txtFather.Enabled = Changeable
-    txtFocc.Enabled = Changeable
-    txtAddress.Enabled = Changeable
-    txtMother.Enabled = Changeable
-    txtMocc.Enabled = Changeable
-    txtTelNo.Enabled = Changeable
-    txtGuardian.Enabled = Changeable
-    txtGAddress.Enabled = Changeable
-    txtLast.Enabled = Changeable
-    txtGRelation.Enabled = Changeable
-    txtGTelNo.Enabled = Changeable
-    txtReligion.Enabled = Changeable
-    chkBaptized.Enabled = Changeable
-    chkComm.Enabled = Changeable
-    
-    chkBCert.Enabled = Not Changeable
-    chkReport.Enabled = Not Changeable
-    chkNoReport.Enabled = Not Changeable
-    cmdRegister.Enabled = IIf(Changeable, False, chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
-    
+    chkNew.enabled = Changeable
+    cmbGrade.enabled = Changeable
+    txtLName.enabled = Changeable
+    txtFName.enabled = Changeable
+    txtMName.enabled = Changeable
+    cmbGender.enabled = Changeable
+    cmbMonth.enabled = Changeable
+    cmbDay.enabled = Changeable
+    cmbYear.enabled = Changeable
+    txtPlace.enabled = Changeable
+    txtFather.enabled = Changeable
+    txtFocc.enabled = Changeable
+    'txtAddress.enabled = Changeable
+    txtBrgy.enabled = Changeable
+    txtCity.enabled = Changeable
+    txtProvince.enabled = Changeable
+    txtMother.enabled = Changeable
+    txtMocc.enabled = Changeable
+    txtTelNo.enabled = Changeable
+    txtGuardian.enabled = Changeable
+    'txtGAddress.enabled = Changeable
+    txtGBrgy.enabled = Changeable
+    txtGCity.enabled = Changeable
+    txtGProvince.enabled = Changeable
+    txtLast.enabled = Changeable
+    txtGRelation.enabled = Changeable
+    txtGTelNo.enabled = Changeable
+    txtReligion.enabled = Changeable
+    chkBaptized.enabled = Changeable
+    chkComm.enabled = Changeable
+
+    chkBCert.enabled = Not Changeable
+    chkReport.enabled = Not Changeable
+    chkNoReport.enabled = Not Changeable
+    cmdRegister.enabled = IIf(Changeable, False, chkBCert.Value = 1 And (chkReport.Value = 1 Or chkNoReport.Value = 1))
+
     'Enables the save button
-    cmdSave.Enabled = Changeable
+    cmdSave.enabled = Changeable
 End Sub
 
 Private Sub cmdEdit_Click()
@@ -690,117 +1066,83 @@ Private Sub cmdEdit_Click()
     End If
 End Sub
 
-Private Sub cmdExpand_Click()
-    If Not expanded Then
-        frmVerification.Height = frmVerification.Height + expandHeight
-        frameBio.Height = frameBio.Height + expandHeight
-        frameBio.Width = expandedFrameWidth
-        frameReq.Top = frameReq.Top + expandHeight
-        cmdRegister.Top = cmdRegister.Top + expandHeight
-        cmdEdit.Top = cmdEdit.Top + expandHeight
-        cmdSave.Top = cmdSave.Top + expandHeight
-        
-        cmdExpand.Left = movedButtonX
-        cmdExpand.Top = movedButtonY
-        cmdExpand.Caption = "Collapse"
-        expanded = True
-    Else
-        frmVerification.Height = frmVerification.Height - expandHeight
-        frameBio.Height = frameBio.Height - expandHeight
-        frameBio.Width = collapsedFrameWidth
-        frameReq.Top = frameReq.Top - expandHeight
-        cmdRegister.Top = cmdRegister.Top - expandHeight
-        cmdEdit.Top = cmdEdit.Top - expandHeight
-        cmdSave.Top = cmdSave.Top - expandHeight
-        
-        cmdExpand.Left = defaultButtonX
-        cmdExpand.Top = defaultButtonY
-        cmdExpand.Caption = "Expand"
-        expanded = False
-    End If
-End Sub
-
 Private Sub cmdRegister_Click()
 'On Error GoTo ProcError
     If chkBCert = 1 And (chkReport = 1 Or chkNoReport = 1) Then
-        Set rs = New ADODB.Recordset
-        rs.ActiveConnection = cn
-        rs.CursorLocation = adUseClient
-        rs.CursorType = adOpenDynamic
-        rs.LockType = adLockOptimistic
-        rs.Source = "SELECT * FROM montessori_records"
-        
-        rs.Open
-        'Adds new student in the database
-        rs.AddNew
-        rs("Queue_ID").Value = currentStudentID
-        rs("current_grade").Value = setgrade(cmbGrade.ListIndex)
-        rs("last_name").Value = txtLName.Text
-        rs("first_name").Value = txtFName.Text
-        rs("middle_name").Value = txtMName.Text
-        rs("gender").Value = cmbGender.Text
-        rs("date_of_birth").Value = DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
-        rs("place_of_birth").Value = txtPlace.Text
-        rs("fathers_name").Value = txtFather.Text
-        rs("father_occupation").Value = txtFocc.Text
-        rs("mothers_name").Value = txtMother.Text
-        rs("mother_occupation").Value = txtMocc.Text
-        rs("home_address").Value = txtAddress.Text
-        rs("home_number").Value = txtTelNo.Text
-        rs("guardian_name").Value = txtGuardian.Text
-        rs("guardian_relation").Value = txtGRelation.Text
-        rs("guardian_address").Value = txtGAddress.Text
-        rs("guardian_number").Value = txtGTelNo.Text
-        rs("last_school_attended").Value = txtLast.Text
-        rs("religion").Value = txtReligion.Text
-        rs("is_baptized").Value = chkBaptized.Value
-        rs("first_communion").Value = chkComm.Value
-        rs.Update
-        rs.Close
+        If CheckMatriculation() = False Then
+            Exit Sub
+        End If
 
+        If Validation() Then
+            Dim updateRecord As Dictionary
+            Set updateRecord = New Dictionary
+            updateRecord.Add "usrn", regadmin.usrn
+            updateRecord.Add "pssw", regadmin.pssw
+            updateRecord.Add "role", regadmin.role
+            updateRecord.Add "action", aREGISTER_STUDENT
 
-        rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID = " & currentStudentID
-        rs.Open
-        Do Until rs.EOF
-            rs("status").Value = "onprocess"
-            rs.Update
-            Exit Do
-        Loop
-        
-        rs.Close
-        
-        MsgBox "The student has been succesfully added to the records database", vbInformation
-        Unload Me
+            updateRecord.Add "is_new", chkNew.Value
+            updateRecord.Add "school_year", txtSchoolYear.Text
+            updateRecord.Add "Student_ID", selectedStudent("ID")
+            updateRecord.Add "current_grade", setgrade(cmbGrade.ListIndex)
+            updateRecord.Add "last_name", Trim(txtLName.Text)
+            updateRecord.Add "first_name", Trim(txtFName.Text)
+            updateRecord.Add "middle_name", Trim(txtMName.Text)
+            updateRecord.Add "gender", cmbGender.Text
+            updateRecord.Add "date_of_birth", DoB(cmbMonth.ListIndex, CInt(cmbDay.Text), CInt(cmbYear.Text))
+            updateRecord.Add "place_of_birth", Trim(txtPlace.Text)
+            updateRecord.Add "fathers_name", Trim(txtFather.Text)
+
+            updateRecord.Add "father_occupation", Trim(txtFocc.Text)
+            updateRecord.Add "mothers_name", Trim(txtMother.Text)
+            updateRecord.Add "mother_occupation", Trim(txtMocc.Text)
+            'updateRecord.Add "home_address", Trim(txtAddress.Text)
+
+            updateRecord.Add "home_address_brgy", Trim(txtBrgy.Text)
+            updateRecord.Add "home_address_city", Trim(txtCity.Text)
+            updateRecord.Add "home_address_province", Trim(txtProvince.Text)
+
+            updateRecord.Add "home_number", Trim(txtTelNo.Text)
+            updateRecord.Add "guardian_name", Trim(txtGuardian.Text)
+            updateRecord.Add "guardian_relation", Trim(txtGRelation.Text)
+            'updateRecord.Add "guardian_address", Trim(txtGAddress.Text)
+
+            updateRecord.Add "guardian_address_brgy", Trim(txtGBrgy.Text)
+            updateRecord.Add "guardian_address_city", Trim(txtGCity.Text)
+            updateRecord.Add "guardian_address_province", Trim(txtGProvince.Text)
+
+            updateRecord.Add "guardian_number", Trim(txtGTelNo.Text)
+            updateRecord.Add "last_school_attended", Trim(txtLast.Text)
+            updateRecord.Add "religion", Trim(txtReligion.Text)
+            updateRecord.Add "is_baptized", chkBaptized.Value
+            updateRecord.Add "first_communion", chkComm.Value
+            updateRecord.Add "total_matriculation", txtMatriculation.Text
+
+            blnConnected = False
+            Call sendRequest(sckMain, hAPI_ACCOUNT, updateRecord, hPOST_METHOD)
+        Else
+            MsgBox "Please fill in required data!", vbExclamation
+        End If
     End If
-    
-ProcExit:
-    Exit Sub
-    
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
 End Sub
+
 Private Function setgrade(gradeindex As Integer) As String
     Select Case gradeindex
-        Case 0:
-            setgrade = "preschool"
-        Case 1:
-            setgrade = "grade1"
-        Case 2:
-            setgrade = "grade2"
-        Case 3:
-            setgrade = "grade3"
-        Case 4:
-            setgrade = "grade4"
-        Case 5:
-            setgrade = "grade5"
-        Case 6:
-            setgrade = "grade6"
+    Case 0:
+        setgrade = "preschool"
+    Case 1:
+        setgrade = "grade1"
+    Case 2:
+        setgrade = "grade2"
+    Case 3:
+        setgrade = "grade3"
+    Case 4:
+        setgrade = "grade4"
+    Case 5:
+        setgrade = "grade5"
+    Case 6:
+        setgrade = "grade6"
     End Select
-End Function
-Private Function DoB(bm As Integer, bd As Integer, by As Integer) As String
-    
-    DoB = Format$(CDate((bm + 1) & "-" & bd & "-" & by), "yyyy-mm-dd")
 End Function
 
 Private Sub cmdSave_Click()
@@ -808,7 +1150,6 @@ Private Sub cmdSave_Click()
     Call EnableDisableControls
     cmdEdit.Caption = "Edit"
 End Sub
-
 
 Private Sub Form_Load()
     expanded = False
@@ -818,8 +1159,104 @@ Private Sub Form_Load()
     For i = 1 To 31
         cmbDay.AddItem (i)
     Next
-    For i = Year(Now) - 2 To Year(Now) - 20 Step -1
+    For i = Year(Now) - 4 To 1995 Step -1
         cmbYear.AddItem (i)
     Next
     Changeable = False
+    Call LoadStudentInfo
+End Sub
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+
+    sckMain.GetData strResponse, vbString, bytesTotal
+    Debug.Print (strResponse)
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+
+    If p.Item("response") = 1 Then
+        Dim message As String
+        message = "The student has been registered!"
+
+        MsgBox message, vbOKOnly + vbInformation
+
+        frmStudentIDPrint.studentID = p.Item("message")
+        frmStudentIDPrint.studentName = txtLName.Text
+        frmStudentIDPrint.Show vbModal
+        Unload Me
+    Else
+        MsgBox p.Item("message"), vbOKOnly + vbExclamation    'prompts
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+
+    sckMain.Close
+End Sub
+
+Private Function Validation() As Boolean
+    Dim isValid As Boolean
+    isValid = True
+    isValid = isValid And cmbGrade.ListIndex >= 0
+    isValid = isValid And txtFName.Text <> ""
+    isValid = isValid And txtMName.Text <> ""
+    isValid = isValid And txtLName.Text <> ""
+    isValid = isValid And cmbGender.ListIndex >= 0
+    isValid = isValid And cmbMonth.ListIndex >= 0
+    isValid = isValid And cmbDay.ListIndex >= 0
+    isValid = isValid And cmbYear.ListIndex >= 0
+    isValid = isValid And txtBrgy.Text <> ""
+    isValid = isValid And txtCity.Text <> ""
+    isValid = isValid And txtProvince.Text <> ""
+
+    Validation = isValid
+End Function
+
+Private Function CheckMatriculation() As Boolean
+    Dim matriculation As Double
+    matriculation = CDbl(txtMatriculation.Text)
+    If matriculation < 10000 Then
+        MsgBox "Matriculation should be 10000 and beyond", vbExclamation
+        CheckMatriculation = False
+    Else
+        CheckMatriculation = True
+    End If
+End Function
+Private Sub txtMatriculation_GotFocus()
+    txtMatriculation.SelStart = 0
+    txtMatriculation.SelLength = Len(txtMatriculation.Text)
+End Sub
+
+Private Sub txtMatriculation_KeyPress(KeyAscii As Integer)
+    If KeyAscii >= vbKey0 And KeyAscii <= vbKey9 Or KeyAscii = vbKeyBack Or KeyAscii = vbKeyDelete Then
+        Exit Sub
+    ElseIf KeyAscii = vbKeyDecimal Or KeyAscii = Asc(".") Then
+        If InStr(1, txtMatriculation.Text, ".") > 0 Then
+            KeyAscii = 0
+            Exit Sub
+        End If
+    Else
+        KeyAscii = 0
+    End If
+End Sub
+
+Private Sub txtMatriculation_LostFocus()
+    If txtMatriculation.Text = "" Then
+        txtMatriculation.Text = "0"
+    Else
+        Dim num As Double
+        num = CDbl(txtMatriculation.Text)
+        txtMatriculation.Text = num
+    End If
 End Sub

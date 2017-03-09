@@ -1,2 +1,3 @@
 9/9/2016 8:33:45 PM:[MySQL][ODBC 5.3(a) Driver]Access denied for user 'registraros'@'Hoshizora-PC' (using password: NO)
 9/9/2016 8:53:07 PM:[MySQL][ODBC 5.3(a) Driver]Access denied for user 'registraros'@'Hoshizora-PC' (using password: NO)
+9/9/2016 9:53:53 PM:[MySQL][ODBC 5.3(a) Driver]Access denied for user 'registraros'@'Hoshizora-PC' (using password: NO)

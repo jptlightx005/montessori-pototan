@@ -1,0 +1,36 @@
+body{
+    font-family:'Segoe UI';
+    margin:0;
+}
+header{
+    /*background-color:#AAFFAA;*/
+}
+header h1{
+    margin-left:100px;
+}
+header img{
+    float:left;
+    width:90px;
+    height:90px;
+}
+header nav{
+    margin-left:100px;
+    background-color:#AAAAFF;
+    padding: 5px 0px;
+}
+header nav a{
+    text-decoration: none;
+}
+header nav span{
+    padding:5px 20px;
+    color: #FFF;
+    cursor:hand;
+}
+header nav span:hover{
+    background-color:#AAAACC;
+}
+
+#content{
+    margin-top: 25px;
+    margin-left:100px;
+}
