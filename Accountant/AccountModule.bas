@@ -42,73 +42,11 @@ ProcError:
 End Sub
 
 'Saves the settings in the ini file
-Public Sub SaveSettings()
+'Saves the user's settings in accountant.ini
+Public Sub SaveSettings(usrn As String, ip As String)
 On Error GoTo ProcError
-    WriteIniValue App.Path & "\accountant.ini", "Default", "username", acctadmin.usrn
-    WriteIniValue App.Path & "\accountant.ini", "Default", "ipaddress", ipaddress
-ProcExit:
-    Exit Sub
-    
-ProcError:
-   MsgBox Err.Description, vbExclamation
-    Resume ProcExit
-End Sub
-
-'Login Method
-Public Sub LogIn(usrn As String, pssw As String, ip As String)
-    On Error GoTo ProcError 'If something goes wrong, skip to the Error message
-    ipaddress = ip 'inserts the ip entered to the global variable
-    
-    'sets the Database Connection
-    Set cn = New ADODB.Connection
-    cn.CursorLocation = adUseClient
-    cn.Open "Driver={MySQL ODBC 5.3 ANSI Driver};Server=" & ipaddress & ";Database=montessori-db; User=" & usrn & ";Password=" & pssw & ";"
-
-    'sets the RecordSet for the log-in method
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_admin WHERE usrn = '" + usrn + "'"
-    'opens the recordset and scans the table
-    'Exit Subs in this loop is used to skip the rest of the codes when conditions are met
-    rs.Open
-    Do Until rs.EOF
-        If rs("role") = "accountant" Then 'if the admin's role is an accountant
-            If rs("pssw") = pssw Then 'if the password entered is correct
-                'increments the times the user has logged in
-                rs("login_count") = rs("login_count") + 1
-                rs.Update
-                
-                acctadmin.usrn = usrn 'sets the current program's registrar admin to current user
-                acctadmin.pssw = pssw
-                acctadmin.role = rs("role")
-                localip = frmLogin.sckMain.localip 'sets the program's local ip to the computer's network ip address
-                
-                'prompts the user has logged in successfully
-                MsgBox "Logged in Successfully!", vbOKOnly + vbInformation 'prompts
-                Unload frmLogin 'exits the current form
-                'sets the registrar form's labels with the current entries
-                frmAccountant.lbladmin = acctadmin.usrn
-                frmAccountant.lblIP = localip
-                'shows the registrar form
-                frmAccountant.Show
-                'closes the recordset
-                rs.Close
-                Exit Sub
-            Else 'If the Password entered is wrong
-                MsgBox "Wrong Password!", vbOKOnly + vbExclamation
-                Exit Sub
-            End If
-        Else 'If the Admin role is not a registrar
-            MsgBox "Must use accountant account!", vbOKOnly + vbExclamation
-            Exit Sub
-        End If
-    Loop
-    'If the scanning didn't match records
-    MsgBox "Wrong username or username doesn't exist!", vbOKOnly + vbExclamation
-    
+    WriteIniValue App.Path & "\accountant.ini", "Default", "username", usrn
+    WriteIniValue App.Path & "\accountant.ini", "Default", "ipaddress", ip
 ProcExit:
     Exit Sub
     
@@ -116,42 +54,6 @@ ProcError:
     MsgBox Err.Description, vbExclamation
     Resume ProcExit
 End Sub
-
-Public Function SearchStudent(searchStr As String) As student
-On Error GoTo ProcError
-'sets the RecordSet for the search method
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    rs.Source = "SELECT * FROM montessori_records WHERE Student_ID=" & searchStr
-    'opens the recordset and scans the table
-    'Exit Subs in this loop is used to skip the rest of the codes when conditions are met
-    rs.Open
-    Do Until rs.EOF
-        Dim studentFound As student
-        Set studentFound = New student
-        studentFound.studentID = rs("Student_ID")
-        studentFound.queueID = rs("Queue_ID")
-        studentFound.firstName = rs("first_name").Value
-        studentFound.middleName = rs("middle_name").Value
-        studentFound.lastName = rs("last_name").Value
-        
-        studentFound.homeAddress = rs("home_address")
-        studentFound.grade = grade(rs("current_grade"))
-        studentFound.balancePaid = rs("balance_paid")
-        studentFound.datePaid = rs("date_of_payment").Value
-        Set SearchStudent = studentFound
-        rs.Close
-        Exit Function
-    Loop
-    Set SearchStudent = Nothing
-ProcExit:
-    Exit Function
-ProcError:
-    MsgBox Err.Description, vbExclamation
-End Function
 
 Public Function grade(grd As String) As String
     Select Case grd

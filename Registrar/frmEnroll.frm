@@ -1,9 +1,10 @@
 VERSION 5.00
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmEnroll 
    BackColor       =   &H00C0E0FF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Enroll Student"
-   ClientHeight    =   4860
+   ClientHeight    =   4335
    ClientLeft      =   5805
    ClientTop       =   3255
    ClientWidth     =   6480
@@ -19,35 +20,42 @@ Begin VB.Form frmEnroll
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4860
+   ScaleHeight     =   4335
    ScaleWidth      =   6480
+   Begin MSWinsockLib.Winsock sckMain 
+      Left            =   600
+      Top             =   3840
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+   End
    Begin VB.Timer tmrEnable 
       Enabled         =   0   'False
       Interval        =   1000
       Left            =   120
-      Top             =   4320
+      Top             =   3840
    End
    Begin VB.CommandButton cmdEnroll 
       Caption         =   "Enroll"
       Enabled         =   0   'False
       Height          =   495
       Left            =   3720
-      TabIndex        =   14
-      Top             =   4200
+      TabIndex        =   12
+      Top             =   3720
       Width           =   1215
    End
    Begin VB.CommandButton cmdBack 
       Caption         =   "Back"
       Height          =   495
       Left            =   5040
-      TabIndex        =   13
-      Top             =   4200
+      TabIndex        =   11
+      Top             =   3720
       Width           =   1215
    End
    Begin VB.Frame frameExtendedInfo 
       BackColor       =   &H00C0E0FF&
       Caption         =   "Student Information"
-      Height          =   3975
+      Height          =   3495
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -55,10 +63,10 @@ Begin VB.Form frmEnroll
       Begin VB.Label Label1 
          Alignment       =   1  'Right Justify
          BackColor       =   &H00C0E0FF&
-         Caption         =   "Student ID Number:"
+         Caption         =   "Student ID"
          Height          =   255
          Left            =   120
-         TabIndex        =   12
+         TabIndex        =   10
          Top             =   840
          Width           =   2175
       End
@@ -67,7 +75,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   11
+         TabIndex        =   9
          Top             =   840
          Width           =   2175
       End
@@ -77,7 +85,7 @@ Begin VB.Form frmEnroll
          Caption         =   "Full Name:"
          Height          =   255
          Left            =   120
-         TabIndex        =   10
+         TabIndex        =   8
          Top             =   1320
          Width           =   2175
       End
@@ -87,7 +95,7 @@ Begin VB.Form frmEnroll
          Caption         =   "Address:"
          Height          =   255
          Left            =   120
-         TabIndex        =   9
+         TabIndex        =   7
          Top             =   1800
          Width           =   2175
       End
@@ -97,18 +105,8 @@ Begin VB.Form frmEnroll
          Caption         =   "Grade:"
          Height          =   255
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   6
          Top             =   2520
-         Width           =   2175
-      End
-      Begin VB.Label Label7 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Balance:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   7
-         Top             =   3000
          Width           =   2175
       End
       Begin VB.Label Label9 
@@ -117,8 +115,8 @@ Begin VB.Form frmEnroll
          Caption         =   "Paid Last:"
          Height          =   255
          Left            =   120
-         TabIndex        =   6
-         Top             =   3480
+         TabIndex        =   5
+         Top             =   3000
          Width           =   2175
       End
       Begin VB.Label lblFullName 
@@ -126,7 +124,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   5
+         TabIndex        =   4
          Top             =   1320
          Width           =   3375
       End
@@ -135,7 +133,7 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   4
+         TabIndex        =   3
          Top             =   1800
          Width           =   3375
       End
@@ -144,17 +142,8 @@ Begin VB.Form frmEnroll
          Caption         =   "N/A"
          Height          =   375
          Left            =   2640
-         TabIndex        =   3
-         Top             =   2520
-         Width           =   3375
-      End
-      Begin VB.Label lblBalance 
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "N/A"
-         Height          =   375
-         Left            =   2640
          TabIndex        =   2
-         Top             =   3000
+         Top             =   2520
          Width           =   3375
       End
       Begin VB.Label lblPaidDate 
@@ -163,7 +152,7 @@ Begin VB.Form frmEnroll
          Height          =   375
          Left            =   2640
          TabIndex        =   1
-         Top             =   3480
+         Top             =   3000
          Width           =   3375
       End
    End
@@ -175,41 +164,46 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Dim countdown As Integer
-Public studentToEnroll As student
+Public student As Dictionary
+Public status As String
 
 Public Sub loadData()
-    lblID.Caption = studentToEnroll.studentID
-    lblFullName.Caption = studentToEnroll.fullName
-    lblAddress.Caption = studentToEnroll.homeAddress
-    
-    lblGrade.Caption = grade(studentToEnroll.grade)
-    lblBalance.Caption = studentToEnroll.balancePaid
-    lblPaidDate.Caption = Format(studentToEnroll.datePaid, "mmmm dd, yyyy")
-    
-    cmdEnroll.Enabled = False
+    lblID.Caption = student("StudentID")
+    lblFullName.Caption = student("first_name") & " " & student("last_name")
+    Dim studentAddress As String
+    studentAddress = student("home_address_brgy")
+    studentAddress = studentAddress & ", " & student("home_address_city")
+    studentAddress = studentAddress & ", " & student("home_address_province")
+    lblAddress.Caption = studentAddress
+
+    lblGrade.Caption = grade(student("current_grade"))
+    lblPaidDate.Caption = Format(student("latest_payment"), "mmmm dd, yyyy")
+
+    cmdEnroll.enabled = False
     countdown = 3
-    tmrEnable.Enabled = True
+    tmrEnable.enabled = True
 End Sub
+
 Public Function grade(grd As String) As String
     Select Case grd
-        Case "preschool"
-            grade = "Nursery"
-        Case "grade1"
-            grade = "Grade I"
-        Case "grade2"
-            grade = "Grade II"
-        Case "grade3"
-            grade = "Grade III"
-        Case "grade4"
-            grade = "Grade IV"
-        Case "grade5"
-            grade = "Grade V"
-        Case "grade6"
-            grade = "Grade VI"
+    Case "preschool"
+        grade = "Nursery"
+    Case "grade1"
+        grade = "Grade I"
+    Case "grade2"
+        grade = "Grade II"
+    Case "grade3"
+        grade = "Grade III"
+    Case "grade4"
+        grade = "Grade IV"
+    Case "grade5"
+        grade = "Grade V"
+    Case "grade6"
+        grade = "Grade VI"
     End Select
 End Function
 Private Sub cmdReset_Click()
-    
+
 End Sub
 
 Private Sub cmdBack_Click()
@@ -217,31 +211,17 @@ Private Sub cmdBack_Click()
 End Sub
 
 Private Sub cmdEnroll_Click()
-'On Error GoTo ProcError 'If something goes wrong, skip to the Error message
-    'sets the RecordSet for counting the enrollees
-    Set rs = New ADODB.Recordset
-    rs.ActiveConnection = cn
-    rs.CursorLocation = adUseClient
-    rs.CursorType = adOpenDynamic
-    rs.LockType = adLockOptimistic
-    'Counts the number of students on queue in the table
-    rs.Source = "SELECT * FROM montessori_queue WHERE Queue_ID =" & studentToEnroll.queueID
-    'Opens the recordset
-    rs.Open
-    Do Until rs.EOF
-        rs("status").Value = "enrolled"
-        rs.Update
-        rs.Close
-        MsgBox "The student has been successfully enrolled!", vbInformation
-        Unload Me
-        Exit Sub
-    Loop
-    MsgBox "There has been a problem, contact your admin!", vbExclamation
-ProcExit:
-    Exit Sub
-ProcError:
-    MsgBox Err.Description, vbExclamation
-    Resume ProcExit
+    Dim enrollParams As Dictionary
+    Set enrollParams = New Dictionary
+    enrollParams.Add "usrn", regadmin.usrn
+    enrollParams.Add "pssw", regadmin.pssw
+    enrollParams.Add "role", regadmin.role
+    enrollParams.Add "action", aENROLL_STUDENT
+
+    enrollParams.Add "student_id", student("ID")
+    blnConnected = False
+
+    Call sendRequest(sckMain, hAPI_ACCOUNT, enrollParams, hPOST_METHOD)
 End Sub
 
 Private Sub Form_Load()
@@ -250,10 +230,47 @@ End Sub
 
 Private Sub tmrEnable_Timer()
     countdown = countdown - 1
-    cmdEnroll.Caption = Str(countdown)
+    cmdEnroll.Caption = str(countdown)
     If countdown < 0 Then
         cmdEnroll.Caption = "Enroll"
-        cmdEnroll.Enabled = True
-        tmrEnable.Enabled = False
+        cmdEnroll.enabled = True
+        tmrEnable.enabled = False
     End If
 End Sub
+
+
+Private Sub sckMain_Connect()
+    blnConnected = True
+End Sub
+
+' this event occurs when data is arriving via winsock
+Private Sub sckMain_DataArrival(ByVal bytesTotal As Long)
+    Dim strResponse As String
+
+    sckMain.GetData strResponse, vbString, bytesTotal
+    Debug.Print strResponse
+    Dim p As Object
+    Set p = JSON.parse(getJSONFromResponse(strResponse))
+    Debug.Print (JSON.toString(p))
+    Dim message As Dictionary
+
+    If p.Item("response") = 1 Then
+        MsgBox p.Item("message"), vbInformation
+        Unload Me
+    Else
+        MsgBox p.Item("message"), vbExclamation
+        Unload Me
+    End If
+End Sub
+
+Private Sub sckMain_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    MsgBox Description, vbExclamation, "Connection Error"
+    sckMain.Close
+End Sub
+
+Private Sub sckMain_Close()
+    blnConnected = False
+    tmrEnable.enabled = True
+    sckMain.Close
+End Sub
+
