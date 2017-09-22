@@ -199,7 +199,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Sub SplashScreenExit()
-    tmrExit.Enabled = False
+    tmrExit.enabled = False
     frmLogin.Show
     Unload Me
 End Sub
